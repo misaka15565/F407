@@ -55,9 +55,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern TIM_HandleTypeDef htim3;
-extern UART_HandleTypeDef huart5;
-extern UART_HandleTypeDef huart3;
+extern RTC_HandleTypeDef hrtc;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -200,55 +198,17 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles TIM3 global interrupt.
+  * @brief This function handles RTC wake-up interrupt through EXTI line 22.
   */
-void TIM3_IRQHandler(void)
+void RTC_WKUP_IRQHandler(void)
 {
-  /* USER CODE BEGIN TIM3_IRQn 0 */
+  /* USER CODE BEGIN RTC_WKUP_IRQn 0 */
 
-  /* USER CODE END TIM3_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim3);
-  /* USER CODE BEGIN TIM3_IRQn 1 */
-    static uint32_t count = 0;
-    static uint16_t led = 7;
-    extern uint8_t waterlampflag;
-    if (waterlampflag) ++count;
-    if (count == 25) {
-        HAL_GPIO_WritePin(GPIOF, 1 << led, GPIO_PIN_SET);
-        led = (led + 1) % 8;
-        HAL_GPIO_WritePin(GPIOF, 1 << led, GPIO_PIN_RESET);
-        count = 0;
-    }
+  /* USER CODE END RTC_WKUP_IRQn 0 */
+  HAL_RTCEx_WakeUpTimerIRQHandler(&hrtc);
+  /* USER CODE BEGIN RTC_WKUP_IRQn 1 */
 
-  /* USER CODE END TIM3_IRQn 1 */
-}
-
-/**
-  * @brief This function handles USART3 global interrupt.
-  */
-void USART3_IRQHandler(void)
-{
-  /* USER CODE BEGIN USART3_IRQn 0 */
-
-  /* USER CODE END USART3_IRQn 0 */
-  HAL_UART_IRQHandler(&huart3);
-  /* USER CODE BEGIN USART3_IRQn 1 */
-
-  /* USER CODE END USART3_IRQn 1 */
-}
-
-/**
-  * @brief This function handles UART5 global interrupt.
-  */
-void UART5_IRQHandler(void)
-{
-  /* USER CODE BEGIN UART5_IRQn 0 */
-
-  /* USER CODE END UART5_IRQn 0 */
-  HAL_UART_IRQHandler(&huart5);
-  /* USER CODE BEGIN UART5_IRQn 1 */
-
-  /* USER CODE END UART5_IRQn 1 */
+  /* USER CODE END RTC_WKUP_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
