@@ -7,7 +7,7 @@ const uint8_t BCD_decode_tab[0x10] =
      0X7F, 0X6F, 0X77, 0X7C,
      0X58, 0X5E, 0X79, 0X71}; // BCD
 
-uint8_t ch455_key; // CH455的按键键值
+volatile uint8_t ch455_key; // CH455的按键键值
 
 uint8_t Alarm_flag = 0;
 

@@ -3,8 +3,12 @@
 #include <stdint.h>
 /* 与单片机有关,与中断连接方式有关 */
 #define		USE_CH455_KEY		1			// 使用了CH455的按键中断
-extern uint8_t ch455_key;	// CH455的按键键值
+extern volatile uint8_t ch455_key;	// CH455的按键键值
 extern const uint8_t BCD_decode_tab[0x10];	// BCD码转换表
+#define CH455_A 0x77
+#define CH455_b 0x7C
+#define CH455_C 0x39
+#define CH455_d 0x5E
 #ifdef USE_CH455_KEY
 	#define		DISABLE_KEY_INTERRUPT	{EX1=0;}
 	#define		ENABLE_KEY_INTERRUPT	{EX1=1;}
