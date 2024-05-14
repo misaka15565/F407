@@ -18,8 +18,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
+#include "dac.h"
 #include "rtc.h"
-#include "stm32f4xx_hal_rtc.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -141,6 +142,8 @@ int main(void)
   MX_TIM3_Init();
   MX_UART5_Init();
   MX_RTC_Init();
+  MX_ADC1_Init();
+  MX_DAC_Init();
   /* USER CODE BEGIN 2 */
     W25QXX_Init();
     HAL_GPIO_WritePin(GPIOF, GPIO_PIN_6, GPIO_PIN_SET);
