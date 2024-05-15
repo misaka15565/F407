@@ -73,11 +73,13 @@ void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim) {
 }
 
 float get_adc1_0() {
-    HAL_ADC_Start(&hadc1);
-    HAL_ADC_PollForConversion(&hadc1, 0xffff);
-    if (HAL_IS_BIT_SET(HAL_ADC_GetState(&hadc1), HAL_ADC_STATE_REG_EOC))
-        return HAL_ADC_GetValue(&hadc1) * 3.3 / 4096;
-    return 114.514;
+    int sum = 0;
+    for (int i = 0; i < 20; ++i) {
+        HAL_ADC_Start(&hadc1);
+        HAL_ADC_PollForConversion(&hadc1, 0xffff);
+        sum += HAL_ADC_GetValue(&hadc1);
+    }
+    return sum * 3.3 / 4096 / 20;
 }
 // 重定向printf
 // gcc是这样的
