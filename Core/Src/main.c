@@ -32,6 +32,7 @@
 #include "W25QXX.h"
 #include "CH455.h"
 #include "WIFI.h"
+#include "key.h"
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_gpio.h"
 #include "stm32f4xx_hal_tim.h"
@@ -65,6 +66,19 @@ uint8_t waterlampflag = 0;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim) {
+    if (htim->Instance != TIM3)
+        return;
+    KeyIRQHandler();
+}
+
+float get_adc1_0() {
+    HAL_ADC_Start(&hadc1);
+    HAL_ADC_PollForConversion(&hadc1, 0xffff);
+    if (HAL_IS_BIT_SET(HAL_ADC_GetState(&hadc1), HAL_ADC_STATE_REG_EOC))
+        return HAL_ADC_GetValue(&hadc1) * 3.3 / 4096;
+    return 114.514;
+}
 // 重定向printf
 // gcc是这样的
 int _write(int fd, char *pBuffer, int size) {
@@ -95,7 +109,7 @@ void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
     RTC_DateTypeDef sDate;
     HAL_RTC_GetTime(hrtc, &sTime, RTC_FORMAT_BIN);
     HAL_RTC_GetDate(hrtc, &sDate, RTC_FORMAT_BIN);
-    char str[20]={};
+    char str[20] = {};
     sprintf(str, "%02d:%02d:%02d", sTime.Hours, sTime.Minutes, sTime.Seconds);
     LCD_ShowString(0, 112, str, BLACK, WHITE);
 }
@@ -107,44 +121,43 @@ void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
-  * @retval int
-  */
-int main(void)
-{
+ * @brief  The application entry point.
+ * @retval int
+ */
+int main(void) {
+    /* USER CODE BEGIN 1 */
 
-  /* USER CODE BEGIN 1 */
+    /* USER CODE END 1 */
 
-  /* USER CODE END 1 */
+    /* MCU Configuration--------------------------------------------------------*/
 
-  /* MCU Configuration--------------------------------------------------------*/
+    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+    HAL_Init();
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+    /* USER CODE BEGIN Init */
 
-  /* USER CODE BEGIN Init */
+    /* USER CODE END Init */
 
-  /* USER CODE END Init */
+    /* Configure the system clock */
+    SystemClock_Config();
 
-  /* Configure the system clock */
-  SystemClock_Config();
+    /* USER CODE BEGIN SysInit */
 
-  /* USER CODE BEGIN SysInit */
+    /* USER CODE END SysInit */
 
-  /* USER CODE END SysInit */
+    /* Initialize all configured peripherals */
+    MX_GPIO_Init();
+    MX_TIM10_Init();
+    MX_TIM1_Init();
+    MX_FSMC_Init();
+    MX_USART3_UART_Init();
+    MX_TIM3_Init();
+    MX_UART5_Init();
+    MX_RTC_Init();
+    MX_ADC1_Init();
+    MX_DAC_Init();
+    /* USER CODE BEGIN 2 */
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_TIM10_Init();
-  MX_TIM1_Init();
-  MX_FSMC_Init();
-  MX_USART3_UART_Init();
-  MX_TIM3_Init();
-  MX_UART5_Init();
-  MX_RTC_Init();
-  MX_ADC1_Init();
-  MX_DAC_Init();
-  /* USER CODE BEGIN 2 */
     W25QXX_Init();
     HAL_GPIO_WritePin(GPIOF, GPIO_PIN_6, GPIO_PIN_SET);
     HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
@@ -189,7 +202,7 @@ int main(void)
     memset(ReadBuf, 0, sizeof(ReadBuf));
     W25QXX_Write_Page((u8 *)WriteBuf, 0, sizeof(WriteBuf));
     W25QXX_Read((u8 *)ReadBuf, 0, sizeof(WriteBuf));
-    
+
     for (volatile uint8_t i = 0; i < 10; i++) {
         if (ReadBuf[i] != WriteBuf[i]) {
             value = 1;
@@ -203,149 +216,112 @@ int main(void)
         LCD_ShowString(0, 96, "W25Q16 Erase&Write ERROR", BLACK, WHITE);
         HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, GPIO_PIN_SET);
     }
-  /* USER CODE END 2 */
+    /* USER CODE END 2 */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+    /* Infinite loop */
+    /* USER CODE BEGIN WHILE */
     // WIFI_Config2();
     LCD_ShowString(0, 0, "Compile Time", BLACK, WHITE);
     LCD_ShowString(0, 16, __TIME__, BLACK, WHITE);
     CH455_Write(CH455_SYSON);
     CH455_Write(CH455_SYSON_8);
-    uint8_t showL[2] = {};
-    uint8_t showH[2] = {};
-    showL[0] = BCD_decode_tab[3];
-    showH[0] = BCD_decode_tab[2];
-    showL[1] = BCD_decode_tab[1];
-    showH[1] = BCD_decode_tab[0];
-    CH455_Write(CH455_DIG3 | showL[0]);
-    CH455_Write(CH455_DIG2 | showH[0]);
-    CH455_Write(CH455_DIG1 | showL[1]);
-    CH455_Write(CH455_DIG0 | showH[1]);
+    CH455_Show_uint(1234);
     uint8_t i;
-    for (i = 1; i < 8; i++) {
-        HAL_Delay(500);
-        CH455_Write(CH455_SYSON | i << 4); // 1-7级亮度显示
-    }
-
-    HAL_Delay(500);
+    uint16_t DAC_value = 0;
     CH455_Write(CH455_SYSON_8);
-    CH455_Write(CH455_DIG0 | CH455_A);
-    CH455_Write(CH455_DIG1 | CH455_b);
-    CH455_Write(CH455_DIG2 | CH455_C);
-    CH455_Write(CH455_DIG3 | CH455_d);
-    HAL_Delay(1000);
-    showL[1]=BCD_decode_tab[0];
     while (1) {
-        ch455_key = CH455_Read();
         sprintf(temp_str, "%02X", ch455_key);
         LCD_ShowString(0, 80, temp_str, BLACK, WHITE);
-        i = ch455_key & 0x3f; // 按键值
-        if (i <= 7) {
-            i = i - 3;
-        } else if (12 <= i & i <= 15) {
-            i = i - 7;
-        } else if (20 <= i & i <= 23) {
-            i = i - 11;
-        } else {
-            i = i - 15;
+        i = CH455_Read_KeyID();
+        if (i == 1) {
+            RTC_TimeTypeDef sTime;
+            HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+            uint8_t nums[4] = {};
+            nums[0] = sTime.Minutes / 10;
+            nums[1] = sTime.Minutes % 10;
+            nums[2] = sTime.Seconds / 10;
+            nums[3] = sTime.Seconds % 10;
+            CH455_Write(CH455_DIG0 | BCD_decode_tab[nums[0]]);
+            CH455_Write(CH455_DIG1 | BCD_decode_tab[nums[1]] | 0x80);
+            CH455_Write(CH455_DIG2 | BCD_decode_tab[nums[2]]);
+            CH455_Write(CH455_DIG3 | BCD_decode_tab[nums[3]]);
+            continue;
         }
-        if(i==1){
-          RTC_TimeTypeDef sTime;
-          HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-          uint8_t nums[4]={};
-          nums[0]=sTime.Minutes/10;
-          nums[1]=sTime.Minutes%10;
-          nums[2]=sTime.Seconds/10;
-          nums[3]=sTime.Seconds%10;
-          CH455_Write(CH455_DIG0 | BCD_decode_tab[nums[0]]);
-          CH455_Write(CH455_DIG1 | BCD_decode_tab[nums[1]]|0x80);
-          CH455_Write(CH455_DIG2 | BCD_decode_tab[nums[2]]);
-          CH455_Write(CH455_DIG3 | BCD_decode_tab[nums[3]]);
-          continue;
+        // CH455_Show_uint(i);
+        if (get_key1_lib()) {
+            DAC_value += 200;
+            if (DAC_value > 4000) DAC_value = 4000;
         }
-        if (i < 10) {
-            showH[0] = BCD_decode_tab[0];
-            showL[0] = BCD_decode_tab[i];
-        } else {
-            showH[0] = BCD_decode_tab[i / 10];
-            showL[0] = BCD_decode_tab[i - 10];
+        if (get_key2_lib()) {
+            if (DAC_value < 200)
+                DAC_value = 0;
+            else
+                DAC_value -= 200;
         }
-        // 数码管显示之间的移位操作
-        CH455_Write(CH455_DIG3 | showL[0]);
-        CH455_Write(CH455_DIG2 | showH[0]);
-        CH455_Write(CH455_DIG1 | showL[1]);
-        CH455_Write(CH455_DIG0 | showH[1]);
+        float adc1_0 = get_adc1_0();
+        char str[20] = "AD:";
+        str[3] = (int)adc1_0 + '0';
+        str[4] = '.';
+        str[5] = ((int)(adc1_0 * 10) % 10) + '0';
+        str[6] = ((int)(adc1_0 * 100) % 10) + '0';
+        str[7] = ((int)(adc1_0 * 1000) % 10) + '0';
+        str[8] = 'V';
+        LCD_ShowString(0, 128, str, BLACK, WHITE);
+        sprintf(str, "DAC:%d", DAC_value);
+        LCD_ShowString(0, 144, str, BLACK, WHITE);
+        CH455_Show_float(adc1_0);
+        /* USER CODE END WHILE */
 
-        // 判断按键有没有释放
-        while (1) {
-            i = CH455_Read(); // 读按键数值
-            if (i & 0x40)     // 按键按下没有释放
-            {
-                // 闪烁
-                CH455_Write(CH455_DIG3);
-                CH455_Write(CH455_DIG2);
-                HAL_Delay(50);
-                CH455_Write(CH455_DIG3 | showL[0]);
-                CH455_Write(CH455_DIG2 | showH[0]);
-                HAL_Delay(50);
-            } else // 按键已经释放
-            {
-                break;
-            }
-        }
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
+        /* USER CODE BEGIN 3 */
+        HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, DAC_value);
+        HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
+        HAL_Delay(100);
     }
-  /* USER CODE END 3 */
+    /* USER CODE END 3 */
 }
 
 /**
-  * @brief System Clock Configuration
-  * @retval None
-  */
-void SystemClock_Config(void)
-{
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+ * @brief System Clock Configuration
+ * @retval None
+ */
+void SystemClock_Config(void) {
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  /** Configure the main internal regulator output voltage
-  */
-  __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+    /** Configure the main internal regulator output voltage
+     */
+    __HAL_RCC_PWR_CLK_ENABLE();
+    __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSE;
-  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 16;
-  RCC_OscInitStruct.PLL.PLLN = 336;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
+    /** Initializes the RCC Oscillators according to the specified parameters
+     * in the RCC_OscInitTypeDef structure.
+     */
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_LSE;
+    RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+    RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+    RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+    RCC_OscInitStruct.PLL.PLLM = 16;
+    RCC_OscInitStruct.PLL.PLLN = 336;
+    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+    RCC_OscInitStruct.PLL.PLLQ = 4;
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+        Error_Handler();
+    }
 
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+    /** Initializes the CPU, AHB and APB buses clocks
+     */
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+                                  | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
-  {
-    Error_Handler();
-  }
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK) {
+        Error_Handler();
+    }
 }
 
 /* USER CODE BEGIN 4 */
@@ -353,32 +329,30 @@ void SystemClock_Config(void)
 /* USER CODE END 4 */
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
-void Error_Handler(void)
-{
-  /* USER CODE BEGIN Error_Handler_Debug */
+ * @brief  This function is executed in case of error occurrence.
+ * @retval None
+ */
+void Error_Handler(void) {
+    /* USER CODE BEGIN Error_Handler_Debug */
     /* User can add his own implementation to report the HAL error return state */
     __disable_irq();
     while (1) {
     }
-  /* USER CODE END Error_Handler_Debug */
+    /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
-void assert_failed(uint8_t *file, uint32_t line)
-{
-  /* USER CODE BEGIN 6 */
+ * @brief  Reports the name of the source file and the source line number
+ *         where the assert_param error has occurred.
+ * @param  file: pointer to the source file name
+ * @param  line: assert_param error line source number
+ * @retval None
+ */
+void assert_failed(uint8_t *file, uint32_t line) {
+    /* USER CODE BEGIN 6 */
     /* User can add his own implementation to report the file name and line number,
        ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
+    /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

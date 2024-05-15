@@ -55,6 +55,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ./ExtraDrivers/softiic.c
     ./ExtraDrivers/CH455.c
     ./ExtraDrivers/w25qxx.c
+    ./ExtraDrivers/key.c
     # Add user sources here
 )
 

@@ -26,3 +26,41 @@ uint8_t CH455_Read() {
     softiic_Stop();
     return key;
 }
+uint8_t CH455_Read_KeyID() {
+    uint8_t res = CH455_Read();
+    res = res & 0x3f;
+    if (res <= 7) {
+        res -= 3;
+    } else if (12 <= res && res <= 15) {
+        res -= 7;
+    } else if (20 <= res && res <= 23) {
+        res -= 11;
+    } else {
+        res -= 15;
+    }
+    return res;
+}
+
+void CH455_Show_uint(uint16_t num) {
+    uint8_t i;
+    uint8_t data[4];
+    data[0] = num / 1000;
+    data[1] = num % 1000 / 100;
+    data[2] = num % 100 / 10;
+    data[3] = num % 10;
+    for (i = 0; i < 4; i++) {
+        CH455_Write((CH455_DIG0 + i * 0x100) | BCD_decode_tab[data[i]]);
+    }
+}
+
+void CH455_Show_float(float num) {
+    uint8_t i;
+    uint16_t data[4];
+    data[0] = (int)num;
+    data[1] = (int)(num * 10) % 10;
+    data[2] = (int)(num * 100) % 10;
+    data[3] = (int)(num * 1000) % 10;
+    for (i = 0; i < 4; i++) {
+        CH455_Write((CH455_DIG0 + i * 0x100) | BCD_decode_tab[data[i]] | (i == 0 ? CH455_dot : 0x00));
+    }
+}
