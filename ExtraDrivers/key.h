@@ -22,7 +22,6 @@ typedef struct
     KEY_e key;           // 按键编号
     KEY_STATUS_e status; // 按键状态
 } KEY_MSG_t;
-extern volatile KEY_MSG_t keymsg;
 extern void KeyIRQHandler();
-
+extern KEY_MSG_t key_getmsg();
 #endif

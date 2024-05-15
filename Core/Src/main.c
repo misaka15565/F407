@@ -66,10 +66,11 @@ uint8_t waterlampflag = 0;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim) {
-    if (htim->Instance != TIM3)
-        return;
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    // if (htim->Instance != TIM3)
+    //   return;
     KeyIRQHandler();
+    HAL_GPIO_WritePin(LED8_GPIO_Port, LED8_Pin, GPIO_PIN_RESET);
 }
 
 float get_adc1_0() {
@@ -272,6 +273,14 @@ int main(void) {
         sprintf(str, "DAC:%d", DAC_value);
         LCD_ShowString(0, 144, str, BLACK, WHITE);
         CH455_Show_float(adc1_0);
+        KEY_MSG_t msg = key_getmsg();
+        if (msg.key != KEY_MAX) {
+            if (msg.status == KEY_DOWN) {
+                HAL_GPIO_WritePin(GPIOF, GPIO_PIN_5, GPIO_PIN_RESET);
+            }
+        } else {
+            HAL_GPIO_WritePin(GPIOF, GPIO_PIN_5, GPIO_PIN_SET);
+        }
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
