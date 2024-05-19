@@ -18,11 +18,10 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "LCD.h"
 #include "adc.h"
 #include "dac.h"
+#include "lwip.h"
 #include "rtc.h"
-#include "stm32f4xx_hal.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -205,6 +204,7 @@ int main(void)
   MX_RTC_Init();
   MX_ADC1_Init();
   MX_DAC_Init();
+  MX_LWIP_Init();
   /* USER CODE BEGIN 2 */
 
     W25QXX_Init();

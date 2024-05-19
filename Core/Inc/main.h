@@ -91,6 +91,8 @@ void Error_Handler(void);
 #define CTP_INT_GPIO_Port GPIOG
 #define LCD_BL_Pin GPIO_PIN_9
 #define LCD_BL_GPIO_Port GPIOA
+#define ETH_RESET_Pin GPIO_PIN_3
+#define ETH_RESET_GPIO_Port GPIOD
 #define CTP_RST_Pin GPIO_PIN_15
 #define CTP_RST_GPIO_Port GPIOG
 #define SPI3_CS_Pin GPIO_PIN_6
