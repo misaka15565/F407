@@ -18,9 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "LCD.h"
 #include "adc.h"
 #include "dac.h"
 #include "rtc.h"
+#include "stm32f4xx_hal.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -31,12 +33,8 @@
 #include "lcd.h"
 #include "W25QXX.h"
 #include "CH455.h"
-#include "WIFI.h"
 #include "key.h"
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_gpio.h"
-#include "stm32f4xx_hal_tim.h"
-#include "w25qxx.h"
+#include "gt9147.h"
 #include <stdio.h>
 #include <string.h>
 #include <sys/_types.h>
@@ -67,10 +65,12 @@ uint8_t waterlampflag = 0;
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-    // if (htim->Instance != TIM3)
-    //   return;
+    if (htim->Instance != TIM3)
+        return;
     KeyIRQHandler();
-    HAL_GPIO_WritePin(LED8_GPIO_Port, LED8_Pin, GPIO_PIN_RESET);
+    static uint16_t count = 0;
+    ++count;
+    if (count == 0) HAL_GPIO_TogglePin(LED8_GPIO_Port, LED8_Pin);
 }
 
 float get_adc1_0() {
@@ -82,9 +82,53 @@ float get_adc1_0() {
     }
     return sum * 3.3 / 4096 / 20;
 }
+const u16 POINT_COLOR_TBL[5] = {RED, GREEN, BLUE, BROWN, GRED};
+void ctp_test(void)
+{
+    u8 t = 0;
+    u8 i = 0;
+    u16 lastpos[5][2];		//最后一次的数据
+    while(1)
+    {
+        tp_dev.scan(0);
+
+        for(t = 0; t < 5; t++)
+        {
+            if((tp_dev.sta) & (1 << t))
+            {
+                if(tp_dev.x[t] < lcddev.width && tp_dev.y[t] < lcddev.height)
+                {
+                    if(lastpos[t][0] == 0XFFFF)
+                    {
+                        lastpos[t][0] = tp_dev.x[t];
+                        lastpos[t][1] = tp_dev.y[t];
+                    }
+                    LCD_DrawLine(lastpos[t][0], lastpos[t][1], tp_dev.x[t], tp_dev.y[t], POINT_COLOR_TBL[t]); //画线
+                    lastpos[t][0] = tp_dev.x[t];
+                    lastpos[t][1] = tp_dev.y[t];
+
+                    if(tp_dev.x[t] > (lcddev.width - 50) && tp_dev.y[t] < 50)
+                    {
+                        LCD_Clear(WHITE);//清除
+                    }
+                }
+            }
+            else
+            {
+                lastpos[t][0] = 0XFFFF;
+            }
+        }
+
+        HAL_Delay(5);
+        i++;
+    }
+}
 // 重定向printf
 // gcc是这样的
 int _write(int fd, char *pBuffer, int size) {
+    if (fd != stdout->_file)
+        return -1;
+
     HAL_UART_Transmit_IT(&huart3, pBuffer, size);
     return size;
 }
@@ -168,6 +212,7 @@ int main(void)
     HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
     LCD_Init();
+    tp_dev.init();
     HAL_TIM_Base_Start_IT(&htim3);
     volatile unsigned short temp = 0;
     unsigned char WriteBuf[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -225,34 +270,16 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-    // WIFI_Config2();
     LCD_ShowString(0, 0, "Compile Time", BLACK, WHITE);
     LCD_ShowString(0, 16, __TIME__, BLACK, WHITE);
-    CH455_Write(CH455_SYSON);
-    CH455_Write(CH455_SYSON_8);
-    CH455_Show_uint(1234);
     uint8_t i;
     uint16_t DAC_value = 0;
-    CH455_Write(CH455_SYSON_8);
     while (1) {
+        ctp_test();
+        continue;
         sprintf(temp_str, "%02X", ch455_key);
         LCD_ShowString(0, 80, temp_str, BLACK, WHITE);
-        i = CH455_Read_KeyID();
-        if (i == 1) {
-            RTC_TimeTypeDef sTime;
-            HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-            uint8_t nums[4] = {};
-            nums[0] = sTime.Minutes / 10;
-            nums[1] = sTime.Minutes % 10;
-            nums[2] = sTime.Seconds / 10;
-            nums[3] = sTime.Seconds % 10;
-            CH455_Write(CH455_DIG0 | BCD_decode_tab[nums[0]]);
-            CH455_Write(CH455_DIG1 | BCD_decode_tab[nums[1]] | 0x80);
-            CH455_Write(CH455_DIG2 | BCD_decode_tab[nums[2]]);
-            CH455_Write(CH455_DIG3 | BCD_decode_tab[nums[3]]);
-            continue;
-        }
-        // CH455_Show_uint(i);
+
         if (get_key1_lib()) {
             DAC_value += 200;
             if (DAC_value > 4000) DAC_value = 4000;
@@ -274,7 +301,7 @@ int main(void)
         LCD_ShowString(0, 128, str, BLACK, WHITE);
         sprintf(str, "DAC:%d", DAC_value);
         LCD_ShowString(0, 144, str, BLACK, WHITE);
-        CH455_Show_float(adc1_0);
+        // CH455_Show_float(adc1_0);
         KEY_MSG_t msg = key_getmsg();
         if (msg.key != KEY_MAX) {
             if (msg.status == KEY_DOWN) {

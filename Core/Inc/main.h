@@ -79,12 +79,20 @@ void Error_Handler(void);
 #define KEY2_GPIO_Port GPIOF
 #define KEY3_Pin GPIO_PIN_10
 #define KEY3_GPIO_Port GPIOF
+#define CTP_SCL_Pin GPIO_PIN_10
+#define CTP_SCL_GPIO_Port GPIOB
+#define CTP_SDA_Pin GPIO_PIN_15
+#define CTP_SDA_GPIO_Port GPIOB
 #define SOFTIIC_SCL_Pin GPIO_PIN_2
 #define SOFTIIC_SCL_GPIO_Port GPIOG
 #define SOFTIIC_SDA_Pin GPIO_PIN_4
 #define SOFTIIC_SDA_GPIO_Port GPIOG
+#define CTP_INT_Pin GPIO_PIN_8
+#define CTP_INT_GPIO_Port GPIOG
 #define LCD_BL_Pin GPIO_PIN_9
 #define LCD_BL_GPIO_Port GPIOA
+#define CTP_RST_Pin GPIO_PIN_15
+#define CTP_RST_GPIO_Port GPIOG
 #define SPI3_CS_Pin GPIO_PIN_6
 #define SPI3_CS_GPIO_Port GPIOB
 
