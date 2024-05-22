@@ -1,9 +1,9 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    tim.h
+  * @file    usb_otg.h
   * @brief   This file contains all the function prototypes for
-  *          the tim.c file
+  *          the usb_otg.c file
   ******************************************************************************
   * @attention
   *
@@ -18,8 +18,8 @@
   */
 /* USER CODE END Header */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __TIM_H__
-#define __TIM_H__
+#ifndef __USB_OTG_H__
+#define __USB_OTG_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,13 +32,13 @@ extern "C" {
 
 /* USER CODE END Includes */
 
-extern TIM_HandleTypeDef htim3;
+extern HCD_HandleTypeDef hhcd_USB_OTG_FS;
 
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
 
-void MX_TIM3_Init(void);
+void MX_USB_OTG_FS_HCD_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
@@ -48,5 +48,5 @@ void MX_TIM3_Init(void);
 }
 #endif
 
-#endif /* __TIM_H__ */
+#endif /* __USB_OTG_H__ */
 
