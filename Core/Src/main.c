@@ -20,11 +20,12 @@
 #include "main.h"
 #include "adc.h"
 #include "dac.h"
+#include "fatfs.h"
 #include "lwip.h"
 #include "rtc.h"
 #include "tim.h"
 #include "usart.h"
-#include "usb_otg.h"
+#include "usb_host.h"
 #include "gpio.h"
 #include "fsmc.h"
 
@@ -64,6 +65,8 @@ uint8_t waterlampflag = 0;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_USB_HOST_Process(void);
+
 /* USER CODE BEGIN PFP */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if (htim->Instance != TIM3)
@@ -171,7 +174,8 @@ int main(void)
   MX_ADC1_Init();
   MX_DAC_Init();
   MX_LWIP_Init();
-  MX_USB_OTG_FS_HCD_Init();
+  MX_USB_HOST_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
     W25QXX_Init();
@@ -284,6 +288,7 @@ int main(void)
             HAL_GPIO_WritePin(GPIOF, GPIO_PIN_5, GPIO_PIN_SET);
         }
     /* USER CODE END WHILE */
+    MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
         HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, DAC_value);

@@ -14,14 +14,21 @@ target_compile_definitions(stm32cubemx INTERFACE
 
 target_include_directories(stm32cubemx INTERFACE
     ../../Core/Inc
+    ../../FATFS/Target
+    ../../FATFS/App
     ../../LWIP/App
     ../../LWIP/Target
+    ../../USB_HOST/App
+    ../../USB_HOST/Target
     ../../Middlewares/Third_Party/LwIP/src/include
     ../../Middlewares/Third_Party/LwIP/system
     ../../Drivers/STM32F4xx_HAL_Driver/Inc
     ../../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy
+    ../../Middlewares/Third_Party/FatFs/src
     ../../Drivers/BSP/Components/lan8742
     ../../Middlewares/Third_Party/LwIP/src/include/netif/ppp
+    ../../Middlewares/ST/STM32_USB_Host_Library/Core/Inc
+    ../../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc
     ../../Drivers/CMSIS/Device/ST/STM32F4xx/Include
     ../../Middlewares/Third_Party/LwIP/src/include/lwip
     ../../Middlewares/Third_Party/LwIP/src/include/lwip/apps
@@ -47,11 +54,14 @@ target_sources(stm32cubemx INTERFACE
     ../../Core/Src/spi.c
     ../../Core/Src/tim.c
     ../../Core/Src/usart.c
-    ../../Core/Src/usb_otg.c
     ../../Core/Src/stm32f4xx_it.c
     ../../Core/Src/stm32f4xx_hal_msp.c
+    ../../FATFS/Target/usbh_diskio.c
+    ../../FATFS/App/fatfs.c
     ../../LWIP/Target/ethernetif.c
     ../../LWIP/App/lwip.c
+    ../../USB_HOST/App/usb_host.c
+    ../../USB_HOST/Target/usbh_conf.c
     ../../Drivers/BSP/Components/lan8742/lan8742.c
     ../../Drivers/BSP/Components/lan8742/lan8742.c
     ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c
@@ -68,6 +78,8 @@ target_sources(stm32cubemx INTERFACE
     ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c
     ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c
     ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c
+    ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c
+    ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c
     ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c
     ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c
     ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c
@@ -81,9 +93,11 @@ target_sources(stm32cubemx INTERFACE
     ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
     ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
     ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c
-    ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c
-    ../../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c
     ../../Core/Src/system_stm32f4xx.c
+    ../../Middlewares/Third_Party/FatFs/src/diskio.c
+    ../../Middlewares/Third_Party/FatFs/src/ff.c
+    ../../Middlewares/Third_Party/FatFs/src/ff_gen_drv.c
+    ../../Middlewares/Third_Party/FatFs/src/option/syscall.c
     ../../Middlewares/Third_Party/LwIP/src/netif/ppp/auth.c
     ../../Middlewares/Third_Party/LwIP/src/netif/ppp/ccp.c
     ../../Middlewares/Third_Party/LwIP/src/netif/ppp/chap_ms.c
@@ -164,6 +178,13 @@ target_sources(stm32cubemx INTERFACE
     ../../Middlewares/Third_Party/LwIP/src/core/ipv6/mld6.c
     ../../Middlewares/Third_Party/LwIP/src/core/ipv6/nd6.c
     ../../Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c
+    ../../Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_core.c
+    ../../Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ctlreq.c
+    ../../Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c
+    ../../Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_pipes.c
+    ../../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc.c
+    ../../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_bot.c
+    ../../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c
     ../../Core/Src/sysmem.c
     ../../Core/Src/syscalls.c
     ../../startup_stm32f407xx.s
