@@ -1039,41 +1039,41 @@ void LCD_DrawRectangle(u16 x1, u16 y1, u16 x2, u16 y2, u16 color)
 //输出参数：无
 //函数返回：无
 //**********************************************************************************************************/
-//void LCD_Draw_Circle(u16 x0, u16 y0, u8 r, u16 color)
-//{
-//    int a, b;
-//    int di;
-//    
-//	a = 0;
-//	b = r;
-//    
-//	di = 3 - (r << 1);       											//	判断下个点位置的标志
-//    
-//	while(a <= b)
-//    {
-//        LCD_DrawPoint(x0 + a, y0 - b, color);        					//	5
-//        LCD_DrawPoint(x0 + b, y0 - a, color);        					//	0
-//        LCD_DrawPoint(x0 + b, y0 + a, color);        					//	4
-//        LCD_DrawPoint(x0 + a, y0 + b, color);        					//	6
-//        LCD_DrawPoint(x0 - a, y0 + b, color);        					//	1
-//        LCD_DrawPoint(x0 - b, y0 + a, color);
-//        LCD_DrawPoint(x0 - a, y0 - b, color);        					//	2
-//        LCD_DrawPoint(x0 - b, y0 - a, color);        					//	7
-//        
-//		a++;
-//        
-//		//	使用Bresenham算法画圆
-//        if(di < 0)
-//        {
-//            di += 4 * a + 6;
-//        }
-//        else
-//        {
-//            di += 10 + 4 * (a - b);
-//            b--;
-//        }
-//    }
-//}
+void LCD_Draw_Circle(u16 x0, u16 y0, u8 r, u16 color)
+{
+    int a, b;
+    int di;
+    
+	a = 0;
+	b = r;
+    
+	di = 3 - (r << 1);       											//	判断下个点位置的标志
+    
+	while(a <= b)
+    {
+        LCD_DrawPoint(x0 + a, y0 - b, color);        					//	5
+        LCD_DrawPoint(x0 + b, y0 - a, color);        					//	0
+        LCD_DrawPoint(x0 + b, y0 + a, color);        					//	4
+        LCD_DrawPoint(x0 + a, y0 + b, color);        					//	6
+        LCD_DrawPoint(x0 - a, y0 + b, color);        					//	1
+        LCD_DrawPoint(x0 - b, y0 + a, color);
+        LCD_DrawPoint(x0 - a, y0 - b, color);        					//	2
+        LCD_DrawPoint(x0 - b, y0 - a, color);        					//	7
+        
+		a++;
+        
+		//	使用Bresenham算法画圆
+        if(di < 0)
+        {
+            di += 4 * a + 6;
+        }
+        else
+        {
+            di += 10 + 4 * (a - b);
+            b--;
+        }
+    }
+}
 
 
 /**********************************************************************************************************
@@ -1303,4 +1303,26 @@ void LCD_DrawPicture(u16 StartX, u16 StartY, u16 Xend, u16 Yend, u8 *pic)
             LCD_DrawOnrPoint(StartX + i, StartY + j, *bitmap++);
         }
     }
+}
+
+void LCD_sudoer_Draw_Triangle_Wave(u16 startx, u16 starty, u16 endx, u16 endy, u16 color,u16 t){
+    //绘制三角波
+    if(startx>endx||starty>endy)return;
+    for(uint16_t i=startx;i<endx;++i){
+        for(uint16_t j=starty;j<endy;++j){
+            LCD_DrawPoint(i,j,WHITE);
+        }
+    }
+    int16_t width=endx-startx;
+    int16_t height=endy-starty;
+    int16_t tmp[480]={};
+    for(uint16_t i=0;i<width;i++){
+        tmp[i]=i;
+        tmp[i]%=2*height;
+        if(tmp[i]>=height)tmp[i]=2*height-tmp[i]-1;
+    }
+    for(uint16_t i=0;i<width;i++){
+        LCD_DrawPoint(startx+i, starty+tmp[(i+t)%width], color);
+    }
+
 }
