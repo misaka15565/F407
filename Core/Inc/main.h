@@ -85,6 +85,8 @@ void Error_Handler(void);
 #define CTP_SDA_GPIO_Port GPIOB
 #define SOFTIIC_SCL_Pin GPIO_PIN_2
 #define SOFTIIC_SCL_GPIO_Port GPIOG
+#define USB_PWR_Pin GPIO_PIN_3
+#define USB_PWR_GPIO_Port GPIOG
 #define SOFTIIC_SDA_Pin GPIO_PIN_4
 #define SOFTIIC_SDA_GPIO_Port GPIOG
 #define CTP_INT_Pin GPIO_PIN_8
