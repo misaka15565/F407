@@ -1199,8 +1199,11 @@ void LCD_DrawPicture(u16 StartX, u16 StartY, u16 width, u16 height, u8 *pic) {
     u16 *bitmap = (u16 *)pic;
 
     for (j = 0; j < height; j++) {
+        LCD_SetCursor(StartX, StartY+j);
+        LCD_WriteRAM_Prepare();
         for (i = 0; i < width; i++) {
-            LCD_DrawOnrPoint(StartX + i, StartY + j, *bitmap++);
+            //LCD_DrawOnrPoint(StartX + i, StartY + j, *bitmap++);
+            LCD->LCD_RAM = *bitmap++;
         }
     }
 }

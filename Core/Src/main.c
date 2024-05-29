@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "LCD.h"
 #include "adc.h"
 #include "dac.h"
 #include "fatfs.h"
@@ -128,7 +129,7 @@ void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
     HAL_RTC_GetDate(hrtc, &sDate, RTC_FORMAT_BIN);
     char str[20] = {0};
     sprintf(str, "%02d:%02d:%02d", sTime.Hours, sTime.Minutes, sTime.Seconds);
-    LCD_ShowString(400, 700, str, BLACK, WHITE);
+    LCD_ShowString(0, 400, str, BLACK, WHITE);
 }
 /* USER CODE END PFP */
 
@@ -176,6 +177,8 @@ int main(void) {
     MX_FATFS_Init();
     /* USER CODE BEGIN 2 */
     LCD_Init();
+    LCD_Display_Dir(1);
+    LCD_Scan_Dir(U2D_R2L);
     tp_dev.init();
     HAL_TIM_Base_Start_IT(&htim3);
     while (1) {
@@ -190,6 +193,8 @@ int main(void) {
     char tmp[20] = {0};
     sprintf(tmp, "%d", res);
     LCD_ShowString(128, 32, tmp, BLACK, WHITE);
+    sprintf(tmp, "%d %d", lcddev.height, lcddev.width);
+    LCD_ShowString(128, 0, tmp, BLACK, WHITE);
     if (res == FR_OK) {
         FIL file;
         f_open(&file, "test.txt", FA_CREATE_ALWAYS | FA_WRITE);
@@ -207,6 +212,15 @@ int main(void) {
     LCD_ShowString(0, 16, __TIME__, BLACK, WHITE);
     LCD_DrawPicture(0, 48, image_width, image_height, image);
     while (1) {
+        /*
+        static uint16_t color = 0;
+        LCD_SetCursor(0, 0);
+        LCD_WriteRAM_Prepare();
+        for (uint32_t i = 0; i < 800 * 480; ++i) {
+            LCD->LCD_RAM = color;
+        }
+        color = ~color;
+        continue;*/
         torch_process();
         HAL_Delay(5);
 
