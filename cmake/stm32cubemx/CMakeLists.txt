@@ -98,7 +98,6 @@ target_sources(stm32cubemx INTERFACE
     ../../Middlewares/Third_Party/FatFs/src/ff.c
     ../../Middlewares/Third_Party/FatFs/src/ff_gen_drv.c
     ../../Middlewares/Third_Party/FatFs/src/option/syscall.c
-    ../../Middlewares/Third_Party/FatFs/src/option/cc936.c
     ../../Middlewares/Third_Party/LwIP/src/netif/ppp/auth.c
     ../../Middlewares/Third_Party/LwIP/src/netif/ppp/ccp.c
     ../../Middlewares/Third_Party/LwIP/src/netif/ppp/chap_ms.c

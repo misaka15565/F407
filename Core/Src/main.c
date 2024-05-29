@@ -178,16 +178,34 @@ int main(void) {
     LCD_Init();
     tp_dev.init();
     HAL_TIM_Base_Start_IT(&htim3);
+    while (1) {
+        MX_USB_HOST_Process();
+        extern ApplicationTypeDef Appli_state;
+        if (APPLICATION_READY == Appli_state) break;
+        if (Appli_state == APPLICATION_DISCONNECT) break;
+    }
 
+    FRESULT res = f_mount(&USBHFatFS, (TCHAR const *)USBHPath, 1);
+    LCD_ShowString(0, 32, (res == FR_OK ? "USBH OK" : "USBH Fail"), BLACK, WHITE);
+    char tmp[20] = {0};
+    sprintf(tmp, "%d", res);
+    LCD_ShowString(128, 32, tmp, BLACK, WHITE);
+    if (res == FR_OK) {
+        FIL file;
+        f_open(&file, "test.txt", FA_CREATE_ALWAYS | FA_WRITE);
+        f_write(&file, "Hello World", 11, 0);
+        f_close(&file);
+    } else if (res == FR_NO_FILESYSTEM) {
+        uint8_t buf[1024] = {0};
+        f_mkfs("0:", FM_FAT32, 4096, buf, 1024);
+    }
     /* USER CODE END 2 */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
     LCD_ShowString(0, 0, "Compile Time", BLACK, WHITE);
     LCD_ShowString(0, 16, __TIME__, BLACK, WHITE);
-    LCD_DrawPicture(0, 0, image_width, image_height, image);
-    LCD_Draw_Circle(400, 400, 50, BLUE);
-    LCD_ShowString(400, 300, "\xc4\xe3\xcb\xb5\xb5\xc3\xb6\xd4", BLACK, WHITE);
+    LCD_DrawPicture(0, 48, image_width, image_height, image);
     while (1) {
         torch_process();
         HAL_Delay(5);

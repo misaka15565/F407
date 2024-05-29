@@ -1193,13 +1193,13 @@ void LCD_DrawOnrPoint(uint16_t xsta, uint16_t ysta, uint16_t color) {
 输出参数：无
 函数返回：无
 **********************************************************************************************************/
-void LCD_DrawPicture(u16 StartX, u16 StartY, u16 Xend, u16 Yend, u8 *pic) {
+void LCD_DrawPicture(u16 StartX, u16 StartY, u16 width, u16 height, u8 *pic) {
     static u16 i = 0, j = 0;
 
     u16 *bitmap = (u16 *)pic;
 
-    for (j = 0; j < Yend - StartY; j++) {
-        for (i = 0; i < Xend - StartX; i++) {
+    for (j = 0; j < height; j++) {
+        for (i = 0; i < width; i++) {
             LCD_DrawOnrPoint(StartX + i, StartY + j, *bitmap++);
         }
     }
