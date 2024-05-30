@@ -112,8 +112,8 @@ extern lcd_dev lcddev; //	管理LCD重要参数
 //	函数声明
 void LCD_delayus(unsigned int time);
 void LCD_delayms(unsigned int cnt);
-void LCD_WR_REG(u16 regval);
-void LCD_WR_DATA(u16 data);
+
+
 u16 LCD_RD_DATA(void);
 void LCD_WriteReg(u16 LCD_Reg, u16 LCD_RegValue);
 u16 LCD_ReadReg(u16 LCD_Reg);

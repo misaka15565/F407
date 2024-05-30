@@ -42,7 +42,7 @@ void LCD_delayms(unsigned int cnt) {
 输出参数：无
 函数返回：无
 **********************************************************************************************************/
-void LCD_WR_REG(u16 regval) {
+static void LCD_WR_REG(u16 regval) {
     LCD->LCD_REG = regval; // 写入要写的寄存器序号
 }
 
@@ -52,7 +52,7 @@ void LCD_WR_REG(u16 regval) {
 输出参数：无
 函数返回：无
 **********************************************************************************************************/
-void LCD_WR_DATA(u16 data) {
+static void LCD_WR_DATA(u16 data) {
     LCD->LCD_RAM = data;
 }
 
