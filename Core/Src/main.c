@@ -178,8 +178,8 @@ int main(void) {
     MX_FATFS_Init();
     /* USER CODE BEGIN 2 */
     LCD_Init();
-    // LCD_Display_Dir(1);
-    // LCD_Scan_Dir(U2D_R2L);
+    LCD_Display_Dir(1);
+    LCD_Scan_Dir(U2D_R2L);
     tp_dev.init();
     HAL_TIM_Base_Start_IT(&htim3);
     while (1) {
@@ -190,12 +190,12 @@ int main(void) {
     }
 
     FRESULT res = f_mount(&USBHFatFS, (TCHAR const *)USBHPath, 1);
-    LCD_ShowString(0, 32, (res == FR_OK ? "USBH OK" : "USBH Fail"), RED, WHITE);
+    LCD_ShowString(0, 16, (res == FR_OK ? "USBH OK" : "USBH Fail"), RED, WHITE);
     char tmp[20] = {0};
     sprintf(tmp, "%d", res);
-    LCD_ShowString(128, 32, tmp, BLACK, WHITE);
+    LCD_ShowString(128, 16, tmp, BLACK, WHITE);
     sprintf(tmp, "%d %d", lcddev.height, lcddev.width);
-    LCD_ShowString(128, 0, tmp, BLACK, WHITE);
+    LCD_ShowString(128+64, 0, tmp, BLACK, WHITE);
     if (res == FR_OK) {
         FIL file;
         f_open(&file, "test.txt", FA_CREATE_ALWAYS | FA_WRITE);
@@ -210,48 +210,26 @@ int main(void) {
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
     LCD_ShowString(0, 0, "Compile Time", BLACK, WHITE);
-    LCD_ShowString(0, 16, __TIME__, BLACK, WHITE);
-    LCD_DrawPicture(0, 48, image_width, image_height, image);
-    LCD_Draw_area(0, 300, 50, 50, ~(uint16_t)(1 << 0));
-    LCD_Draw_area(50, 300, 50, 50, ~(uint16_t)(1 << 1));
-    LCD_Draw_area(100, 300, 50, 50, ~(uint16_t)(1 << 2));
-    LCD_Draw_area(150, 300, 50, 50, ~(uint16_t)(1 << 3));
-    LCD_Draw_area(0, 350, 50, 50, ~(uint16_t)(1 << 4));
-    LCD_Draw_area(50, 350, 50, 50, ~(uint16_t)(1 << 5));
-    LCD_Draw_area(100, 350, 50, 50, ~(uint16_t)(1 << 6));
-    LCD_Draw_area(150, 350, 50, 50, ~(uint16_t)(1 << 7));
-    LCD_Draw_area(0, 400, 50, 50, ~(uint16_t)(1 << 8));
-    LCD_Draw_area(50, 400, 50, 50, ~(uint16_t)(1 << 9));
-    LCD_Draw_area(100, 400, 50, 50, ~(uint16_t)(1 << 10));
-    LCD_Draw_area(150, 400, 50, 50, ~(uint16_t)(1 << 11));
-    LCD_Draw_area(0, 450, 50, 50, ~(uint16_t)(1 << 12));
-    LCD_Draw_area(50, 450, 50, 50, ~(uint16_t)(1 << 13));
-    LCD_Draw_area(100, 450, 50, 50, ~(uint16_t)(1 << 14));
-    LCD_Draw_area(150, 450, 50, 50, ~(uint16_t)(((unsigned)1) << 15));
+    LCD_ShowString(13*8, 0, __TIME__, BLACK, WHITE);
+    LCD_DrawPicture(0, 32, image_width, image_height, image);
 
-    LCD_Draw_area(0, 600, 50, 50, ~(uint16_t)(0xF800));
-    LCD_Draw_area(50, 600, 50, 50, ~(uint16_t)(0x07E0));
-    LCD_Draw_area(100, 600, 50, 50, ~(uint16_t)(0x001F));
-#define DL1(y) LCD_Draw_area(0, y, 160, 1, RED)
-#define DL2(y) LCD_Draw_area(160, y, 160, 1, GREEN)
-#define DL3(y) LCD_Draw_area(320, y, 160, 1, BLUE)
-#define DLA(y)  \
-    do {        \
-        DL1(y); \
-        DL2(y); \
-        DL3(y); \
-    } while (0)
-    DLA(550);
-    LCD_Draw_area(0, 551, 160, 1, BLUE);
-    LCD_Draw_area(160, 551, 160, 1, RED);
-    LCD_Draw_area(320, 551, 160, 1, GREEN);
-    DLA(552);
-    DLA(554);
+    LCD_Draw_area(0, 250, 50, 50, ~(uint16_t)(1 << 0));
+    LCD_Draw_area(50, 250, 50, 50, ~(uint16_t)(1 << 1));
+    LCD_Draw_area(100, 250, 50, 50, ~(uint16_t)(1 << 2));
+    LCD_Draw_area(150, 250, 50, 50, ~(uint16_t)(1 << 3));
+    LCD_Draw_area(0, 300, 50, 50, ~(uint16_t)(1 << 4));
+    LCD_Draw_area(50, 300, 50, 50, ~(uint16_t)(1 << 5));
+    LCD_Draw_area(100, 300, 50, 50, ~(uint16_t)(1 << 6));
+    LCD_Draw_area(150, 300, 50, 50, ~(uint16_t)(1 << 7));
+    LCD_Draw_area(0, 350, 50, 50, ~(uint16_t)(1 << 8));
+    LCD_Draw_area(50, 350, 50, 50, ~(uint16_t)(1 << 9));
+    LCD_Draw_area(100, 350, 50, 50, ~(uint16_t)(1 << 10));
+    LCD_Draw_area(150, 350, 50, 50, ~(uint16_t)(1 << 11));
+    LCD_Draw_area(0, 400, 50, 50, ~(uint16_t)(1 << 12));
+    LCD_Draw_area(50, 400, 50, 50, ~(uint16_t)(1 << 13));
+    LCD_Draw_area(100, 400, 50, 50, ~(uint16_t)(1 << 14));
+    LCD_Draw_area(150, 400, 50, 50, ~(uint16_t)(((unsigned)1) << 15));
 
-#undef DL1
-#undef DL2
-#undef DL3
-#undef DLA
     while (1) {
         /*
         static uint16_t color=RED;
