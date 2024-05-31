@@ -18,9 +18,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "LCD.h"
 #include "adc.h"
 #include "dac.h"
+#include "dma.h"
 #include "fatfs.h"
 #include "lwip.h"
 #include "rtc.h"
@@ -140,43 +140,46 @@ void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
 /* USER CODE END 0 */
 
 /**
- * @brief  The application entry point.
- * @retval int
- */
-int main(void) {
-    /* USER CODE BEGIN 1 */
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
 
-    /* USER CODE END 1 */
+  /* USER CODE BEGIN 1 */
 
-    /* MCU Configuration--------------------------------------------------------*/
+  /* USER CODE END 1 */
 
-    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-    HAL_Init();
+  /* MCU Configuration--------------------------------------------------------*/
 
-    /* USER CODE BEGIN Init */
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
 
-    /* USER CODE END Init */
+  /* USER CODE BEGIN Init */
 
-    /* Configure the system clock */
-    SystemClock_Config();
+  /* USER CODE END Init */
 
-    /* USER CODE BEGIN SysInit */
+  /* Configure the system clock */
+  SystemClock_Config();
 
-    /* USER CODE END SysInit */
+  /* USER CODE BEGIN SysInit */
 
-    /* Initialize all configured peripherals */
-    MX_GPIO_Init();
-    MX_FSMC_Init();
-    MX_USART3_UART_Init();
-    MX_TIM3_Init();
-    MX_UART5_Init();
-    MX_RTC_Init();
-    MX_ADC1_Init();
-    MX_DAC_Init();
-    MX_LWIP_Init();
-    MX_USB_HOST_Init();
-    MX_FATFS_Init();
-    /* USER CODE BEGIN 2 */
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_FSMC_Init();
+  MX_USART3_UART_Init();
+  MX_TIM3_Init();
+  MX_UART5_Init();
+  MX_RTC_Init();
+  MX_ADC1_Init();
+  MX_DAC_Init();
+  MX_LWIP_Init();
+  MX_USB_HOST_Init();
+  MX_FATFS_Init();
+  /* USER CODE BEGIN 2 */
     LCD_Init();
     LCD_Display_Dir(1);
     LCD_Scan_Dir(U2D_R2L);
@@ -195,7 +198,7 @@ int main(void) {
     sprintf(tmp, "%d", res);
     LCD_ShowString(128, 16, tmp, BLACK, WHITE);
     sprintf(tmp, "%d %d", lcddev.height, lcddev.width);
-    LCD_ShowString(128+64, 0, tmp, BLACK, WHITE);
+    LCD_ShowString(128 + 64, 0, tmp, BLACK, WHITE);
     if (res == FR_OK) {
         FIL file;
         f_open(&file, "test.txt", FA_CREATE_ALWAYS | FA_WRITE);
@@ -205,12 +208,13 @@ int main(void) {
         uint8_t buf[1024] = {0};
         f_mkfs("0:", FM_FAT32, 4096, buf, 1024);
     }
-    /* USER CODE END 2 */
+  /* USER CODE END 2 */
 
-    /* Infinite loop */
-    /* USER CODE BEGIN WHILE */
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
     LCD_ShowString(0, 0, "Compile Time", BLACK, WHITE);
-    LCD_ShowString(13*8, 0, __TIME__, BLACK, WHITE);
+    printf("Compile Time: %s\n", __TIME__);
+    LCD_ShowString(13 * 8, 0, __TIME__, BLACK, WHITE);
     LCD_DrawPicture(0, 32, image_width, image_height, image);
 
     LCD_Draw_area(0, 250, 50, 50, ~(uint16_t)(1 << 0));
@@ -241,57 +245,60 @@ int main(void) {
         continue;
         */
         torch_process();
-        HAL_Delay(5);
+        // HAL_Delay(5);
+        MX_LWIP_Process();
+    /* USER CODE END WHILE */
+    MX_USB_HOST_Process();
 
-        /* USER CODE END WHILE */
-        MX_USB_HOST_Process();
-
-        /* USER CODE BEGIN 3 */
+    /* USER CODE BEGIN 3 */
     }
-    /* USER CODE END 3 */
+  /* USER CODE END 3 */
 }
 
 /**
- * @brief System Clock Configuration
- * @retval None
- */
-void SystemClock_Config(void) {
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-    /** Configure the main internal regulator output voltage
-     */
-    __HAL_RCC_PWR_CLK_ENABLE();
-    __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+  /** Configure the main internal regulator output voltage
+  */
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-    /** Initializes the RCC Oscillators according to the specified parameters
-     * in the RCC_OscInitTypeDef structure.
-     */
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_LSE;
-    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-    RCC_OscInitStruct.LSEState = RCC_LSE_ON;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-    RCC_OscInitStruct.PLL.PLLM = 25;
-    RCC_OscInitStruct.PLL.PLLN = 336;
-    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-    RCC_OscInitStruct.PLL.PLLQ = 7;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-        Error_Handler();
-    }
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE|RCC_OSCILLATORTYPE_LSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLM = 25;
+  RCC_OscInitStruct.PLL.PLLN = 336;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLQ = 7;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
 
-    /** Initializes the CPU, AHB and APB buses clocks
-     */
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-                                  | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK) {
-        Error_Handler();
-    }
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 
 /* USER CODE BEGIN 4 */
@@ -299,30 +306,32 @@ void SystemClock_Config(void) {
 /* USER CODE END 4 */
 
 /**
- * @brief  This function is executed in case of error occurrence.
- * @retval None
- */
-void Error_Handler(void) {
-    /* USER CODE BEGIN Error_Handler_Debug */
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
     /* User can add his own implementation to report the HAL error return state */
     __disable_irq();
     while (1) {
     }
-    /* USER CODE END Error_Handler_Debug */
+  /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef USE_FULL_ASSERT
+#ifdef  USE_FULL_ASSERT
 /**
- * @brief  Reports the name of the source file and the source line number
- *         where the assert_param error has occurred.
- * @param  file: pointer to the source file name
- * @param  line: assert_param error line source number
- * @retval None
- */
-void assert_failed(uint8_t *file, uint32_t line) {
-    /* USER CODE BEGIN 6 */
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
     /* User can add his own implementation to report the file name and line number,
        ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-    /* USER CODE END 6 */
+  /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
