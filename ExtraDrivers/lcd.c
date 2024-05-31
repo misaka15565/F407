@@ -4,7 +4,7 @@
 #include "stm32f4xx_hal_rcc_ex.h"
 
 //	LCD结构体，默认为横屏
-lcd_dev lcddev;
+volatile lcd_dev lcddev;
 volatile LCD_TypeDef *LCD = (LCD_TypeDef *)LCD_BASE;
 /**********************************************************************************************************
 函数名称：液晶us延时函数
@@ -16,8 +16,7 @@ void LCD_delayus(unsigned int time) {
 
     while (time--) {
         i = 8;
-        while (i--)
-            ;
+        while (i--);
     }
 }
 
@@ -31,8 +30,7 @@ void LCD_delayms(unsigned int cnt) {
     volatile unsigned int dl;
 
     while (cnt--) {
-        for (dl = 0; dl < 20000; dl++)
-            ;
+        for (dl = 0; dl < 20000; dl++);
     }
 }
 
@@ -285,6 +283,7 @@ void LCD_DrawPoint(u16 x, u16 y, u16 color) {
 输出参数：无
 函数返回：无
 **********************************************************************************************************/
+//哪里快了？这不一样？
 void LCD_Fast_DrawPoint(u16 x, u16 y, u16 color) {
     if (lcddev.id == 0X5510) {
         LCD_WR_REG(lcddev.setxcmd);
@@ -1199,11 +1198,11 @@ void LCD_DrawPicture(u16 StartX, u16 StartY, u16 width, u16 height, u8 *pic) {
     u16 *bitmap = (u16 *)pic;
 
     for (j = 0; j < height; j++) {
-        LCD_SetCursor(StartX, StartY+j);
+        LCD_SetCursor(StartX, StartY + j);
         LCD_WriteRAM_Prepare();
         for (i = 0; i < width; i++) {
-            //LCD_DrawOnrPoint(StartX + i, StartY + j, *bitmap++);
-            LCD->LCD_RAM = *bitmap++;
+            // LCD_DrawOnrPoint(StartX + i, StartY + j, *bitmap++);
+            LCD->LCD_RAM = (*bitmap++);
         }
     }
 }
@@ -1226,5 +1225,15 @@ void LCD_sudoer_Draw_Triangle_Wave(u16 startx, u16 starty, u16 endx, u16 endy, u
     }
     for (uint16_t i = 0; i < width; i++) {
         LCD_DrawPoint(startx + i, starty + tmp[(i + t) % width], color);
+    }
+}
+
+void LCD_Draw_area(u16 startx, u16 starty, u16 width, u16 height, u16 color) {
+    for(uint16_t j=0;j<height;++j){
+        LCD_SetCursor(startx, starty+j);
+        LCD_WriteRAM_Prepare();
+        for(uint16_t i=0;i<width;++i){
+            LCD->LCD_RAM = color;
+        }
     }
 }

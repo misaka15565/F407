@@ -77,7 +77,7 @@ typedef struct
 //	注意设置时STM32内部会右移一位对其!    1111 1111 1110 = 0xFFE
 #define LCD_BASE ((uint32_t)(0x6C000000 | 0x00000FFE))
 // #define LCD             ((LCD_TypeDef *) LCD_BASE)
-extern volatile LCD_TypeDef *LCD ;
+extern volatile LCD_TypeDef *LCD;
 
 /*********************************************************************************************************
 液晶硬件引脚定义
@@ -107,12 +107,11 @@ typedef struct
 
 //	LCD参数
 
-extern lcd_dev lcddev; //	管理LCD重要参数
+extern volatile lcd_dev lcddev; //	管理LCD重要参数
 
 //	函数声明
 void LCD_delayus(unsigned int time);
 void LCD_delayms(unsigned int cnt);
-
 
 u16 LCD_RD_DATA(void);
 void LCD_WriteReg(u16 LCD_Reg, u16 LCD_RegValue);
@@ -143,5 +142,5 @@ void LCD_DrawOnrPoint(uint16_t xsta, uint16_t ysta, uint16_t color);
 void LCD_DrawPicture(u16 StartX, u16 StartY, u16 Xend, u16 Yend, u8 *pic);
 
 void LCD_sudoer_Draw_Triangle_Wave(u16 startx, u16 starty, u16 endx, u16 endy, u16 color, u16 t);
-
+void LCD_Draw_area(u16 startx, u16 starty, u16 width, u16 height, u16 color);
 #endif

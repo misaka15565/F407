@@ -37,6 +37,7 @@
 #include "CH455.h"
 #include "key.h"
 #include "gt9147.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include "image_fll.h"
@@ -129,7 +130,7 @@ void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
     HAL_RTC_GetDate(hrtc, &sDate, RTC_FORMAT_BIN);
     char str[20] = {0};
     sprintf(str, "%02d:%02d:%02d", sTime.Hours, sTime.Minutes, sTime.Seconds);
-    LCD_ShowString(0, 400, str, BLACK, WHITE);
+    // LCD_ShowString(0, 400, str, BLACK, WHITE);
 }
 /* USER CODE END PFP */
 
@@ -177,8 +178,8 @@ int main(void) {
     MX_FATFS_Init();
     /* USER CODE BEGIN 2 */
     LCD_Init();
-    LCD_Display_Dir(1);
-    LCD_Scan_Dir(U2D_R2L);
+    // LCD_Display_Dir(1);
+    // LCD_Scan_Dir(U2D_R2L);
     tp_dev.init();
     HAL_TIM_Base_Start_IT(&htim3);
     while (1) {
@@ -189,7 +190,7 @@ int main(void) {
     }
 
     FRESULT res = f_mount(&USBHFatFS, (TCHAR const *)USBHPath, 1);
-    LCD_ShowString(0, 32, (res == FR_OK ? "USBH OK" : "USBH Fail"), BLACK, WHITE);
+    LCD_ShowString(0, 32, (res == FR_OK ? "USBH OK" : "USBH Fail"), RED, WHITE);
     char tmp[20] = {0};
     sprintf(tmp, "%d", res);
     LCD_ShowString(128, 32, tmp, BLACK, WHITE);
@@ -211,16 +212,56 @@ int main(void) {
     LCD_ShowString(0, 0, "Compile Time", BLACK, WHITE);
     LCD_ShowString(0, 16, __TIME__, BLACK, WHITE);
     LCD_DrawPicture(0, 48, image_width, image_height, image);
+    LCD_Draw_area(0, 300, 50, 50, ~(uint16_t)(1 << 0));
+    LCD_Draw_area(50, 300, 50, 50, ~(uint16_t)(1 << 1));
+    LCD_Draw_area(100, 300, 50, 50, ~(uint16_t)(1 << 2));
+    LCD_Draw_area(150, 300, 50, 50, ~(uint16_t)(1 << 3));
+    LCD_Draw_area(0, 350, 50, 50, ~(uint16_t)(1 << 4));
+    LCD_Draw_area(50, 350, 50, 50, ~(uint16_t)(1 << 5));
+    LCD_Draw_area(100, 350, 50, 50, ~(uint16_t)(1 << 6));
+    LCD_Draw_area(150, 350, 50, 50, ~(uint16_t)(1 << 7));
+    LCD_Draw_area(0, 400, 50, 50, ~(uint16_t)(1 << 8));
+    LCD_Draw_area(50, 400, 50, 50, ~(uint16_t)(1 << 9));
+    LCD_Draw_area(100, 400, 50, 50, ~(uint16_t)(1 << 10));
+    LCD_Draw_area(150, 400, 50, 50, ~(uint16_t)(1 << 11));
+    LCD_Draw_area(0, 450, 50, 50, ~(uint16_t)(1 << 12));
+    LCD_Draw_area(50, 450, 50, 50, ~(uint16_t)(1 << 13));
+    LCD_Draw_area(100, 450, 50, 50, ~(uint16_t)(1 << 14));
+    LCD_Draw_area(150, 450, 50, 50, ~(uint16_t)(((unsigned)1) << 15));
+
+    LCD_Draw_area(0, 600, 50, 50, ~(uint16_t)(0xF800));
+    LCD_Draw_area(50, 600, 50, 50, ~(uint16_t)(0x07E0));
+    LCD_Draw_area(100, 600, 50, 50, ~(uint16_t)(0x001F));
+#define DL1(y) LCD_Draw_area(0, y, 160, 1, RED)
+#define DL2(y) LCD_Draw_area(160, y, 160, 1, GREEN)
+#define DL3(y) LCD_Draw_area(320, y, 160, 1, BLUE)
+#define DLA(y)  \
+    do {        \
+        DL1(y); \
+        DL2(y); \
+        DL3(y); \
+    } while (0)
+    DLA(550);
+    LCD_Draw_area(0, 551, 160, 1, BLUE);
+    LCD_Draw_area(160, 551, 160, 1, RED);
+    LCD_Draw_area(320, 551, 160, 1, GREEN);
+    DLA(552);
+    DLA(554);
+
+#undef DL1
+#undef DL2
+#undef DL3
+#undef DLA
     while (1) {
         /*
-        static uint16_t color = 0;
+        static uint16_t color=RED;
         LCD_SetCursor(0, 0);
         LCD_WriteRAM_Prepare();
         for (uint32_t i = 0; i < 800 * 480; ++i) {
             LCD->LCD_RAM = color;
         }
-        color = ~color;
-        continue;*/
+        continue;
+        */
         torch_process();
         HAL_Delay(5);
 
