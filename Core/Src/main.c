@@ -195,12 +195,6 @@ int main(void) {
     }
 
     FRESULT res = f_mount(&USBHFatFS, (TCHAR const *)USBHPath, 1);
-    LCD_ShowString(0, 16, (res == FR_OK ? "USBH OK" : "USBH Fail"), RED, WHITE);
-    char tmp[20] = {0};
-    sprintf(tmp, "%d", res);
-    LCD_ShowString(128, 16, tmp, BLACK, WHITE);
-    sprintf(tmp, "%d %d", lcddev.height, lcddev.width);
-    LCD_ShowString(128 + 64, 0, tmp, BLACK, WHITE);
     if (res == FR_OK) {
         FIL file;
         f_open(&file, "test.txt", FA_CREATE_ALWAYS | FA_WRITE);
@@ -214,27 +208,7 @@ int main(void) {
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
-    LCD_ShowString(0, 0, "Compile Time", BLACK, WHITE);
     printf("Compile Time: %s\n", __TIME__);
-    LCD_ShowString(13 * 8, 0, __TIME__, BLACK, WHITE);
-    LCD_DrawPicture(0, 32, image_width, image_height, image);
-
-    LCD_Draw_area(0, 250, 50, 50, ~(uint16_t)(1 << 0));
-    LCD_Draw_area(50, 250, 50, 50, ~(uint16_t)(1 << 1));
-    LCD_Draw_area(100, 250, 50, 50, ~(uint16_t)(1 << 2));
-    LCD_Draw_area(150, 250, 50, 50, ~(uint16_t)(1 << 3));
-    LCD_Draw_area(0, 300, 50, 50, ~(uint16_t)(1 << 4));
-    LCD_Draw_area(50, 300, 50, 50, ~(uint16_t)(1 << 5));
-    LCD_Draw_area(100, 300, 50, 50, ~(uint16_t)(1 << 6));
-    LCD_Draw_area(150, 300, 50, 50, ~(uint16_t)(1 << 7));
-    LCD_Draw_area(0, 350, 50, 50, ~(uint16_t)(1 << 8));
-    LCD_Draw_area(50, 350, 50, 50, ~(uint16_t)(1 << 9));
-    LCD_Draw_area(100, 350, 50, 50, ~(uint16_t)(1 << 10));
-    LCD_Draw_area(150, 350, 50, 50, ~(uint16_t)(1 << 11));
-    LCD_Draw_area(0, 400, 50, 50, ~(uint16_t)(1 << 12));
-    LCD_Draw_area(50, 400, 50, 50, ~(uint16_t)(1 << 13));
-    LCD_Draw_area(100, 400, 50, 50, ~(uint16_t)(1 << 14));
-    LCD_Draw_area(150, 400, 50, 50, ~(uint16_t)(((unsigned)1) << 15));
     lv_init();
     HAL_DMA_RegisterCallback(&hdma_memtomem_dma2_stream0, HAL_DMA_XFER_CPLT_CB_ID, dma_finish_callback);
     __HAL_DMA_ENABLE_IT(&hdma_memtomem_dma2_stream0, DMA_IT_TC);
