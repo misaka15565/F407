@@ -6,6 +6,7 @@
 #include "misc/lv_types.h"
 #include "stm32f4xx_hal_dma.h"
 #include "stm32f4xx_hal_rcc_ex.h"
+#include <stdint.h>
 
 //	LCD结构体，默认为横屏
 volatile lcd_dev lcddev;
@@ -1013,7 +1014,6 @@ void LCD_Draw_Circle(u16 x0, u16 y0, u8 r, u16 color) {
     }
 }
 
-
 /**********************************************************************************************************
 函数名称：显示ASCII码函数
 输入参数：x，y      起始坐标（x:0~234 y:0~308）
@@ -1119,7 +1119,7 @@ void LCD_ShowString(u16 x0, u16 y0, u8 *pcStr, u16 PenColor, u16 BackColor) {
     while (*pcStr) {
         if (*pcStr > 0xa1) //  显示汉字
         {
-            //LCD_ShowHzString(x0, y0, pcStr, PenColor, BackColor);
+            // LCD_ShowHzString(x0, y0, pcStr, PenColor, BackColor);
             pcStr += 2;
             x0 += 16;
         } else //  显示字符
@@ -1215,17 +1215,35 @@ static void LCD_SetRegion(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) {
     LCD_WR_DATA(y2 & 0XFF);
 }
 
+static uint16_t rgb2gbr(uint16_t rgb) {
+    //损失了1bit信息，但是没办法，除非拿rgb666存
+    uint16_t gbr = 0;
+    uint16_t r=rgb>>11;
+    uint16_t g=(rgb>>6)&0x1f;
+    uint16_t b=rgb&0x1f;
+    gbr = (g << 11) | (b << 6) | r;
+    return gbr;
+}
+
 void LCD_LVGL_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *data) {
     uint16_t x1 = area->x1;
     uint16_t y1 = area->y1;
     uint16_t x2 = area->x2;
     uint16_t y2 = area->y2;
-
     uint16_t width = x2 - x1 + 1;
     uint16_t height = y2 - y1 + 1;
+#if 1
+    uint16_t *p = (uint16_t *)data;
+    for (uint16_t i = x1; i <= x2; ++i) {
+        if (i % 2 == 0) {
+            for (uint16_t j = y1; j <= y2; ++j) {
+                p[(j - y1) * width + (i - x1)] = rgb2gbr(p[(j - y1) * width + (i - x1)]);
+            }
+        }
+    }
+#endif
 
     LCD_SetRegion(x1, y1, x2, y2);
     LCD_WriteRAM_Prepare();
     HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream0, (uint32_t)data, (uint32_t) & (LCD->LCD_RAM), width * height);
-
 }
