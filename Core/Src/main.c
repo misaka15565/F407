@@ -136,7 +136,7 @@ void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint8_t ccmram_arr[65536]__attribute__((section(".ccmram")));
 /* USER CODE END 0 */
 
 /**
@@ -205,8 +205,8 @@ int main(void)
         f_write(&file, "Hello World", 11, 0);
         f_close(&file);
     } else if (res == FR_NO_FILESYSTEM) {
-        uint8_t buf[1024] = {0};
-        f_mkfs("0:", FM_FAT32, 4096, buf, 1024);
+        //uint8_t buf[1024] = {0};
+        f_mkfs("0:", FM_FAT32, 4096, ccmram_arr, sizeof(ccmram_arr));
     }
   /* USER CODE END 2 */
 
