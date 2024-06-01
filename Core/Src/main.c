@@ -24,6 +24,7 @@
 #include "dma.h"
 #include "fatfs.h"
 #include "lwip.h"
+#include "misc/lv_color.h"
 #include "misc/lv_timer.h"
 #include "misc/lv_types.h"
 #include "rtc.h"
@@ -130,15 +131,16 @@ void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
     RTC_DateTypeDef sDate;
     HAL_RTC_GetTime(hrtc, &sTime, RTC_FORMAT_BIN);
     HAL_RTC_GetDate(hrtc, &sDate, RTC_FORMAT_BIN);
-    //char str[20] = {0};
-    //sprintf(str, "%02d:%02d:%02d", sTime.Hours, sTime.Minutes, sTime.Seconds);
-    // LCD_ShowString(0, 400, str, BLACK, WHITE);
+    // char str[20] = {0};
+    // sprintf(str, "%02d:%02d:%02d", sTime.Hours, sTime.Minutes, sTime.Seconds);
+    //  LCD_ShowString(0, 400, str, BLACK, WHITE);
 }
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 static lv_color_t disp_buf_1[800 * 10];
+static lv_color_t disp_buf_2[800 * 10];
 /* USER CODE END 0 */
 
 /**
@@ -238,26 +240,26 @@ int main(void) {
     __HAL_DMA_ENABLE_IT(&hdma_memtomem_dma2_stream0, DMA_IT_TC);
     displayer = lv_display_create(800, 480);
     lv_display_set_flush_cb(displayer, LCD_LVGL_flush);
-    lv_display_set_buffers(displayer, disp_buf_1, NULL, sizeof(disp_buf_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
+    lv_display_set_buffers(displayer, disp_buf_1, disp_buf_2, sizeof(disp_buf_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
     // 更改活动屏幕的背景颜色
     lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x003a57), LV_PART_MAIN);
     lv_obj_set_style_text_color(lv_screen_active(), lv_color_hex(0xffffff), LV_PART_MAIN);
     lv_obj_t *lvimg = lv_image_create(lv_screen_active());
     lv_image_dsc_t img_dsc;
-    img_dsc.header.magic=LV_IMAGE_HEADER_MAGIC;
-    img_dsc.header.cf=LV_COLOR_FORMAT_RGB565;
-    img_dsc.header.flags=0;
-    img_dsc.header.w=image_width;
-    img_dsc.header.h=image_height;
-    img_dsc.header.stride=image_width*2;
-    img_dsc.data_size=image_width*image_height*2;
-    img_dsc.data=image;
+    img_dsc.header.magic = LV_IMAGE_HEADER_MAGIC;
+    img_dsc.header.cf = LV_COLOR_FORMAT_RGB565;
+    img_dsc.header.flags = 0;
+    img_dsc.header.w = image_width;
+    img_dsc.header.h = image_height;
+    img_dsc.header.stride = image_width * 2;
+    img_dsc.data_size = image_width * image_height * 2;
+    img_dsc.data = image;
     lv_image_set_src(lvimg, &img_dsc);
     /*创建旋转器*/
     lv_obj_t *spinner = lv_spinner_create(lv_screen_active());
     lv_obj_set_size(spinner, 200, 200);
     lv_obj_align(spinner, LV_ALIGN_CENTER, 0, 0);
-    
+
     while (1) {
         lv_timer_handler();
         MX_LWIP_Process();
