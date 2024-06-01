@@ -136,11 +136,7 @@ void LCD_Color_Fill(u16 sx, u16 sy, u16 ex, u16 ey, u16 *color);
 void LCD_DrawLine(u16 x1, u16 y1, u16 x2, u16 y2, u16 color);
 void LCD_DrawRectangle(u16 x1, u16 y1, u16 x2, u16 y2, u16 color);
 void LCD_Draw_Circle(u16 x0, u16 y0, u8 r, u16 color);
-void LCD_ShowHzString(u16 x, u16 y, u8 *c, u16 PenColor, u16 BackColor);
-void LCD_ShowChar(u16 x, u16 y, u8 num, u8 size, u16 PenColor, u16 BackColor);
-void LCD_ShowCharString(uint16_t x, uint16_t y, const uint8_t *p, uint16_t PenColor, uint16_t BackColor);
-void LCD_ShowString(u16 x0, u16 y0, u8 *pcStr, u16 PenColor, u16 BackColor);
-void LCD_DrawOnrPoint(uint16_t xsta, uint16_t ysta, uint16_t color);
+
 void LCD_DrawPicture(u16 StartX, u16 StartY, u16 Xend, u16 Yend, u8 *pic);
 
 void LCD_Draw_area(u16 startx, u16 starty, u16 width, u16 height, u16 color);
