@@ -434,5 +434,16 @@ u8 GT9147_Scan(u8 mode) {
 void lvgl_input_torch(lv_indev_t *indev, lv_indev_data_t *data) {
     data->point.x = 800 - tp_dev.x[0];
     data->point.y = 480 - tp_dev.y[0];
+    static int32_t last_x;
+    static int32_t last_y;
+
     data->state = tp_dev.sta & 0x80 ? LV_INDEV_STATE_PRESSED : LV_INDEV_STATE_RELEASED;
+    if (data->point.x < 0 || data->point.y < 0) {
+        data->state = LV_INDEV_STATE_REL;
+        data->point.x = last_x;
+        data->point.y = last_y;
+    }else if(data->state==LV_INDEV_STATE_PRESSED){
+        last_x=data->point.x;
+        last_y=data->point.y;
+    }
 }
