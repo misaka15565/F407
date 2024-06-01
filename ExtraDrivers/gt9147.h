@@ -1,5 +1,6 @@
 #ifndef __GT9147_H
 #define __GT9147_H
+#include "indev/lv_indev.h"
 #include <stdint.h>
 typedef uint8_t u8;
 typedef uint16_t u16;
@@ -70,7 +71,7 @@ typedef struct
 } _m_tp_dev;
 
 extern _m_tp_dev tp_dev;	 	//触屏控制器在touch.c里面定义
-
+void lvgl_input_torch(lv_indev_t *indev, lv_indev_data_t *data) ;
 
 #endif
 

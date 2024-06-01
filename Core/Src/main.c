@@ -80,6 +80,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     // KeyIRQHandler();
     static uint16_t count = 0;
     ++count;
+    tp_dev.scan(0);
     if (count == 10) {
         HAL_GPIO_TogglePin(LED8_GPIO_Port, LED8_Pin);
         count = 0;
@@ -221,7 +222,7 @@ int main(void) {
     // 创建触摸屏输入设备
     lv_indev_t *indev_drv = lv_indev_create();
     lv_indev_set_type(indev_drv, LV_INDEV_TYPE_POINTER);
-    lv_indev_set_read_cb(indev_drv, NULL);
+    lv_indev_set_read_cb(indev_drv, lvgl_input_torch);
     lv_obj_t *explorer = lv_file_explorer_create(lv_screen_active());
 
     while (1) {
