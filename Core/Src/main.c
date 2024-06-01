@@ -20,10 +20,14 @@
 #include "main.h"
 #include "adc.h"
 #include "dac.h"
+#include "display/lv_display.h"
 #include "dma.h"
 #include "fatfs.h"
 #include "lwip.h"
+#include "misc/lv_timer.h"
+#include "misc/lv_types.h"
 #include "rtc.h"
+#include "stm32f4xx_hal_dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_host.h"
@@ -42,6 +46,7 @@
 #include <string.h>
 #include "image_fll.h"
 #include <sys/_types.h>
+#include "lvgl.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -118,26 +123,22 @@ int get_key2_lib(void) {
 int get_key3_lib(void) {
     return HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin) == 0;
 }
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-    if (GPIO_Pin == 5) {
-        ch455_key = CH455_Read();
-    }
-}
+
 void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
     HAL_GPIO_TogglePin(GPIOF, GPIO_PIN_6);
     RTC_TimeTypeDef sTime;
     RTC_DateTypeDef sDate;
     HAL_RTC_GetTime(hrtc, &sTime, RTC_FORMAT_BIN);
     HAL_RTC_GetDate(hrtc, &sDate, RTC_FORMAT_BIN);
-    char str[20] = {0};
-    sprintf(str, "%02d:%02d:%02d", sTime.Hours, sTime.Minutes, sTime.Seconds);
+    //char str[20] = {0};
+    //sprintf(str, "%02d:%02d:%02d", sTime.Hours, sTime.Minutes, sTime.Seconds);
     // LCD_ShowString(0, 400, str, BLACK, WHITE);
 }
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+static lv_color_t disp_buf_1[800 * 10];
 /* USER CODE END 0 */
 
 /**
@@ -232,8 +233,31 @@ int main(void) {
     LCD_Draw_area(50, 400, 50, 50, ~(uint16_t)(1 << 13));
     LCD_Draw_area(100, 400, 50, 50, ~(uint16_t)(1 << 14));
     LCD_Draw_area(150, 400, 50, 50, ~(uint16_t)(((unsigned)1) << 15));
+    lv_init();
+    HAL_DMA_RegisterCallback(&hdma_memtomem_dma2_stream0, HAL_DMA_XFER_CPLT_CB_ID, dma_finish_callback);
+    __HAL_DMA_ENABLE_IT(&hdma_memtomem_dma2_stream0, DMA_IT_TC);
+    displayer = lv_display_create(800, 480);
+    lv_display_set_flush_cb(displayer, LCD_LVGL_flush);
+    lv_display_set_buffers(displayer, disp_buf_1, NULL, sizeof(disp_buf_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
+    // 更改活动屏幕的背景颜色
+    lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x003a57), LV_PART_MAIN);
+    lv_obj_set_style_text_color(lv_screen_active(), lv_color_hex(0xffffff), LV_PART_MAIN);
 
-
+    /*创建旋转器*/
+    lv_obj_t *spinner = lv_spinner_create(lv_screen_active());
+    lv_obj_set_size(spinner, 64, 64);
+    lv_obj_align(spinner, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_t *lvimg = lv_image_create(lv_screen_active());
+    lv_image_dsc_t img_dsc;
+    img_dsc.header.magic=LV_IMAGE_HEADER_MAGIC;
+    img_dsc.header.cf=LV_COLOR_FORMAT_RGB565;
+    img_dsc.header.flags=0;
+    img_dsc.header.w=image_width;
+    img_dsc.header.h=image_height;
+    img_dsc.header.stride=image_width*2;
+    img_dsc.data_size=image_width*image_height*2;
+    img_dsc.data=image;
+    lv_image_set_src(lvimg, &img_dsc);
     while (1) {
         /*
         static uint16_t color=RED;
@@ -244,7 +268,7 @@ int main(void) {
         }
         continue;
         */
-
+        lv_timer_handler();
         // torch_process();
         //  HAL_Delay(5);
         MX_LWIP_Process();

@@ -67,15 +67,18 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ./ExtraDrivers
-    ./LVGL/GUI
-    ./LVGL/GUI/lvgl
-    ./LVGL/GUI_APP
+    ./LVGL
+    ./LVGL/src
+    ./LVGL/porting
+    
     # Add user defined include paths
 )
 
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined symbols
+    LV_LVGL_H_INCLUDE_SIMPLE
+    LV_CONF_INCLUDE_SIMPLE
 )
 
 # Add linked libraries

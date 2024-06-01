@@ -1,9 +1,11 @@
 #ifndef __LCD_H
 #define __LCD_H
 
+#include "lvgl.h"
+#include "misc/lv_types.h"
 #include "stm32f4xx.h"
 #include <stdlib.h>
-
+extern lv_display_t *displayer;
 #define LCD_W 480
 #define LCD_H 272
 
@@ -143,4 +145,6 @@ void LCD_DrawPicture(u16 StartX, u16 StartY, u16 Xend, u16 Yend, u8 *pic);
 
 void LCD_Draw_area(u16 startx, u16 starty, u16 width, u16 height, u16 color);
 void LCD_WriteDatas_DMA(u16 *datas, u32 size);
+void dma_finish_callback(DMA_HandleTypeDef *hdma);
+void LCD_LVGL_flush(lv_display_t *, const lv_area_t *, uint8_t *);
 #endif

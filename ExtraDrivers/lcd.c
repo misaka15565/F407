@@ -2,12 +2,16 @@
 #include "Hzk16song.h"
 #include "dma.h"
 #include "font.h"
+#include "lcd.h"
+#include "misc/lv_area.h"
+#include "misc/lv_types.h"
 #include "stm32f4xx_hal_dma.h"
 #include "stm32f4xx_hal_rcc_ex.h"
 
 //	LCD结构体，默认为横屏
 volatile lcd_dev lcddev;
 volatile LCD_TypeDef *LCD = (LCD_TypeDef *)LCD_BASE;
+lv_display_t *displayer;
 /**********************************************************************************************************
 函数名称：液晶us延时函数
 输入参数：时间
@@ -1226,4 +1230,40 @@ void LCD_Draw_area(u16 startx, u16 starty, u16 width, u16 height, u16 color) {
 void LCD_WriteDatas_DMA(uint16_t *data, uint32_t len) {
     HAL_DMA_Start(&hdma_memtomem_dma2_stream0, (uint32_t)data, (uint32_t) & (LCD->LCD_RAM), len);
     HAL_DMA_PollForTransfer(&hdma_memtomem_dma2_stream0, HAL_DMA_FULL_TRANSFER, HAL_MAX_DELAY);
+}
+
+static uint8_t *buffer = NULL;
+static lv_area_t drawing_area;
+static uint16_t current_drawing_y;
+
+void dma_finish_callback(DMA_HandleTypeDef *hdma) {
+    lv_display_flush_ready(displayer);
+}
+
+void LCD_LVGL_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *data) {
+    uint16_t x1 = area->x1;
+    uint16_t y1 = area->y1;
+    uint16_t x2 = area->x2;
+    uint16_t y2 = area->y2;
+
+    uint16_t width = x2 - x1 + 1;
+    uint16_t height = y2 - y1 + 1;
+
+    if (x1 == 0 && x2 == 799) {
+        LCD_SetCursor(x1, y1);
+        LCD_WriteRAM_Prepare();
+        HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream0, (uint32_t)data, (uint32_t) & (LCD->LCD_RAM), width * height * 2);
+    }else{
+        uint16_t i,j;
+        for(j=y1;j<y2;++j){
+            LCD_SetCursor(x1, j);
+            LCD_WriteRAM_Prepare();
+            for(i=x1;i<=x2;++i){
+                LCD->LCD_RAM = *(uint16_t *)data;
+                data+=2;
+            }
+        }
+        lv_display_flush_ready(disp);
+    }
+    //
 }
