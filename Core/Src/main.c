@@ -242,11 +242,6 @@ int main(void) {
     // 更改活动屏幕的背景颜色
     lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x003a57), LV_PART_MAIN);
     lv_obj_set_style_text_color(lv_screen_active(), lv_color_hex(0xffffff), LV_PART_MAIN);
-
-    /*创建旋转器*/
-    lv_obj_t *spinner = lv_spinner_create(lv_screen_active());
-    lv_obj_set_size(spinner, 64, 64);
-    lv_obj_align(spinner, LV_ALIGN_CENTER, 0, 0);
     lv_obj_t *lvimg = lv_image_create(lv_screen_active());
     lv_image_dsc_t img_dsc;
     img_dsc.header.magic=LV_IMAGE_HEADER_MAGIC;
@@ -258,19 +253,13 @@ int main(void) {
     img_dsc.data_size=image_width*image_height*2;
     img_dsc.data=image;
     lv_image_set_src(lvimg, &img_dsc);
+    /*创建旋转器*/
+    lv_obj_t *spinner = lv_spinner_create(lv_screen_active());
+    lv_obj_set_size(spinner, 200, 200);
+    lv_obj_align(spinner, LV_ALIGN_CENTER, 0, 0);
+    
     while (1) {
-        /*
-        static uint16_t color=RED;
-        LCD_SetCursor(0, 0);
-        LCD_WriteRAM_Prepare();
-        for (uint32_t i = 0; i < 800 * 480; ++i) {
-            LCD->LCD_RAM = color;
-        }
-        continue;
-        */
         lv_timer_handler();
-        // torch_process();
-        //  HAL_Delay(5);
         MX_LWIP_Process();
         /* USER CODE END WHILE */
         MX_USB_HOST_Process();

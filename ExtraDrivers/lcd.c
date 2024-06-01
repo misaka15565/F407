@@ -1239,6 +1239,25 @@ static uint16_t current_drawing_y;
 void dma_finish_callback(DMA_HandleTypeDef *hdma) {
     lv_display_flush_ready(displayer);
 }
+static void LCD_SetRegion(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) {
+    LCD_WR_REG(lcddev.setxcmd);
+    LCD_WR_DATA(x1 >> 8);
+    LCD_WR_REG(lcddev.setxcmd + 1);
+    LCD_WR_DATA(x1 & 0XFF);
+    LCD_WR_REG(lcddev.setxcmd + 2);
+    LCD_WR_DATA(x2 >> 8);
+    LCD_WR_REG(lcddev.setxcmd + 3);
+    LCD_WR_DATA(x2 & 0XFF);
+
+    LCD_WR_REG(lcddev.setycmd);
+    LCD_WR_DATA(y1 >> 8);
+    LCD_WR_REG(lcddev.setycmd + 1);
+    LCD_WR_DATA(y1 & 0XFF);
+    LCD_WR_REG(lcddev.setycmd + 2);
+    LCD_WR_DATA(y2 >> 8);
+    LCD_WR_REG(lcddev.setycmd + 3);
+    LCD_WR_DATA(y2 & 0XFF);
+}
 
 void LCD_LVGL_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *data) {
     uint16_t x1 = area->x1;
@@ -1252,18 +1271,21 @@ void LCD_LVGL_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *data) {
     if (x1 == 0 && x2 == 799) {
         LCD_SetCursor(x1, y1);
         LCD_WriteRAM_Prepare();
-        HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream0, (uint32_t)data, (uint32_t) & (LCD->LCD_RAM), width * height * 2);
+        HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream0, (uint32_t)data, (uint32_t) & (LCD->LCD_RAM), width * height);
     }else{
         uint16_t i,j;
-        for(j=y1;j<y2;++j){
+        /*for(j=y1;j<y2;++j){
             LCD_SetCursor(x1, j);
             LCD_WriteRAM_Prepare();
             for(i=x1;i<=x2;++i){
                 LCD->LCD_RAM = *(uint16_t *)data;
                 data+=2;
             }
-        }
-        lv_display_flush_ready(disp);
+        }*/
+        LCD_SetRegion(x1, y1, x2, y2);
+        LCD_WriteRAM_Prepare();
+        HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream0, (uint32_t)data, (uint32_t) & (LCD->LCD_RAM), width * height );
+
     }
     //
 }
