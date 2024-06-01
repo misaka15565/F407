@@ -90,11 +90,11 @@ void lv_example_file_explorer_3(void)
 
 #else
     /* linux */
-    lv_file_explorer_open_dir(file_explorer, "A:/");
+    lv_file_explorer_open_dir(file_explorer, "0:/");
 #if LV_FILE_EXPLORER_QUICK_ACCESS
     char * envvar = "HOME";
     char home_dir[LV_FS_MAX_PATH_LENGTH];
-    strcpy(home_dir, "A:");
+    strcpy(home_dir, "0:");
     /* get the user's home directory from the HOME environment variable*/
     strcat(home_dir, getenv(envvar));
     LV_LOG_USER("home_dir: %s\n", home_dir);
@@ -116,7 +116,7 @@ void lv_example_file_explorer_3(void)
     strcat(document_dir, "/Documents");
     lv_file_explorer_set_quick_access_path(file_explorer, LV_EXPLORER_DOCS_DIR, document_dir);
 
-    lv_file_explorer_set_quick_access_path(file_explorer, LV_EXPLORER_FS_DIR, "A:/");
+    lv_file_explorer_set_quick_access_path(file_explorer, LV_EXPLORER_FS_DIR, "0:/");
 #endif
 #endif
 

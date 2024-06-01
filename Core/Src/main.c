@@ -22,6 +22,8 @@
 #include "dac.h"
 #include "display/lv_display.h"
 #include "dma.h"
+#include "examples/others/file_explorer/lv_example_file_explorer.h"
+#include "examples/widgets/lv_example_widgets.h"
 #include "fatfs.h"
 #include "indev/lv_indev.h"
 #include "lwip.h"
@@ -223,7 +225,8 @@ int main(void) {
     lv_indev_t *indev_drv = lv_indev_create();
     lv_indev_set_type(indev_drv, LV_INDEV_TYPE_POINTER);
     lv_indev_set_read_cb(indev_drv, lvgl_input_torch);
-    lv_obj_t *explorer = lv_file_explorer_create(lv_screen_active());
+    //lv_obj_t *explorer = lv_file_explorer_create(lv_screen_active());
+    lv_example_menu_5();
 
     while (1) {
         lv_timer_handler();
