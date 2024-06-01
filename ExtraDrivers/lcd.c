@@ -1268,24 +1268,8 @@ void LCD_LVGL_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *data) {
     uint16_t width = x2 - x1 + 1;
     uint16_t height = y2 - y1 + 1;
 
-    if (x1 == 0 && x2 == 799) {
-        LCD_SetCursor(x1, y1);
-        LCD_WriteRAM_Prepare();
-        HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream0, (uint32_t)data, (uint32_t) & (LCD->LCD_RAM), width * height);
-    }else{
-        uint16_t i,j;
-        /*for(j=y1;j<y2;++j){
-            LCD_SetCursor(x1, j);
-            LCD_WriteRAM_Prepare();
-            for(i=x1;i<=x2;++i){
-                LCD->LCD_RAM = *(uint16_t *)data;
-                data+=2;
-            }
-        }*/
-        LCD_SetRegion(x1, y1, x2, y2);
-        LCD_WriteRAM_Prepare();
-        HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream0, (uint32_t)data, (uint32_t) & (LCD->LCD_RAM), width * height );
+    LCD_SetRegion(x1, y1, x2, y2);
+    LCD_WriteRAM_Prepare();
+    HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream0, (uint32_t)data, (uint32_t) & (LCD->LCD_RAM), width * height);
 
-    }
-    //
 }
