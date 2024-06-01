@@ -1,5 +1,4 @@
 #include "LCD.h"
-#include "Hzk16song.h"
 #include "dma.h"
 #include "font.h"
 #include "lcd.h"
@@ -1014,49 +1013,6 @@ void LCD_Draw_Circle(u16 x0, u16 y0, u8 r, u16 color) {
     }
 }
 
-/**********************************************************************************************************
-函数名称：显示中文字符
-输入参数：x0，y0    起始坐标
-          pcStr     指向
-          PenColor  字体颜色
-          BackColor 字体背景
-输出参数：无
-函数返回：无
-函数说明：显示汉字字符串，这个函数不能单独调用
-**********************************************************************************************************/
-void LCD_ShowHzString(u16 x, u16 y, u8 *c, u16 PenColor, u16 BackColor) {
-    int i, j;
-    u8 buffer[32];
-    u16 tmp_char = 0;
-    unsigned int c1, c2;
-    unsigned int c3 = 0;
-    unsigned char *c4;
-
-    c4 = c4;
-    c1 = *c;                                        //  区号
-    c2 = *(c + 1);                                  //  位号	修改正确
-    c3 = ((c1 - 0xa1) * 0x5e + (c2 - 0xa1)) * 0x20; //  汉字在字库中的地址
-    c4 = (unsigned char *)&Hzk16[c3];               //  换算成指针
-
-    for (i = 0; i < 32; i++) {
-        buffer[i] = Hzk16[c3 + i];
-    }
-
-    for (i = 0; i < 16; i++) {
-        tmp_char = buffer[i * 2];
-        tmp_char = (tmp_char << 8);
-        tmp_char |= buffer[2 * i + 1]; //  现在tmp_char存储着一行的点阵数据
-
-        for (j = 0; j < 16; j++) {
-            if ((tmp_char >> 15 - j) & 0x01 == 0x01) // tmp_char >> (15 - j) & 0x01 == 0x01 aka tmp_char>>(15-j)&1 逆天
-            {
-                LCD_DrawPoint(x + j, y + i, PenColor); //  字符颜色
-            } else {
-                LCD_DrawPoint(x + j, y + i, BackColor); //  背景颜色
-            }
-        }
-    }
-}
 
 /**********************************************************************************************************
 函数名称：显示ASCII码函数
@@ -1163,7 +1119,7 @@ void LCD_ShowString(u16 x0, u16 y0, u8 *pcStr, u16 PenColor, u16 BackColor) {
     while (*pcStr) {
         if (*pcStr > 0xa1) //  显示汉字
         {
-            LCD_ShowHzString(x0, y0, pcStr, PenColor, BackColor);
+            //LCD_ShowHzString(x0, y0, pcStr, PenColor, BackColor);
             pcStr += 2;
             x0 += 16;
         } else //  显示字符
