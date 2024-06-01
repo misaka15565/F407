@@ -73,11 +73,13 @@ void MX_USB_HOST_Process(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if (htim->Instance != TIM3)
         return;
-    KeyIRQHandler();
+    // KeyIRQHandler();
     static uint16_t count = 0;
     ++count;
-    if (count == 0) {
+    MX_LWIP_Process();
+    if (count == 10) {
         HAL_GPIO_TogglePin(LED8_GPIO_Port, LED8_Pin);
+        count = 0;
     }
 }
 float get_adc1_0() {
@@ -92,7 +94,6 @@ float get_adc1_0() {
 const u16 POINT_COLOR_TBL[5] = {RED, GREEN, BLUE, BROWN, GRED};
 void torch_process(void) {
     tp_dev.scan(0);
-
 }
 // 重定向printf
 // gcc是这样的
@@ -118,7 +119,7 @@ int get_key3_lib(void) {
 }
 
 void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
-    HAL_GPIO_TogglePin(GPIOF, GPIO_PIN_6);
+    // HAL_GPIO_TogglePin(GPIOF, GPIO_PIN_6);
     RTC_TimeTypeDef sTime;
     RTC_DateTypeDef sDate;
     HAL_RTC_GetTime(hrtc, &sTime, RTC_FORMAT_BIN);
@@ -210,19 +211,20 @@ int main(void)
     lv_display_set_flush_cb(displayer, LCD_LVGL_flush);
     lv_display_set_buffers(displayer, disp_buf_1, disp_buf_2, sizeof(disp_buf_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
     // 更改活动屏幕的背景颜色
-    lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x003a57), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x00ff00), LV_PART_MAIN);
     lv_obj_set_style_text_color(lv_screen_active(), lv_color_hex(0xffffff), LV_PART_MAIN);
     lv_obj_t *lvimg = lv_image_create(lv_screen_active());
 
-    lv_image_set_src(lvimg,"0:/fll800.jpg");
+    lv_image_set_src(lvimg, "0:/fll800.jpg");
     /*创建旋转器*/
-    lv_obj_t *spinner = lv_spinner_create(lv_screen_active());
-    lv_obj_set_size(spinner, 200, 200);
-    lv_obj_align(spinner, LV_ALIGN_CENTER, 0, 0);
+    //lv_obj_t *spinner = lv_spinner_create(lv_screen_active());
+    //lv_spinner_set_anim_params(spinner, 5000, 60);
+    //lv_obj_set_size(spinner, 200, 200);
+    //lv_obj_align(spinner, LV_ALIGN_CENTER, 0, 0);
 
     while (1) {
         lv_timer_handler();
-        MX_LWIP_Process();
+
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();
 
