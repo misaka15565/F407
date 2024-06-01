@@ -141,6 +141,6 @@ void LCD_ShowString(u16 x0, u16 y0, u8 *pcStr, u16 PenColor, u16 BackColor);
 void LCD_DrawOnrPoint(uint16_t xsta, uint16_t ysta, uint16_t color);
 void LCD_DrawPicture(u16 StartX, u16 StartY, u16 Xend, u16 Yend, u8 *pic);
 
-void LCD_sudoer_Draw_Triangle_Wave(u16 startx, u16 starty, u16 endx, u16 endy, u16 color, u16 t);
 void LCD_Draw_area(u16 startx, u16 starty, u16 width, u16 height, u16 color);
+void LCD_WriteDatas_DMA(u16 *datas, u32 size);
 #endif

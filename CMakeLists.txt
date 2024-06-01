@@ -48,6 +48,8 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined library search paths
 )
 
+file(GLOB_RECURSE LVGL_SRCS "LVGL/*.c")
+message("SOURCES: ${LVGL_SRCS}")
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ./ExtraDrivers/lcd.c
@@ -58,12 +60,16 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ./ExtraDrivers/key.c
     ./ExtraDrivers/ct_iic.c
     ./ExtraDrivers/gt9147.c
+    ${LVGL_SRCS}
     # Add user sources here
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ./ExtraDrivers
+    ./LVGL/GUI
+    ./LVGL/GUI/lvgl
+    ./LVGL/GUI_APP
     # Add user defined include paths
 )
 

@@ -1,6 +1,8 @@
 #include "LCD.h"
 #include "Hzk16song.h"
+#include "dma.h"
 #include "font.h"
+#include "stm32f4xx_hal_dma.h"
 #include "stm32f4xx_hal_rcc_ex.h"
 
 //	LCD结构体，默认为横屏
@@ -283,7 +285,7 @@ void LCD_DrawPoint(u16 x, u16 y, u16 color) {
 输出参数：无
 函数返回：无
 **********************************************************************************************************/
-//哪里快了？这不一样？
+// 哪里快了？这不一样？
 void LCD_Fast_DrawPoint(u16 x, u16 y, u16 color) {
     if (lcddev.id == 0X5510) {
         LCD_WR_REG(lcddev.setxcmd);
@@ -1200,40 +1202,28 @@ void LCD_DrawPicture(u16 StartX, u16 StartY, u16 width, u16 height, u8 *pic) {
     for (j = 0; j < height; j++) {
         LCD_SetCursor(StartX, StartY + j);
         LCD_WriteRAM_Prepare();
+        LCD_WriteDatas_DMA(bitmap, width);
+        bitmap += width;
+        /*
         for (i = 0; i < width; i++) {
             // LCD_DrawOnrPoint(StartX + i, StartY + j, *bitmap++);
             LCD->LCD_RAM = (*bitmap++);
         }
-    }
-}
-
-void LCD_sudoer_Draw_Triangle_Wave(u16 startx, u16 starty, u16 endx, u16 endy, u16 color, u16 t) {
-    // 绘制三角波
-    if (startx > endx || starty > endy) return;
-    for (uint16_t i = startx; i < endx; ++i) {
-        for (uint16_t j = starty; j < endy; ++j) {
-            LCD_DrawPoint(i, j, WHITE);
-        }
-    }
-    int16_t width = endx - startx;
-    int16_t height = endy - starty;
-    int16_t tmp[480] = {};
-    for (uint16_t i = 0; i < width; i++) {
-        tmp[i] = i;
-        tmp[i] %= 2 * height;
-        if (tmp[i] >= height) tmp[i] = 2 * height - tmp[i] - 1;
-    }
-    for (uint16_t i = 0; i < width; i++) {
-        LCD_DrawPoint(startx + i, starty + tmp[(i + t) % width], color);
+        */
     }
 }
 
 void LCD_Draw_area(u16 startx, u16 starty, u16 width, u16 height, u16 color) {
-    for(uint16_t j=0;j<height;++j){
-        LCD_SetCursor(startx, starty+j);
+    for (uint16_t j = 0; j < height; ++j) {
+        LCD_SetCursor(startx, starty + j);
         LCD_WriteRAM_Prepare();
-        for(uint16_t i=0;i<width;++i){
+        for (uint16_t i = 0; i < width; ++i) {
             LCD->LCD_RAM = color;
         }
     }
+}
+
+void LCD_WriteDatas_DMA(uint16_t *data, uint32_t len) {
+    HAL_DMA_Start(&hdma_memtomem_dma2_stream0, (uint32_t)data, (uint32_t) & (LCD->LCD_RAM), len);
+    HAL_DMA_PollForTransfer(&hdma_memtomem_dma2_stream0, HAL_DMA_FULL_TRANSFER, HAL_MAX_DELAY);
 }
