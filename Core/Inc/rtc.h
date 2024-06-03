@@ -21,6 +21,7 @@
 #ifndef __RTC_H__
 #define __RTC_H__
 
+#include <strings.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -41,7 +42,8 @@ extern RTC_HandleTypeDef hrtc;
 void MX_RTC_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void bsp_sntp_init();
+void sntp_set_time(uint32_t);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
