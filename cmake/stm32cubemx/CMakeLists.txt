@@ -180,6 +180,7 @@ target_sources(stm32cubemx INTERFACE
     ../../Middlewares/Third_Party/LwIP/src/core/ipv6/mld6.c
     ../../Middlewares/Third_Party/LwIP/src/core/ipv6/nd6.c
     ../../Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c
+    ../../Middlewares/Third_Party/LwIP/src/apps/sntp/sntp.c
     ../../Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_core.c
     ../../Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ctlreq.c
     ../../Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.c

@@ -49,8 +49,9 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 )
 
 file(GLOB_RECURSE LVGL_SRCS "LVGL/*.c")
-message("SOURCES: ${LVGL_SRCS}")
+file(GLOB_RECURSE GUI_SRCS "GUI_SquareLine_Gen/*.c")
 # Add sources to executable
+
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ./ExtraDrivers/lcd.c
     ./ExtraDrivers/WIFI.c
@@ -61,6 +62,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ./ExtraDrivers/ct_iic.c
     ./ExtraDrivers/gt9147.c
     ${LVGL_SRCS}
+    ${GUI_SRCS}
     # Add user sources here
 )
 
@@ -70,7 +72,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ./LVGL
     ./LVGL/src
     ./LVGL/porting
-    
+    ./GUI_SquareLine_Gen
     # Add user defined include paths
 )
 
@@ -80,10 +82,8 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     LV_LVGL_H_INCLUDE_SIMPLE
     LV_CONF_INCLUDE_SIMPLE
 )
-
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
-
     # Add user defined libraries
 )
