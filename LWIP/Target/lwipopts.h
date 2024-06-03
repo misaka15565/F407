@@ -32,6 +32,7 @@
 /* USER CODE BEGIN 0 */
 #include "rtc.h"
 #define SNTP_SET_SYSTEM_TIME(sec)   sntp_set_time(sec)
+#define SNTP_MAX_SERVERS 11
 /* USER CODE END 0 */
 
 #ifdef __cplusplus

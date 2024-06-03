@@ -191,12 +191,10 @@ void set_sntp_server_list(void) {
 void bsp_sntp_init(void) {
     // 设置 SNTP 的获取方式 -> 使用向服务器获取方式
     sntp_setoperatingmode(SNTP_OPMODE_POLL);
-
-    // SNTP 初始化
-    sntp_init();
-
     // 加入授时中心的IP信息
     set_sntp_server_list();
+    // SNTP 初始化
+    sntp_init();
 }
 
 uint32_t get_timestamp(void) {

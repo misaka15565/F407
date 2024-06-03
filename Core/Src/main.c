@@ -223,7 +223,7 @@ int main(void) {
     lv_indev_set_read_cb(indev_drv, lvgl_input_torch);
 
     ui_init();
-    bsp_sntp_init();
+    //bsp_sntp_init();
     while (1) {
         lv_timer_handler();
         /* USER CODE END WHILE */
