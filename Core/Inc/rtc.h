@@ -21,7 +21,6 @@
 #ifndef __RTC_H__
 #define __RTC_H__
 
-#include <strings.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

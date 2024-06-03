@@ -33,6 +33,7 @@
 #include "rtc.h"
 #define SNTP_SET_SYSTEM_TIME(sec)   sntp_set_time(sec)
 #define SNTP_MAX_SERVERS 11
+#define LWIP_DEBUG
 /* USER CODE END 0 */
 
 #ifdef __cplusplus
@@ -103,6 +104,8 @@
 #define CHECKSUM_CHECK_ICMP 0
 /*----- Value in opt.h for CHECKSUM_CHECK_ICMP6: 1 -----*/
 #define CHECKSUM_CHECK_ICMP6 0
+/*----- Default Value for SNTP_DEBUG: LWIP_DBG_OFF ---*/
+#define SNTP_DEBUG LWIP_DBG_ON
 /*-----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
 
