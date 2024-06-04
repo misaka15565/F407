@@ -24,12 +24,15 @@ extern lv_obj_t * ui_Screen1_Keyboard_Keyboard1;
 extern lv_obj_t * ui_Screen1_Label_Label3;
 void ui_event_Screen1_Button_Button4(lv_event_t * e);
 extern lv_obj_t * ui_Screen1_Button_Button4;
-extern lv_obj_t * ui_Screen1_Label_Label4;
+extern lv_obj_t * ui_Screen1_Label_Label5;
 // SCREEN: ui_Screen2
 void ui_Screen2_screen_init(void);
 void ui_event_Screen2(lv_event_t * e);
 extern lv_obj_t * ui_Screen2;
 extern lv_obj_t * ui_Screen2_Label_Label6;
+void ui_event_Screen2_Button_Button1(lv_event_t * e);
+extern lv_obj_t * ui_Screen2_Button_Button1;
+extern lv_obj_t * ui_Screen2_Label_Label1;
 extern lv_obj_t * ui_Startevents____initial_actions0;
 
 

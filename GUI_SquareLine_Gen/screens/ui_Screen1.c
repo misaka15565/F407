@@ -57,11 +57,14 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_style_bg_color(ui_Screen1_Button_Button4, lv_color_hex(0xD04F97), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Screen1_Button_Button4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Screen1_Label_Label4 = lv_label_create(ui_Screen1);
-    lv_obj_set_width(ui_Screen1_Label_Label4, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Screen1_Label_Label4, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_Screen1_Label_Label4, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Screen1_Label_Label4, "text");
+    ui_Screen1_Label_Label5 = lv_label_create(ui_Screen1_Button_Button4);
+    lv_obj_set_width(ui_Screen1_Label_Label5, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen1_Label_Label5, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_Screen1_Label_Label5, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Screen1_Label_Label5, "Submit");
+    lv_obj_set_style_text_color(ui_Screen1_Label_Label5, lv_color_hex(0x2000FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Screen1_Label_Label5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Screen1_Label_Label5, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_Screen1_Textarea_TextArea1, ui_event_Screen1_Textarea_TextArea1, LV_EVENT_ALL, NULL);
     lv_keyboard_set_textarea(ui_Screen1_Keyboard_Keyboard1, ui_Screen1_Textarea_TextArea1);
