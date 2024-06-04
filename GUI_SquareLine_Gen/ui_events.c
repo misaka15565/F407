@@ -23,8 +23,8 @@ void CheckPasswd(lv_event_t *e) {
 #ifdef PASSWORD_NOCHECK
     _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Screen2_screen_init);
     return;
-#endif
 #undef PASSWORD_NOCHECK
+#endif
     const char *pwdtmp = lv_textarea_get_text(ui_Screen1_Textarea_TextArea1);
 
     if (lv_strcmp("password", pwdtmp) == 0) {
@@ -34,19 +34,19 @@ void CheckPasswd(lv_event_t *e) {
 
 static void timelabel_update_timer(lv_timer_t *timer) {
     // Your code here
-    printf("label updater running\n");
-    char tmp[20] = "TIME:";
+    // printf("label updater running\n");
+    char tmp[20];
     RTC_TimeTypeDef sTime;
-	RTC_DateTypeDef sDate;
+    RTC_DateTypeDef sDate;
     HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-	HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);//不读日期会导致时间被锁定
-    sprintf(tmp + 5, "%02d:%02d:%02d", sTime.Hours, sTime.Minutes, sTime.Seconds);
+    HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN); // 不读日期会导致时间被锁定
+	sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d", sDate.Year + 2000, sDate.Month, sDate.Date, sTime.Hours, sTime.Minutes, sTime.Seconds);
     lv_label_set_text(ui_Screen2_Label_Label6, tmp);
 }
 static lv_timer_t *timelabel_update_timer_ptr;
 void Timer_Create(lv_event_t *e) {
     // Your code here
-    timelabel_update_timer_ptr = lv_timer_create(timelabel_update_timer, 1000, NULL);
+    timelabel_update_timer_ptr = lv_timer_create(timelabel_update_timer, 100, NULL);
 }
 
 void Timer_Delete(lv_event_t *e) {

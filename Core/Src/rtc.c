@@ -224,12 +224,8 @@ uint32_t get_timestamp(void) {
 
 void sntp_set_time(uint32_t sntp_time) {
     if (sntp_time == 0) {
-        printf("sntp_set_time: wrong!@@\n");
         return;
     }
-
-    printf("sntp_set_time: c00, enter!\n");
-    printf("sntp_set_time: c01, get time = %u\n", sntp_time);
 
 #if 1
     struct tm *time;
@@ -262,12 +258,6 @@ void sntp_set_time(uint32_t sntp_time) {
     if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK) {
         Error_Handler();
     }
-
-    printf("sntp_set_time: c02, decode time: 20%d-%02d-%02d %02d:%02d:%02d\n",
-           sDate.Year, sDate.Month, sDate.Date, sTime.Hours, sTime.Minutes, sTime.Seconds);
-
-    printf("sntp_set_time: c03, test get = %u\n", get_timestamp());
-    printf("sntp_set_time: c04, set rtc time done\n");
 #endif
 }
 /* USER CODE END 1 */
