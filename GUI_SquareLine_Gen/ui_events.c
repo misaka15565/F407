@@ -12,41 +12,44 @@
 #include "ui_helpers.h"
 #include <stdio.h>
 
-void button1_clicked(lv_event_t * e)
-{
-	// Your code here
-	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+void button1_clicked(lv_event_t *e) {
+    // Your code here
+    HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 }
 
+void CheckPasswd(lv_event_t *e) {
+// Your code here
+#define PASSWORD_NOCHECK
+#ifdef PASSWORD_NOCHECK
+    _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Screen2_screen_init);
+    return;
+#endif
+#undef PASSWORD_NOCHECK
+    const char *pwdtmp = lv_textarea_get_text(ui_Screen1_Textarea_TextArea1);
 
-void CheckPasswd(lv_event_t * e)
-{
-	// Your code here
-	const char* pwdtmp=lv_textarea_get_text(ui_Screen1_Textarea_TextArea1);
-	if(lv_strcmp("password",pwdtmp)==0){
-		_ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Screen2_screen_init);
-	}
+    if (lv_strcmp("password", pwdtmp) == 0) {
+        _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Screen2_screen_init);
+    }
 }
 
-static void timelabel_update_timer(lv_timer_t * timer)
-{
-	// Your code here
-	char tmp[20]="TIME:";
-	RTC_TimeTypeDef sTime;
-	HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-	sprintf(tmp+5,"%02d:%02d:%02d",sTime.Hours,sTime.Minutes,sTime.Seconds);
-	lv_label_set_text(ui_Screen2_Label_Label6,tmp);
+static void timelabel_update_timer(lv_timer_t *timer) {
+    // Your code here
+    printf("label updater running\n");
+    char tmp[20] = "TIME:";
+    RTC_TimeTypeDef sTime;
+	RTC_DateTypeDef sDate;
+    HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+	HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);//不读日期会导致时间被锁定
+    sprintf(tmp + 5, "%02d:%02d:%02d", sTime.Hours, sTime.Minutes, sTime.Seconds);
+    lv_label_set_text(ui_Screen2_Label_Label6, tmp);
 }
-static lv_timer_t * timelabel_update_timer_ptr;
-void Timer_Create(lv_event_t * e)
-{
-	// Your code here
-	timelabel_update_timer_ptr=lv_timer_create(timelabel_update_timer, 1000, NULL);
-	
+static lv_timer_t *timelabel_update_timer_ptr;
+void Timer_Create(lv_event_t *e) {
+    // Your code here
+    timelabel_update_timer_ptr = lv_timer_create(timelabel_update_timer, 1000, NULL);
 }
 
-void Timer_Delete(lv_event_t * e)
-{
-	// Your code here
-	lv_timer_delete(timelabel_update_timer_ptr);
+void Timer_Delete(lv_event_t *e) {
+    // Your code here
+    lv_timer_delete(timelabel_update_timer_ptr);
 }

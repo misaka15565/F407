@@ -79,7 +79,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     static uint16_t count = 0;
     ++count;
     tp_dev.scan(0);
-    MX_LWIP_Process();
     if (count == 10) {
         HAL_GPIO_TogglePin(LED8_GPIO_Port, LED8_Pin);
         count = 0;
@@ -121,16 +120,6 @@ int get_key3_lib(void) {
     return HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin) == 0;
 }
 
-void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc) {
-    // HAL_GPIO_TogglePin(GPIOF, GPIO_PIN_6);
-    RTC_TimeTypeDef sTime;
-    RTC_DateTypeDef sDate;
-    HAL_RTC_GetTime(hrtc, &sTime, RTC_FORMAT_BIN);
-    HAL_RTC_GetDate(hrtc, &sDate, RTC_FORMAT_BIN);
-    // char str[20] = {0};
-    // sprintf(str, "%02d:%02d:%02d", sTime.Hours, sTime.Minutes, sTime.Seconds);
-    //  LCD_ShowString(0, 400, str, BLACK, WHITE);
-}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -221,10 +210,19 @@ int main(void)
     lv_indev_t *indev_drv = lv_indev_create();
     lv_indev_set_type(indev_drv, LV_INDEV_TYPE_POINTER);
     lv_indev_set_read_cb(indev_drv, lvgl_input_torch);
+    {
+        // 读取速度模式
+        uint32_t ethres;
+        HAL_ETH_ReadPHYRegister(&heth, 0, 31, &ethres);
+        ethres &= 0x1c;
+        ethres >>= 2;
+        printf("eth:%d\n", ethres);
+    }
 
     ui_init();
-    //bsp_sntp_init();
+    bsp_sntp_init();
     while (1) {
+        MX_LWIP_Process();
         lv_timer_handler();
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();

@@ -114,7 +114,7 @@ void MX_RTC_Init(void)
 
   /** Enable the WakeUp
   */
-  if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0, RTC_WAKEUPCLOCK_CK_SPRE_16BITS) != HAL_OK)
+  if (HAL_RTCEx_SetWakeUpTimer(&hrtc, 0, RTC_WAKEUPCLOCK_CK_SPRE_16BITS) != HAL_OK)
   {
     Error_Handler();
   }
@@ -145,10 +145,6 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef* rtcHandle)
 
     /* RTC clock enable */
     __HAL_RCC_RTC_ENABLE();
-
-    /* RTC interrupt Init */
-    HAL_NVIC_SetPriority(RTC_WKUP_IRQn, 10, 0);
-    HAL_NVIC_EnableIRQ(RTC_WKUP_IRQn);
   /* USER CODE BEGIN RTC_MspInit 1 */
 
   /* USER CODE END RTC_MspInit 1 */
@@ -165,9 +161,6 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
   /* USER CODE END RTC_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_RTC_DISABLE();
-
-    /* RTC interrupt Deinit */
-    HAL_NVIC_DisableIRQ(RTC_WKUP_IRQn);
   /* USER CODE BEGIN RTC_MspDeInit 1 */
 
   /* USER CODE END RTC_MspDeInit 1 */
@@ -183,24 +176,16 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
  * @retval: 无
  */
 void set_sntp_server_list(void) {
+  sntp_setservername(0, "ntp.aliyun.com");
+  return;
     uint32_t server_list[SNTP_MAX_SERVERS] = {
-        0x279148D2, // 国家授时中心
-        0x42041876,
-        0x5F066CCA,
-        0x0B6C1978,
-        0x0B0C5CB6,
-        0x58066BCB,
-        0x14731978,
-        0xC51F70CA,
-        0x521D70CA,
-        0x820176CA,
-        0x510176CA,
+        0x0101a0c0
     };
     ip_addr_t sntp_server;
 
     for (int i = 0; i < SNTP_MAX_SERVERS; i++) {
         sntp_server.addr = server_list[i];
-        sntp_setserver(i, &sntp_server); // 国家授时中心
+        sntp_setserver(i, &sntp_server); 
     }
 }
 
