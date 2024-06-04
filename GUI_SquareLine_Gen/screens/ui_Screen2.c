@@ -15,8 +15,6 @@ void ui_Screen2_screen_init(void)
     ui_Screen2_Label_Label6 = lv_label_create(ui_Screen2);
     lv_obj_set_width(ui_Screen2_Label_Label6, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Screen2_Label_Label6, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Screen2_Label_Label6, 25);
-    lv_obj_set_y(ui_Screen2_Label_Label6, 20);
     lv_label_set_text(ui_Screen2_Label_Label6, "TIME:");
     lv_obj_set_style_text_color(ui_Screen2_Label_Label6, lv_color_hex(0xF30000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Screen2_Label_Label6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);

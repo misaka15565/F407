@@ -54,7 +54,6 @@ file(GLOB_RECURSE GUI_SRCS "GUI_SquareLine_Gen/*.c")
 
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ./ExtraDrivers/lcd.c
-    ./ExtraDrivers/WIFI.c
     ./ExtraDrivers/softiic.c
     ./ExtraDrivers/CH455.c
     ./ExtraDrivers/w25qxx.c
