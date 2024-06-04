@@ -33,6 +33,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "lcd.h"
+#include "GNSS.h"
 #include "W25QXX.h"
 #include "CH455.h"
 #include "key.h"
@@ -218,7 +219,7 @@ int main(void)
         ethres >>= 2;
         printf("eth:%d\n", ethres);
     }
-
+    GNSS_Init();
     ui_init();
     bsp_sntp_init();
     while (1) {
