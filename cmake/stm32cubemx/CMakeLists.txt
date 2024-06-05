@@ -20,6 +20,7 @@ target_include_directories(stm32cubemx INTERFACE
     ../../LWIP/Target
     ../../USB_HOST/App
     ../../USB_HOST/Target
+    ../../wolfMQTT
     ../../Middlewares/Third_Party/LwIP/src/include
     ../../Middlewares/Third_Party/LwIP/system
     ../../Drivers/STM32F4xx_HAL_Driver/Inc
@@ -42,6 +43,7 @@ target_include_directories(stm32cubemx INTERFACE
     ../../Middlewares/Third_Party/LwIP/src/include/compat/stdc
     ../../Middlewares/Third_Party/LwIP/system/arch
     ../../Drivers/CMSIS/Include
+    ../../Middlewares/Third_Party/wolfSSL_wolfMQTT_wolfMQTT/wolfmqtt/
 )
 
 target_sources(stm32cubemx INTERFACE
@@ -188,6 +190,9 @@ target_sources(stm32cubemx INTERFACE
     ../../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc.c
     ../../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_bot.c
     ../../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Src/usbh_msc_scsi.c
+    ../../Middlewares/Third_Party/wolfSSL_wolfMQTT_wolfMQTT/wolfmqtt/src/mqtt_client.c
+    ../../Middlewares/Third_Party/wolfSSL_wolfMQTT_wolfMQTT/wolfmqtt/src/mqtt_packet.c
+    ../../Middlewares/Third_Party/wolfSSL_wolfMQTT_wolfMQTT/wolfmqtt/src/mqtt_socket.c
     ../../Core/Src/sysmem.c
     ../../Core/Src/syscalls.c
     ../../startup_stm32f407xx.s
