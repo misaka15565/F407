@@ -125,7 +125,7 @@ int get_key3_lib(void) {
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static lv_color_t disp_buf_1[800 * 20];
+static lv_color_t disp_buf_1[800 * 30];
 /* USER CODE END 0 */
 
 /**
