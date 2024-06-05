@@ -45,6 +45,7 @@
 #include <time.h>
 #include "lvgl.h"
 #include "ui.h"
+#include "w25qxx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -169,6 +170,8 @@ int main(void) {
     MX_FATFS_Init();
     MX_TIM10_Init();
     /* USER CODE BEGIN 2 */
+    W25QXX_Init();
+    printf("%04x\n",W25QXX_ReadID());
     LCD_Init();
     LCD_Display_Dir(1);
     LCD_Scan_Dir(U2D_R2L);

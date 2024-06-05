@@ -30,7 +30,7 @@ static unsigned char SPI3_ReadWriteByte(unsigned char TxData) {
 输出参数：无
 **********************************************************************************************************/
 static void delay_us(unsigned int time) {
-    unsigned short i = 0;
+    volatile unsigned short i = 0;
 
     while (time--) {
         i = 8;
