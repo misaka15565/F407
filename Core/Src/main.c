@@ -125,8 +125,7 @@ int get_key3_lib(void) {
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static lv_color_t disp_buf_1[800 * 10];
-static lv_color_t disp_buf_2[800 * 10];
+static lv_color_t disp_buf_1[800 * 20];
 /* USER CODE END 0 */
 
 /**
@@ -202,7 +201,7 @@ int main(void)
     __HAL_DMA_ENABLE_IT(&hdma_memtomem_dma2_stream0, DMA_IT_TC);
     displayer = lv_display_create(800, 480);
     lv_display_set_flush_cb(displayer, LCD_LVGL_flush);
-    lv_display_set_buffers(displayer, disp_buf_1, disp_buf_2, sizeof(disp_buf_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
+    lv_display_set_buffers(displayer, disp_buf_1, NULL, sizeof(disp_buf_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
     // 更改活动屏幕的背景颜色
     lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0xffffff), LV_PART_MAIN);
     lv_obj_set_style_text_color(lv_screen_active(), lv_color_hex(0x000000), LV_PART_MAIN);
