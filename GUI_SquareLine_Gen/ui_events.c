@@ -4,9 +4,8 @@
 // Project name: SquareLine_Project
 
 #include "examples/others/file_explorer/lv_example_file_explorer.h"
-#include "others/file_explorer/lv_file_explorer.h"
+#include "lvgl.h"
 #include "rtc.h"
-#include "stdlib/lv_string.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_rtc.h"
 #include "ui.h"
@@ -14,7 +13,6 @@
 #include "ui_helpers.h"
 #include <stdio.h>
 #include "GNSS.h"
-#include "widgets/textarea/lv_textarea.h"
 
 void button1_clicked(lv_event_t *e) {
     // Your code here

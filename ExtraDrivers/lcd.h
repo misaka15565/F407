@@ -2,7 +2,6 @@
 #define __LCD_H
 
 #include "lvgl.h"
-#include "misc/lv_types.h"
 #include "stm32f4xx.h"
 #include <stdlib.h>
 extern lv_display_t *displayer;

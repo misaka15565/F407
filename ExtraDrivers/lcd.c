@@ -1,8 +1,7 @@
 #include "LCD.h"
 #include "dma.h"
 #include "lcd.h"
-#include "misc/lv_area.h"
-#include "misc/lv_types.h"
+#include "lvgl.h"
 #include "stm32f4xx_hal_dma.h"
 #include "stm32f4xx_hal_rcc_ex.h"
 #include <stdint.h>

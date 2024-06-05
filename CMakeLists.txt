@@ -42,13 +42,13 @@ add_executable(${CMAKE_PROJECT_NAME})
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
-
+add_subdirectory(cmake/lvgl_lib)
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined library search paths
 )
 
-file(GLOB_RECURSE LVGL_SRCS "LVGL/*.c")
+
 file(GLOB_RECURSE GUI_SRCS "GUI_SquareLine_Gen/*.c")
 # Add sources to executable
 
@@ -61,7 +61,6 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ./ExtraDrivers/ct_iic.c
     ./ExtraDrivers/gt9147.c
     ./ExtraDrivers/GNSS.c
-    ${LVGL_SRCS}
     ${GUI_SRCS}
     # Add user sources here
 )
@@ -69,9 +68,6 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ./ExtraDrivers
-    ./LVGL
-    ./LVGL/src
-    ./LVGL/porting
     ./GUI_SquareLine_Gen
     # Add user defined include paths
 )
@@ -85,6 +81,7 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
+    lvgl_lib
     # Add user defined libraries
 )
 

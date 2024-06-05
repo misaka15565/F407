@@ -1,6 +1,6 @@
 #ifndef __GT9147_H
 #define __GT9147_H
-#include "indev/lv_indev.h"
+#include "lvgl.h"
 #include <stdint.h>
 typedef uint8_t u8;
 typedef uint16_t u16;
