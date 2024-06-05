@@ -168,6 +168,7 @@ int main(void)
   MX_LWIP_Init();
   MX_USB_HOST_Init();
   MX_FATFS_Init();
+  MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
     LCD_Init();
     LCD_Display_Dir(1);
@@ -180,7 +181,7 @@ int main(void)
         if (APPLICATION_READY == Appli_state) break;
         if (Appli_state == APPLICATION_DISCONNECT) break;
     }
-
+    HAL_TIM_PWM_Start(&htim10, TIM_CHANNEL_1);
     FRESULT res = f_mount(&USBHFatFS, (TCHAR const *)USBHPath, 1);
     if (res == FR_OK) {
         FIL file;

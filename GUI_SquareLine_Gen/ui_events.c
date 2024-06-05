@@ -11,6 +11,7 @@
 #include "main.h"
 #include "ui_helpers.h"
 #include <stdio.h>
+#include "GNSS.h"
 
 void button1_clicked(lv_event_t *e) {
     // Your code here
@@ -35,13 +36,21 @@ void CheckPasswd(lv_event_t *e) {
 static void timelabel_update_timer(lv_timer_t *timer) {
     // Your code here
     // printf("label updater running\n");
-    char tmp[20];
+    char tmp[60];
     RTC_TimeTypeDef sTime;
     RTC_DateTypeDef sDate;
     HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
     HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN); // 不读日期会导致时间被锁定
-	sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d", sDate.Year + 2000, sDate.Month, sDate.Date, sTime.Hours, sTime.Minutes, sTime.Seconds);
+    sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d", sDate.Year + 2000, sDate.Month, sDate.Date, sTime.Hours, sTime.Minutes, sTime.Seconds);
     lv_label_set_text(ui_Screen2_Label_Label6, tmp);
+
+    // GNSS
+    sprintf(tmp, "GNSS:\n\
+longitude: %6.2f%c\n\
+latitude:%6.2f%c\n\
+    ",
+            longitude, longitude_dir, latitude, latitude_dir);
+    lv_label_set_text(ui_Screen2_Label_Label2, tmp);
 }
 static lv_timer_t *timelabel_update_timer_ptr;
 void Timer_Create(lv_event_t *e) {
@@ -52,4 +61,11 @@ void Timer_Create(lv_event_t *e) {
 void Timer_Delete(lv_event_t *e) {
     // Your code here
     lv_timer_delete(timelabel_update_timer_ptr);
+}
+
+void Slider1_proc(lv_event_t *e) {
+    // Your code here
+    int val = lv_slider_get_value(ui_Screen2_Slider_Slider1);
+    // Adjust PWM duty cycle of TIM10 channel 1
+    TIM10->CCR1 = val * 10;
 }

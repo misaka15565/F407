@@ -87,3 +87,8 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
     # Add user defined libraries
 )
+
+#添加链接选项以启用printf float
+target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
+    -u_printf_float
+)

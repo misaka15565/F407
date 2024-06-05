@@ -39,7 +39,34 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_style_text_align(ui_Screen2_Label_Label1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Screen2_Label_Label1, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    ui_Screen2_Slider_Slider1 = lv_slider_create(ui_Screen2);
+    lv_slider_set_value(ui_Screen2_Slider_Slider1, 0, LV_ANIM_OFF);
+    if(lv_slider_get_mode(ui_Screen2_Slider_Slider1) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(
+            ui_Screen2_Slider_Slider1, 0, LV_ANIM_OFF);
+    lv_obj_set_width(ui_Screen2_Slider_Slider1, 706);
+    lv_obj_set_height(ui_Screen2_Slider_Slider1, 10);
+    lv_obj_set_x(ui_Screen2_Slider_Slider1, 4);
+    lv_obj_set_y(ui_Screen2_Slider_Slider1, 172);
+    lv_obj_set_align(ui_Screen2_Slider_Slider1, LV_ALIGN_CENTER);
+
+
+    //Compensating for LVGL9.1 draw crash with bar/slider max value when top-padding is nonzero and right-padding is 0
+    if(lv_obj_get_style_pad_top(ui_Screen2_Slider_Slider1,
+                                LV_PART_MAIN) > 0) lv_obj_set_style_pad_right(ui_Screen2_Slider_Slider1,
+                                                                                  lv_obj_get_style_pad_right(ui_Screen2_Slider_Slider1, LV_PART_MAIN) + 1, LV_PART_MAIN);
+    ui_Screen2_Label_Label2 = lv_label_create(ui_Screen2);
+    lv_obj_set_width(ui_Screen2_Label_Label2, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen2_Label_Label2, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Screen2_Label_Label2, 0);
+    lv_obj_set_y(ui_Screen2_Label_Label2, 50);
+    lv_label_set_text(ui_Screen2_Label_Label2, "GNSS:");
+    lv_obj_set_style_text_color(ui_Screen2_Label_Label2, lv_color_hex(0x0800FF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Screen2_Label_Label2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui_Screen2_Label_Label2, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Screen2_Label_Label2, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
+
     lv_obj_add_event_cb(ui_Screen2_Button_Button1, ui_event_Screen2_Button_Button1, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Screen2_Slider_Slider1, ui_event_Screen2_Slider_Slider1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2, ui_event_Screen2, LV_EVENT_ALL, NULL);
 
 }

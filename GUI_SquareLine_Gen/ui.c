@@ -29,6 +29,9 @@ lv_obj_t * ui_Screen2_Label_Label6;
 void ui_event_Screen2_Button_Button1(lv_event_t * e);
 lv_obj_t * ui_Screen2_Button_Button1;
 lv_obj_t * ui_Screen2_Label_Label1;
+void ui_event_Screen2_Slider_Slider1(lv_event_t * e);
+lv_obj_t * ui_Screen2_Slider_Slider1;
+lv_obj_t * ui_Screen2_Label_Label2;
 lv_obj_t * ui_Startevents____initial_actions0;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
@@ -72,6 +75,14 @@ void ui_event_Screen2_Button_Button1(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_Screen1, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0, &ui_Screen1_screen_init);
+    }
+}
+void ui_event_Screen2_Slider_Slider1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        Slider1_proc(e);
     }
 }
 
