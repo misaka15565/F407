@@ -3,6 +3,8 @@
 // LVGL version: 9.1.0
 // Project name: SquareLine_Project
 
+#include "examples/others/file_explorer/lv_example_file_explorer.h"
+#include "others/file_explorer/lv_file_explorer.h"
 #include "rtc.h"
 #include "stdlib/lv_string.h"
 #include "stm32f4xx.h"
@@ -30,7 +32,7 @@ void CheckPasswd(lv_event_t *e) {
     const char *pwdtmp = lv_textarea_get_text(ui_Screen1_Textarea_TextArea1);
 
     if (lv_strcmp("password", pwdtmp) == 0) {
-        lv_textarea_set_text(ui_Screen1_Textarea_TextArea1,"");//清空密码框
+        lv_textarea_set_text(ui_Screen1_Textarea_TextArea1, ""); // 清空密码框
         _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Screen2_screen_init);
     }
 }
@@ -72,12 +74,18 @@ void Slider1_proc(lv_event_t *e) {
     TIM10->CCR1 = val * 10;
 }
 
-void ExplorerScreenLoaded(lv_event_t * e)
-{
-	// Your code here
+static lv_obj_t *sudoer_ui_Explorer;
+
+void ExplorerScreenLoaded(lv_event_t *e) {
+    // Your code here
+    // 添加文件浏览器
+    sudoer_ui_Explorer = lv_file_explorer_create(ui_ExplorerScreen);
+    lv_file_explorer_open_dir(sudoer_ui_Explorer, "0:/");
+    //lv_example_file_explorer_3();
+    lv_file_explorer_set_sort(sudoer_ui_Explorer, LV_EXPLORER_SORT_NONE);
 }
 
-void ExplorerScreenUnLoaded(lv_event_t * e)
-{
-	// Your code here
+void ExplorerScreenUnLoaded(lv_event_t *e) {
+    // Your code here
+    lv_obj_delete(sudoer_ui_Explorer);
 }
