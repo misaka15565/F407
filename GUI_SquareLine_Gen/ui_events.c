@@ -12,6 +12,7 @@
 #include "ui_helpers.h"
 #include <stdio.h>
 #include "GNSS.h"
+#include "widgets/textarea/lv_textarea.h"
 
 void button1_clicked(lv_event_t *e) {
     // Your code here
@@ -29,6 +30,7 @@ void CheckPasswd(lv_event_t *e) {
     const char *pwdtmp = lv_textarea_get_text(ui_Screen1_Textarea_TextArea1);
 
     if (lv_strcmp("password", pwdtmp) == 0) {
+        lv_textarea_set_text(ui_Screen1_Textarea_TextArea1,"");//清空密码框
         _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Screen2_screen_init);
     }
 }
