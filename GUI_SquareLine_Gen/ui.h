@@ -36,6 +36,10 @@ extern lv_obj_t * ui_Screen2_Label_Label1;
 void ui_event_Screen2_Slider_Slider1(lv_event_t * e);
 extern lv_obj_t * ui_Screen2_Slider_Slider1;
 extern lv_obj_t * ui_Screen2_Label_Label2;
+// SCREEN: ui_ExplorerScreen
+void ui_ExplorerScreen_screen_init(void);
+void ui_event_ExplorerScreen(lv_event_t * e);
+extern lv_obj_t * ui_ExplorerScreen;
 extern lv_obj_t * ui_Startevents____initial_actions0;
 
 

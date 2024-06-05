@@ -14,6 +14,8 @@ void CheckPasswd(lv_event_t * e);
 void Timer_Create(lv_event_t * e);
 void Timer_Delete(lv_event_t * e);
 void Slider1_proc(lv_event_t * e);
+void ExplorerScreenLoaded(lv_event_t * e);
+void ExplorerScreenUnLoaded(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

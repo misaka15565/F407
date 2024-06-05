@@ -71,3 +71,13 @@ void Slider1_proc(lv_event_t *e) {
     // Adjust PWM duty cycle of TIM10 channel 1
     TIM10->CCR1 = val * 10;
 }
+
+void ExplorerScreenLoaded(lv_event_t * e)
+{
+	// Your code here
+}
+
+void ExplorerScreenUnLoaded(lv_event_t * e)
+{
+	// Your code here
+}

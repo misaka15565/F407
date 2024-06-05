@@ -32,6 +32,12 @@ lv_obj_t * ui_Screen2_Label_Label1;
 void ui_event_Screen2_Slider_Slider1(lv_event_t * e);
 lv_obj_t * ui_Screen2_Slider_Slider1;
 lv_obj_t * ui_Screen2_Label_Label2;
+
+
+// SCREEN: ui_ExplorerScreen
+void ui_ExplorerScreen_screen_init(void);
+void ui_event_ExplorerScreen(lv_event_t * e);
+lv_obj_t * ui_ExplorerScreen;
 lv_obj_t * ui_Startevents____initial_actions0;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
@@ -85,6 +91,17 @@ void ui_event_Screen2_Slider_Slider1(lv_event_t * e)
         Slider1_proc(e);
     }
 }
+void ui_event_ExplorerScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_SCREEN_LOADED) {
+        ExplorerScreenLoaded(e);
+    }
+    if(event_code == LV_EVENT_SCREEN_UNLOADED) {
+        ExplorerScreenUnLoaded(e);
+    }
+}
 
 ///////////////////// SCREENS ////////////////////
 
@@ -96,6 +113,7 @@ void ui_init(void)
     lv_disp_set_theme(dispp, theme);
     ui_Screen1_screen_init();
     ui_Screen2_screen_init();
+    ui_ExplorerScreen_screen_init();
     ui_Startevents____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_Screen1);
 }
