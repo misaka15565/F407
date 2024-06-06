@@ -2,11 +2,13 @@
 #include "ct_iic.h"
 #include "lvgl.h"
 #include "main.h"
+#include "src/indev/lv_indev.h"
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_gpio.h"
 #include "usart.h"
 #include "string.h"
 #include "lcd.h"
+#include <stdbool.h>
 // GT9147配置参数表
 // 第一个字节为版本号(0X60),必须保证新的版本号大于等于GT9147内部
 // flash原有版本号,才会更新配置.
@@ -430,19 +432,34 @@ u8 GT9147_Scan(u8 mode) {
     return res;
 }
 
+volatile static int32_t touch_last_x;
+volatile static int32_t touch_last_y;
+volatile static bool data_readed; // 标志本次触摸数据是否已经被lvgl读走
 void lvgl_input_torch(lv_indev_t *indev, lv_indev_data_t *data) {
-    data->point.x = 800 - tp_dev.x[0];
-    data->point.y = 480 - tp_dev.y[0];
-    static int32_t last_x;
-    static int32_t last_y;
-
-    data->state = tp_dev.sta & 0x80 ? LV_INDEV_STATE_PRESSED : LV_INDEV_STATE_RELEASED;
-    if (data->point.x < 0 || data->point.y < 0) {
-        data->state = LV_INDEV_STATE_REL;
-        data->point.x = last_x;
-        data->point.y = last_y;
-    }else if(data->state==LV_INDEV_STATE_PRESSED){
-        last_x=data->point.x;
-        last_y=data->point.y;
+    data->point.x = touch_last_x;
+    data->point.y = touch_last_y;
+    if (data_readed) {
+        // 如果触摸点已经被读过，说明上次读到这次读中间没有发生新的触摸
+        data->state = LV_INDEV_STATE_RELEASED;
+    } else {
+        data->state = LV_INDEV_STATE_PRESSED;
+        data_readed = true;
+    }
+}
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    if (htim->Instance != TIM3)
+        return;
+    static uint16_t count = 0;
+    ++count;
+    tp_dev.scan(0);
+    // 处理触摸屏事件，如果有触摸，将触摸点给到touch_last_x和touch_last_y，设置readed
+    if (tp_dev.sta & TP_PRES_DOWN) {
+        touch_last_x = 800 - tp_dev.x[0];
+        touch_last_y = 480 - tp_dev.y[0];
+        data_readed = false;
+    }
+    if (count == 10) {
+        HAL_GPIO_TogglePin(LED8_GPIO_Port, LED8_Pin);
+        count = 0;
     }
 }

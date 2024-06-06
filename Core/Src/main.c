@@ -75,18 +75,7 @@ void SystemClock_Config(void);
 void MX_USB_HOST_Process(void);
 
 /* USER CODE BEGIN PFP */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-    if (htim->Instance != TIM3)
-        return;
-    // KeyIRQHandler();
-    static uint16_t count = 0;
-    ++count;
-    tp_dev.scan(0);
-    if (count == 10) {
-        HAL_GPIO_TogglePin(LED8_GPIO_Port, LED8_Pin);
-        count = 0;
-    }
-}
+
 float get_adc1_0() {
     int sum = 0;
     for (int i = 0; i < 20; ++i) {
@@ -96,10 +85,7 @@ float get_adc1_0() {
     }
     return sum * 3.3 / 4096 / 20;
 }
-const u16 POINT_COLOR_TBL[5] = {RED, GREEN, BLUE, BROWN, GRED};
-void torch_process(void) {
-    tp_dev.scan(0);
-}
+
 // 重定向printf
 // gcc是这样的
 int _write(int fd, char *pBuffer, int size) {
