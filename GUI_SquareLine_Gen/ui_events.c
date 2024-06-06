@@ -104,7 +104,7 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
         const char *sel_fn = lv_file_explorer_get_selected_file_name(obj);
         // 如果以jpg结尾
         uint16_t len = lv_strlen(sel_fn);
-        if (len > 4 && lv_strcmp(sel_fn + len - 4, ".jpg") == 0) {
+        if (len > 4 && (lv_strcmp(sel_fn + len - 4, ".jpg") == 0 || lv_strcmp(sel_fn + len - 4, ".bmp") == 0)) {
             char path[256];
             lv_strcpy(path, cur_path);
             lv_strcpy(path + lv_strlen(cur_path) - 1, sel_fn);
