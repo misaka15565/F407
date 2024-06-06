@@ -46,6 +46,7 @@
 #include "lvgl.h"
 #include "ui.h"
 #include "w25qxx.h"
+#include "MP3IOT.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -171,6 +172,7 @@ int main(void)
   MX_USB_HOST_Init();
   MX_FATFS_Init();
   MX_TIM10_Init();
+  MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
     W25QXX_Init();
     printf("%04x\n",W25QXX_ReadID());
@@ -201,6 +203,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
     printf("Compile Time: %s\n", __TIME__);
+    mp3_init();
     lv_init();
     HAL_DMA_RegisterCallback(&hdma_memtomem_dma2_stream0, HAL_DMA_XFER_CPLT_CB_ID, dma_finish_callback);
     __HAL_DMA_ENABLE_IT(&hdma_memtomem_dma2_stream0, DMA_IT_TC);

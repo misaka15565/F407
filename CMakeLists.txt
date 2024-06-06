@@ -61,6 +61,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ./ExtraDrivers/ct_iic.c
     ./ExtraDrivers/gt9147.c
     ./ExtraDrivers/GNSS.c
+    ./ExtraDrivers/MP3IOT.c
     ${GUI_SRCS}
     # Add user sources here
 )

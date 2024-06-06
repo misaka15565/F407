@@ -3,9 +3,11 @@
 // LVGL version: 9.1.0
 // Project name: SquareLine_Project
 
+#include "MP3IOT.h"
 #include "examples/others/file_explorer/lv_example_file_explorer.h"
 #include "lvgl.h"
 #include "rtc.h"
+#include "src/core/lv_obj.h"
 #include "src/core/lv_obj_event.h"
 #include "src/core/lv_obj_pos.h"
 #include "src/core/lv_obj_style.h"
@@ -137,4 +139,14 @@ void ExplorerScreenLoaded(lv_event_t *e) {
 void ExplorerScreenUnLoaded(lv_event_t *e) {
     // Your code here
     lv_obj_delete(sudoer_ui_ExplorerWindow);
+}
+
+void Switch_mp3_changed(lv_event_t * e)
+{
+	// Your code here
+    if(lv_obj_has_state(ui_Screen2_Switch_Switch1,LV_STATE_CHECKED)){
+        mp3_play();
+    }else{
+        mp3_stop();
+    }
 }
