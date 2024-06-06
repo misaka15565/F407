@@ -6,6 +6,15 @@
 #include "examples/others/file_explorer/lv_example_file_explorer.h"
 #include "lvgl.h"
 #include "rtc.h"
+#include "src/core/lv_obj_event.h"
+#include "src/core/lv_obj_pos.h"
+#include "src/core/lv_obj_style.h"
+#include "src/core/lv_obj_style_gen.h"
+#include "src/core/lv_obj_tree.h"
+#include "src/font/lv_font.h"
+#include "src/misc/lv_event.h"
+#include "src/misc/lv_types.h"
+#include "src/others/file_explorer/lv_file_explorer.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_rtc.h"
 #include "ui.h"
@@ -73,17 +82,59 @@ void Slider1_proc(lv_event_t *e) {
 }
 
 static lv_obj_t *sudoer_ui_Explorer;
+static lv_obj_t *sudoer_ui_ExplorerWindow;
+static lv_obj_t *sudoer_ui_ExplorerWindow_CloseButton;
 
+static void ExplorerWindowClose(lv_event_t *e) {
+    _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_NONE, 0, 0, &ui_Screen2_screen_init);
+}
+static lv_obj_t *sudoer_ui_image_window;
+static lv_obj_t *sudoer_ui_image;
+static void ImageWindowClose(lv_event_t* e){
+    lv_obj_delete(sudoer_ui_image_window);
+    sudoer_ui_image_window=NULL;
+}
+static void Explorer_file_selected_handler(lv_event_t *e) {
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_target(e);
+    if (code == LV_EVENT_VALUE_CHANGED) {
+        const char *cur_path = lv_file_explorer_get_current_path(obj);
+        const char *sel_fn = lv_file_explorer_get_selected_file_name(obj);
+        // 如果以jpg结尾
+        uint16_t len = lv_strlen(sel_fn);
+        if (len > 4 && lv_strcmp(sel_fn + len - 4, ".jpg") == 0) {
+            char path[256];
+            lv_strcpy(path, cur_path);
+            lv_strcpy(path + lv_strlen(cur_path) - 1, sel_fn);
+            printf("open file %s\n", path);
+
+            sudoer_ui_image_window = lv_win_create(ui_ExplorerScreen);
+            lv_obj_set_pos(sudoer_ui_ExplorerWindow,0,0);
+            lv_win_add_title(sudoer_ui_image_window, "Image");
+            lv_obj_t* button=lv_win_add_button(sudoer_ui_image_window, LV_SYMBOL_CLOSE, 50);
+            lv_obj_add_event_cb(button,ImageWindowClose,LV_EVENT_CLICKED,NULL);
+            lv_obj_set_style_text_font(button, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+            sudoer_ui_image = lv_image_create(sudoer_ui_image_window);
+            lv_image_set_src(sudoer_ui_image, path);
+        }
+    }
+}
 void ExplorerScreenLoaded(lv_event_t *e) {
     // Your code here
-    // 添加文件浏览器
-    sudoer_ui_Explorer = lv_file_explorer_create(ui_ExplorerScreen);
-    lv_file_explorer_open_dir(sudoer_ui_Explorer, "0:/");
-    //lv_example_file_explorer_3();
+    sudoer_ui_ExplorerWindow = lv_win_create(ui_ExplorerScreen);
+    lv_win_add_title(sudoer_ui_ExplorerWindow, "Explorer");
+    lv_obj_set_style_text_font(sudoer_ui_ExplorerWindow, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(sudoer_ui_ExplorerWindow, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+    sudoer_ui_ExplorerWindow_CloseButton = lv_win_add_button(sudoer_ui_ExplorerWindow, LV_SYMBOL_CLOSE, 50);
+    lv_obj_add_event_cb(sudoer_ui_ExplorerWindow_CloseButton, ExplorerWindowClose, LV_EVENT_CLICKED, NULL);
+    sudoer_ui_Explorer = lv_file_explorer_create(sudoer_ui_ExplorerWindow);
     lv_file_explorer_set_sort(sudoer_ui_Explorer, LV_EXPLORER_SORT_NONE);
+    lv_file_explorer_open_dir(sudoer_ui_Explorer, "0:/");
+    lv_obj_set_size(sudoer_ui_Explorer, 800, 400);
+    lv_obj_add_event_cb(sudoer_ui_Explorer, Explorer_file_selected_handler, LV_EVENT_VALUE_CHANGED, NULL);
 }
 
 void ExplorerScreenUnLoaded(lv_event_t *e) {
     // Your code here
-    lv_obj_delete(sudoer_ui_Explorer);
+    lv_obj_delete(sudoer_ui_ExplorerWindow);
 }

@@ -32,6 +32,9 @@ lv_obj_t * ui_Screen2_Label_Label1;
 void ui_event_Screen2_Slider_Slider1(lv_event_t * e);
 lv_obj_t * ui_Screen2_Slider_Slider1;
 lv_obj_t * ui_Screen2_Label_Label2;
+void ui_event_Screen2_Button_Button2(lv_event_t * e);
+lv_obj_t * ui_Screen2_Button_Button2;
+lv_obj_t * ui_Screen2_Label_Label4;
 
 
 // SCREEN: ui_ExplorerScreen
@@ -91,6 +94,14 @@ void ui_event_Screen2_Slider_Slider1(lv_event_t * e)
         Slider1_proc(e);
     }
 }
+void ui_event_Screen2_Button_Button2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_ExplorerScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ExplorerScreen_screen_init);
+    }
+}
 void ui_event_ExplorerScreen(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -98,7 +109,7 @@ void ui_event_ExplorerScreen(lv_event_t * e)
     if(event_code == LV_EVENT_SCREEN_LOADED) {
         ExplorerScreenLoaded(e);
     }
-    if(event_code == LV_EVENT_SCREEN_UNLOADED) {
+    if(event_code == LV_EVENT_SCREEN_UNLOAD_START) {
         ExplorerScreenUnLoaded(e);
     }
 }
@@ -109,7 +120,7 @@ void ui_init(void)
 {
     lv_disp_t * dispp = lv_display_get_default();
     lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
-                                               true, LV_FONT_DEFAULT);
+                                               false, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
     ui_Screen1_screen_init();
     ui_Screen2_screen_init();
