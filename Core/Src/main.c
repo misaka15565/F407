@@ -25,6 +25,7 @@
 #include "lwip.h"
 #include "rng.h"
 #include "rtc.h"
+#include "stm32f4xx_hal_gpio.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_host.h"
@@ -99,15 +100,6 @@ int _write(int fd, char *pBuffer, int size) {
 int _read(int fd, char *pBuffer, int size) {
     HAL_UART_Receive(&huart3, pBuffer, size, 0xffff);
     return size;
-}
-int get_key1_lib(void) {
-    return HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin) == 0;
-}
-int get_key2_lib(void) {
-    return HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin) == 0;
-}
-int get_key3_lib(void) {
-    return HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin) == 0;
 }
 
 /* USER CODE END PFP */
@@ -219,7 +211,9 @@ int main(void)
     bsp_sntp_init();
     while (1) {
         MX_LWIP_Process();
+        HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_RESET);
         lv_timer_handler();
+        HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin,GPIO_PIN_SET);
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();
 
