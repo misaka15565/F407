@@ -44,9 +44,9 @@ void ui_Screen2_screen_init(void)
     if(lv_slider_get_mode(ui_Screen2_Slider_Slider1) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(
             ui_Screen2_Slider_Slider1, 0, LV_ANIM_OFF);
     lv_obj_set_width(ui_Screen2_Slider_Slider1, 706);
-    lv_obj_set_height(ui_Screen2_Slider_Slider1, 10);
-    lv_obj_set_x(ui_Screen2_Slider_Slider1, 4);
-    lv_obj_set_y(ui_Screen2_Slider_Slider1, 172);
+    lv_obj_set_height(ui_Screen2_Slider_Slider1, 73);
+    lv_obj_set_x(ui_Screen2_Slider_Slider1, 12);
+    lv_obj_set_y(ui_Screen2_Slider_Slider1, 88);
     lv_obj_set_align(ui_Screen2_Slider_Slider1, LV_ALIGN_CENTER);
 
 
