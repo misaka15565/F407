@@ -3,6 +3,7 @@
 // LVGL version: 9.1.0
 // Project name: SquareLine_Project
 
+#include "DTH11.h"
 #include "MP3IOT.h"
 #include "examples/others/file_explorer/lv_example_file_explorer.h"
 #include "lvgl.h"
@@ -52,17 +53,22 @@ static void timelabel_update_timer(lv_timer_t *timer) {
     char tmp[60];
     RTC_TimeTypeDef sTime;
     RTC_DateTypeDef sDate;
-    HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-    HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN); // 不读日期会导致时间被锁定
-    sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d", sDate.Year + 2000, sDate.Month, sDate.Date, sTime.Hours, sTime.Minutes, sTime.Seconds);
-    lv_label_set_text(ui_Screen2_Label_Label6, tmp);
+    //HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+    //HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN); // 不读日期会导致时间被锁定
+    //sprintf(tmp, "%04d-%02d-%02d %02d:%02d:%02d", sDate.Year + 2000, sDate.Month, sDate.Date, sTime.Hours, sTime.Minutes, sTime.Seconds);
+    //lv_label_set_text(ui_Screen2_Label_Label6, tmp);
 
     // GNSS
+    /*
     sprintf(tmp, "GNSS:\n\
 longitude: %6.2f%c\n\
 latitude:%6.2f%c\n\
     ",
-            longitude, longitude_dir, latitude, latitude_dir);
+            longitude, longitude_dir, latitude, latitude_dir);*/
+    uint8_t temperature;
+    uint8_t humidity;
+    DTH11_ReadData(&temperature, &humidity);
+    sprintf(tmp, "%d %d", temperature, humidity);
     lv_label_set_text(ui_Screen2_Label_Label2, tmp);
 }
 static lv_timer_t *timelabel_update_timer_ptr;
@@ -92,9 +98,9 @@ static void ExplorerWindowClose(lv_event_t *e) {
 }
 static lv_obj_t *sudoer_ui_image_window;
 static lv_obj_t *sudoer_ui_image;
-static void ImageWindowClose(lv_event_t* e){
+static void ImageWindowClose(lv_event_t *e) {
     lv_obj_delete(sudoer_ui_image_window);
-    sudoer_ui_image_window=NULL;
+    sudoer_ui_image_window = NULL;
 }
 static void Explorer_file_selected_handler(lv_event_t *e) {
     lv_event_code_t code = lv_event_get_code(e);
@@ -111,10 +117,10 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
             printf("open file %s\n", path);
 
             sudoer_ui_image_window = lv_win_create(ui_ExplorerScreen);
-            lv_obj_set_pos(sudoer_ui_ExplorerWindow,0,0);
+            lv_obj_set_pos(sudoer_ui_ExplorerWindow, 0, 0);
             lv_win_add_title(sudoer_ui_image_window, "Image");
-            lv_obj_t* button=lv_win_add_button(sudoer_ui_image_window, LV_SYMBOL_CLOSE, 50);
-            lv_obj_add_event_cb(button,ImageWindowClose,LV_EVENT_CLICKED,NULL);
+            lv_obj_t *button = lv_win_add_button(sudoer_ui_image_window, LV_SYMBOL_CLOSE, 50);
+            lv_obj_add_event_cb(button, ImageWindowClose, LV_EVENT_CLICKED, NULL);
             lv_obj_set_style_text_font(button, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
             sudoer_ui_image = lv_image_create(sudoer_ui_image_window);
             lv_image_set_src(sudoer_ui_image, path);
@@ -141,12 +147,11 @@ void ExplorerScreenUnLoaded(lv_event_t *e) {
     lv_obj_delete(sudoer_ui_ExplorerWindow);
 }
 
-void Switch_mp3_changed(lv_event_t * e)
-{
-	// Your code here
-    if(lv_obj_has_state(ui_Screen2_Switch_Switch1,LV_STATE_CHECKED)){
+void Switch_mp3_changed(lv_event_t *e) {
+    // Your code here
+    if (lv_obj_has_state(ui_Screen2_Switch_Switch1, LV_STATE_CHECKED)) {
         mp3_play();
-    }else{
+    } else {
         mp3_stop();
     }
 }
