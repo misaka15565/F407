@@ -25,7 +25,6 @@
 #include "lwip.h"
 #include "rng.h"
 #include "rtc.h"
-#include "stm32f4xx_hal_gpio.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_host.h"
