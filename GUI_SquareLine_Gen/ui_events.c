@@ -150,3 +150,13 @@ void Switch_mp3_changed(lv_event_t * e)
         mp3_stop();
     }
 }
+
+void screen3loadedfunc(lv_event_t * e)
+{
+	// Your code here
+}
+
+void screen3unloadedfunc(lv_event_t * e)
+{
+	// Your code here
+}

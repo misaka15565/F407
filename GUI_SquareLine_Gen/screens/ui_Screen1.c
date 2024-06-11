@@ -17,7 +17,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_height(ui_Screen1_Textarea_TextArea1, LV_SIZE_CONTENT);    /// 140
     lv_obj_set_x(ui_Screen1_Textarea_TextArea1, 27);
     lv_obj_set_y(ui_Screen1_Textarea_TextArea1, 116);
-    lv_textarea_set_placeholder_text(ui_Screen1_Textarea_TextArea1, "Placeholder...");
+    lv_textarea_set_placeholder_text(ui_Screen1_Textarea_TextArea1, "请输入密码：");
     lv_textarea_set_one_line(ui_Screen1_Textarea_TextArea1, true);
     lv_textarea_set_password_mode(ui_Screen1_Textarea_TextArea1, true);
     lv_obj_set_style_text_font(ui_Screen1_Textarea_TextArea1, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -27,6 +27,9 @@ void ui_Screen1_screen_init(void)
     ui_Screen1_Keyboard_Keyboard1 = lv_keyboard_create(ui_Screen1);
     lv_obj_set_width(ui_Screen1_Keyboard_Keyboard1, 800);
     lv_obj_set_height(ui_Screen1_Keyboard_Keyboard1, 280);
+    lv_obj_set_x(ui_Screen1_Keyboard_Keyboard1, 0);
+    lv_obj_set_y(ui_Screen1_Keyboard_Keyboard1, 280);
+    lv_obj_add_flag(ui_Screen1_Keyboard_Keyboard1, LV_OBJ_FLAG_HIDDEN);     /// Flags
     lv_obj_set_style_bg_color(ui_Screen1_Keyboard_Keyboard1, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Screen1_Keyboard_Keyboard1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 

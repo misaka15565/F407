@@ -15,6 +15,8 @@ extern "C" {
 #include "ui_helpers.h"
 #include "ui_events.h"
 
+void keyboardin_Animation(lv_obj_t * TargetObject, int delay);
+void keyboardout_Animation(lv_obj_t * TargetObject, int delay);
 // SCREEN: ui_Screen1
 void ui_Screen1_screen_init(void);
 extern lv_obj_t * ui_Screen1;
@@ -45,6 +47,10 @@ extern lv_obj_t * ui_Screen2_Switch_Switch1;
 void ui_ExplorerScreen_screen_init(void);
 void ui_event_ExplorerScreen(lv_event_t * e);
 extern lv_obj_t * ui_ExplorerScreen;
+// SCREEN: ui_Screen3
+void ui_Screen3_screen_init(void);
+void ui_event_Screen3(lv_event_t * e);
+extern lv_obj_t * ui_Screen3;
 extern lv_obj_t * ui_Startevents____initial_actions0;
 
 
