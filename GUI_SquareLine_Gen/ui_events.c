@@ -14,10 +14,13 @@
 #include "src/core/lv_obj_style.h"
 #include "src/core/lv_obj_style_gen.h"
 #include "src/core/lv_obj_tree.h"
+#include "src/display/lv_display.h"
 #include "src/font/lv_font.h"
+#include "src/misc/lv_area.h"
 #include "src/misc/lv_event.h"
 #include "src/misc/lv_types.h"
 #include "src/others/file_explorer/lv_file_explorer.h"
+#include "src/widgets/label/lv_label.h"
 #include "src/widgets/textarea/lv_textarea.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_rtc.h"
@@ -206,4 +209,52 @@ void screen3loadedfunc(lv_event_t *e) {
 
 void screen3unloadedfunc(lv_event_t *e) {
     // Your code here
+}
+
+void changepasswordvisible(lv_event_t *e) {
+    // Your code here
+    char *label9text = lv_label_get_text(ui_Screen3_Label_Label9);
+    if (strcmp(label9text, "显示") == 0) {
+        lv_textarea_set_password_mode(ui_Screen3_Textarea_TextAreas3t1, false);
+        lv_textarea_set_password_mode(ui_Screen3_Textarea_TextAreas3t2, false);
+        lv_textarea_set_password_mode(ui_Screen3_Textarea_TextAreas3t3, false);
+        lv_label_set_text(ui_Screen3_Label_Label9, "隐藏");
+    } else {
+        lv_textarea_set_password_mode(ui_Screen3_Textarea_TextAreas3t1, true);
+        lv_textarea_set_password_mode(ui_Screen3_Textarea_TextAreas3t2, true);
+        lv_textarea_set_password_mode(ui_Screen3_Textarea_TextAreas3t3, true);
+        lv_label_set_text(ui_Screen3_Label_Label9, "显示");
+    }
+}
+
+lv_obj_t* password_msgbox_win;
+static void windows_close_cb(lv_event_t *e) {
+    lv_obj_delete(password_msgbox_win);
+    _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_OUT_LEFT, 500, 0, &ui_Screen2_screen_init);
+}
+
+void passwordchange(lv_event_t *e) {
+    // Your code here
+    const char *pwd1 = lv_textarea_get_text(ui_Screen3_Textarea_TextAreas3t1);
+    const char *pwd2 = lv_textarea_get_text(ui_Screen3_Textarea_TextAreas3t2);
+    const char *pwd3 = lv_textarea_get_text(ui_Screen3_Textarea_TextAreas3t3);
+    // 如果pwd1和原来的密码相同
+    if (strcmp(pwd1, W25Qxx_password + 6) == 0) {
+        // 如果pwd2和pwd3相同
+        if (strcmp(pwd2, pwd3) == 0) {
+            // 修改密码
+            W25Qxx_writePassword(pwd2);
+
+            // 新建一个窗口
+            password_msgbox_win = lv_win_create(ui_Screen3);
+            lv_win_add_title(password_msgbox_win, "修改密码成功");
+            lv_obj_set_align(password_msgbox_win, LV_ALIGN_CENTER);
+            lv_obj_set_style_text_font(password_msgbox_win, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_t *button = lv_win_add_button(password_msgbox_win, LV_SYMBOL_CLOSE, 50);
+            lv_obj_add_event_cb(button, windows_close_cb, LV_EVENT_CLICKED, NULL);
+            lv_obj_set_style_text_font(button, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_pos(password_msgbox_win, 0, 0);
+            lv_obj_set_size(password_msgbox_win, 400, 240);
+        }
+    }
 }

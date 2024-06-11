@@ -56,5 +56,5 @@ void W25QXX_Wait_Busy(void);                                                    
 void W25QXX_PowerDown(void);                                                                      // 进入掉电模式
 void W25QXX_WAKEUP(void);                                                                         // 唤醒
 void W25Qxx_readPassword();
-void W25Qxx_writePassword(char *passwd);
+void W25Qxx_writePassword(const char *passwd);
 #endif

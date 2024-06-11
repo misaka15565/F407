@@ -10,6 +10,148 @@ void ui_Screen3_screen_init(void)
     ui_Screen3 = lv_obj_create(NULL);
     lv_obj_remove_flag(ui_Screen3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
+    ui_Screen3_Keyboard_Keyboard3 = lv_keyboard_create(ui_Screen3);
+    lv_obj_set_width(ui_Screen3_Keyboard_Keyboard3, 800);
+    lv_obj_set_height(ui_Screen3_Keyboard_Keyboard3, 280);
+    lv_obj_set_style_bg_color(ui_Screen3_Keyboard_Keyboard3, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_Screen3_Keyboard_Keyboard3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_set_style_bg_color(ui_Screen3_Keyboard_Keyboard3, lv_color_hex(0xFFFFFF), LV_PART_ITEMS | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_Screen3_Keyboard_Keyboard3, 255, LV_PART_ITEMS | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui_Screen3_Keyboard_Keyboard3, lv_color_hex(0x000000), LV_PART_ITEMS | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Screen3_Keyboard_Keyboard3, 255, LV_PART_ITEMS | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Screen3_Keyboard_Keyboard3, &lv_font_montserrat_18, LV_PART_ITEMS | LV_STATE_DEFAULT);
+
+    ui_Screen3_Textarea_TextAreas3t1 = lv_textarea_create(ui_Screen3);
+    lv_obj_set_width(ui_Screen3_Textarea_TextAreas3t1, 450);
+    lv_obj_set_height(ui_Screen3_Textarea_TextAreas3t1, LV_SIZE_CONTENT);    /// 140
+    lv_obj_set_x(ui_Screen3_Textarea_TextAreas3t1, 230);
+    lv_obj_set_y(ui_Screen3_Textarea_TextAreas3t1, 10);
+    lv_textarea_set_max_length(ui_Screen3_Textarea_TextAreas3t1, 100);
+    lv_textarea_set_placeholder_text(ui_Screen3_Textarea_TextAreas3t1, "密码");
+    lv_textarea_set_one_line(ui_Screen3_Textarea_TextAreas3t1, true);
+    lv_textarea_set_password_mode(ui_Screen3_Textarea_TextAreas3t1, true);
+    lv_obj_set_style_text_font(ui_Screen3_Textarea_TextAreas3t1, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+
+
+    ui_Screen3_Textarea_TextAreas3t2 = lv_textarea_create(ui_Screen3);
+    lv_obj_set_width(ui_Screen3_Textarea_TextAreas3t2, 450);
+    lv_obj_set_height(ui_Screen3_Textarea_TextAreas3t2, LV_SIZE_CONTENT);    /// 140
+    lv_obj_set_x(ui_Screen3_Textarea_TextAreas3t2, 230);
+    lv_obj_set_y(ui_Screen3_Textarea_TextAreas3t2, 70);
+    lv_textarea_set_max_length(ui_Screen3_Textarea_TextAreas3t2, 100);
+    lv_textarea_set_placeholder_text(ui_Screen3_Textarea_TextAreas3t2, "密码");
+    lv_textarea_set_one_line(ui_Screen3_Textarea_TextAreas3t2, true);
+    lv_textarea_set_password_mode(ui_Screen3_Textarea_TextAreas3t2, true);
+    lv_obj_set_style_text_font(ui_Screen3_Textarea_TextAreas3t2, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+
+
+    ui_Screen3_Textarea_TextAreas3t3 = lv_textarea_create(ui_Screen3);
+    lv_obj_set_width(ui_Screen3_Textarea_TextAreas3t3, 450);
+    lv_obj_set_height(ui_Screen3_Textarea_TextAreas3t3, LV_SIZE_CONTENT);    /// 140
+    lv_obj_set_x(ui_Screen3_Textarea_TextAreas3t3, 230);
+    lv_obj_set_y(ui_Screen3_Textarea_TextAreas3t3, 130);
+    lv_textarea_set_max_length(ui_Screen3_Textarea_TextAreas3t3, 100);
+    lv_textarea_set_placeholder_text(ui_Screen3_Textarea_TextAreas3t3, "密码");
+    lv_textarea_set_one_line(ui_Screen3_Textarea_TextAreas3t3, true);
+    lv_textarea_set_password_mode(ui_Screen3_Textarea_TextAreas3t3, true);
+    lv_obj_set_style_text_font(ui_Screen3_Textarea_TextAreas3t3, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+
+
+    ui_Screen3_Button_Button6 = lv_button_create(ui_Screen3);
+    lv_obj_set_width(ui_Screen3_Button_Button6, 100);
+    lv_obj_set_height(ui_Screen3_Button_Button6, 50);
+    lv_obj_set_x(ui_Screen3_Button_Button6, 345);
+    lv_obj_set_y(ui_Screen3_Button_Button6, -210);
+    lv_obj_set_align(ui_Screen3_Button_Button6, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Screen3_Button_Button6, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_Screen3_Button_Button6, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Screen3_Label_Label9 = lv_label_create(ui_Screen3_Button_Button6);
+    lv_obj_set_width(ui_Screen3_Label_Label9, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen3_Label_Label9, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_Screen3_Label_Label9, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Screen3_Label_Label9, "显示");
+    lv_obj_set_style_text_color(ui_Screen3_Label_Label9, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Screen3_Label_Label9, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui_Screen3_Label_Label9, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Screen3_Label_Label9, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Screen3_Button_Button7 = lv_button_create(ui_Screen3);
+    lv_obj_set_width(ui_Screen3_Button_Button7, 100);
+    lv_obj_set_height(ui_Screen3_Button_Button7, 50);
+    lv_obj_set_x(ui_Screen3_Button_Button7, 345);
+    lv_obj_set_y(ui_Screen3_Button_Button7, -150);
+    lv_obj_set_align(ui_Screen3_Button_Button7, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Screen3_Button_Button7, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_Screen3_Button_Button7, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Screen3_Label_Label10 = lv_label_create(ui_Screen3_Button_Button7);
+    lv_obj_set_width(ui_Screen3_Label_Label10, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen3_Label_Label10, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_Screen3_Label_Label10, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Screen3_Label_Label10, "确认");
+    lv_obj_set_style_text_color(ui_Screen3_Label_Label10, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Screen3_Label_Label10, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui_Screen3_Label_Label10, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Screen3_Label_Label10, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Screen3_Button_Button8 = lv_button_create(ui_Screen3);
+    lv_obj_set_width(ui_Screen3_Button_Button8, 100);
+    lv_obj_set_height(ui_Screen3_Button_Button8, 50);
+    lv_obj_set_x(ui_Screen3_Button_Button8, 345);
+    lv_obj_set_y(ui_Screen3_Button_Button8, -90);
+    lv_obj_set_align(ui_Screen3_Button_Button8, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Screen3_Button_Button8, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_Screen3_Button_Button8, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Screen3_Label_Label11 = lv_label_create(ui_Screen3_Button_Button8);
+    lv_obj_set_width(ui_Screen3_Label_Label11, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen3_Label_Label11, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_Screen3_Label_Label11, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Screen3_Label_Label11, "取消");
+    lv_obj_set_style_text_color(ui_Screen3_Label_Label11, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Screen3_Label_Label11, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui_Screen3_Label_Label11, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Screen3_Label_Label11, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Screen3_Label_Label8 = lv_label_create(ui_Screen3);
+    lv_obj_set_width(ui_Screen3_Label_Label8, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen3_Label_Label8, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Screen3_Label_Label8, -277);
+    lv_obj_set_y(ui_Screen3_Label_Label8, -201);
+    lv_obj_set_align(ui_Screen3_Label_Label8, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Screen3_Label_Label8, "原密码：");
+    lv_obj_set_style_text_font(ui_Screen3_Label_Label8, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Screen3_Label_Label13 = lv_label_create(ui_Screen3);
+    lv_obj_set_width(ui_Screen3_Label_Label13, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen3_Label_Label13, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Screen3_Label_Label13, -274);
+    lv_obj_set_y(ui_Screen3_Label_Label13, -87);
+    lv_obj_set_align(ui_Screen3_Label_Label13, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Screen3_Label_Label13, "重复新密码：");
+    lv_obj_set_style_text_font(ui_Screen3_Label_Label13, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Screen3_Label_Label14 = lv_label_create(ui_Screen3);
+    lv_obj_set_width(ui_Screen3_Label_Label14, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen3_Label_Label14, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Screen3_Label_Label14, -276);
+    lv_obj_set_y(ui_Screen3_Label_Label14, -144);
+    lv_obj_set_align(ui_Screen3_Label_Label14, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Screen3_Label_Label14, "新密码：");
+    lv_obj_set_style_text_font(ui_Screen3_Label_Label14, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_keyboard_set_textarea(ui_Screen3_Keyboard_Keyboard3, ui_Screen1_Textarea_TextArea1);
+    lv_obj_add_event_cb(ui_Screen3_Textarea_TextAreas3t1, ui_event_Screen3_Textarea_TextAreas3t1, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Screen3_Textarea_TextAreas3t2, ui_event_Screen3_Textarea_TextAreas3t2, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Screen3_Textarea_TextAreas3t3, ui_event_Screen3_Textarea_TextAreas3t3, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Screen3_Button_Button6, ui_event_Screen3_Button_Button6, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Screen3_Button_Button7, ui_event_Screen3_Button_Button7, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Screen3_Button_Button8, ui_event_Screen3_Button_Button8, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen3, ui_event_Screen3, LV_EVENT_ALL, NULL);
 
 }

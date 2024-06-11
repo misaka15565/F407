@@ -39,6 +39,9 @@ lv_obj_t * ui_Screen2_Button_Button2;
 lv_obj_t * ui_Screen2_Label_Label4;
 void ui_event_Screen2_Switch_Switch1(lv_event_t * e);
 lv_obj_t * ui_Screen2_Switch_Switch1;
+void ui_event_Screen2_Button_Button3(lv_event_t * e);
+lv_obj_t * ui_Screen2_Button_Button3;
+lv_obj_t * ui_Screen2_Label_Label7;
 
 
 // SCREEN: ui_ExplorerScreen
@@ -51,6 +54,25 @@ lv_obj_t * ui_ExplorerScreen;
 void ui_Screen3_screen_init(void);
 void ui_event_Screen3(lv_event_t * e);
 lv_obj_t * ui_Screen3;
+lv_obj_t * ui_Screen3_Keyboard_Keyboard3;
+void ui_event_Screen3_Textarea_TextAreas3t1(lv_event_t * e);
+lv_obj_t * ui_Screen3_Textarea_TextAreas3t1;
+void ui_event_Screen3_Textarea_TextAreas3t2(lv_event_t * e);
+lv_obj_t * ui_Screen3_Textarea_TextAreas3t2;
+void ui_event_Screen3_Textarea_TextAreas3t3(lv_event_t * e);
+lv_obj_t * ui_Screen3_Textarea_TextAreas3t3;
+void ui_event_Screen3_Button_Button6(lv_event_t * e);
+lv_obj_t * ui_Screen3_Button_Button6;
+lv_obj_t * ui_Screen3_Label_Label9;
+void ui_event_Screen3_Button_Button7(lv_event_t * e);
+lv_obj_t * ui_Screen3_Button_Button7;
+lv_obj_t * ui_Screen3_Label_Label10;
+void ui_event_Screen3_Button_Button8(lv_event_t * e);
+lv_obj_t * ui_Screen3_Button_Button8;
+lv_obj_t * ui_Screen3_Label_Label11;
+lv_obj_t * ui_Screen3_Label_Label8;
+lv_obj_t * ui_Screen3_Label_Label13;
+lv_obj_t * ui_Screen3_Label_Label14;
 lv_obj_t * ui_Startevents____initial_actions0;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
@@ -166,6 +188,14 @@ void ui_event_Screen2_Switch_Switch1(lv_event_t * e)
         Switch_mp3_changed(e);
     }
 }
+void ui_event_Screen2_Button_Button3(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_Screen3, LV_SCR_LOAD_ANIM_MOVE_TOP, 500, 0, &ui_Screen3_screen_init);
+    }
+}
 void ui_event_ExplorerScreen(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -186,6 +216,54 @@ void ui_event_Screen3(lv_event_t * e)
     }
     if(event_code == LV_EVENT_SCREEN_UNLOAD_START) {
         screen3unloadedfunc(e);
+    }
+}
+void ui_event_Screen3_Textarea_TextAreas3t1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_keyboard_set_target(ui_Screen3_Keyboard_Keyboard3,  ui_Screen3_Textarea_TextAreas3t1);
+    }
+}
+void ui_event_Screen3_Textarea_TextAreas3t2(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_keyboard_set_target(ui_Screen3_Keyboard_Keyboard3,  ui_Screen3_Textarea_TextAreas3t2);
+    }
+}
+void ui_event_Screen3_Textarea_TextAreas3t3(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_keyboard_set_target(ui_Screen3_Keyboard_Keyboard3,  ui_Screen3_Textarea_TextAreas3t3);
+    }
+}
+void ui_event_Screen3_Button_Button6(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        changepasswordvisible(e);
+    }
+}
+void ui_event_Screen3_Button_Button7(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        passwordchange(e);
+    }
+}
+void ui_event_Screen3_Button_Button8(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0, &ui_Screen2_screen_init);
     }
 }
 

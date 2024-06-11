@@ -43,6 +43,9 @@ extern lv_obj_t * ui_Screen2_Button_Button2;
 extern lv_obj_t * ui_Screen2_Label_Label4;
 void ui_event_Screen2_Switch_Switch1(lv_event_t * e);
 extern lv_obj_t * ui_Screen2_Switch_Switch1;
+void ui_event_Screen2_Button_Button3(lv_event_t * e);
+extern lv_obj_t * ui_Screen2_Button_Button3;
+extern lv_obj_t * ui_Screen2_Label_Label7;
 // SCREEN: ui_ExplorerScreen
 void ui_ExplorerScreen_screen_init(void);
 void ui_event_ExplorerScreen(lv_event_t * e);
@@ -51,6 +54,25 @@ extern lv_obj_t * ui_ExplorerScreen;
 void ui_Screen3_screen_init(void);
 void ui_event_Screen3(lv_event_t * e);
 extern lv_obj_t * ui_Screen3;
+extern lv_obj_t * ui_Screen3_Keyboard_Keyboard3;
+void ui_event_Screen3_Textarea_TextAreas3t1(lv_event_t * e);
+extern lv_obj_t * ui_Screen3_Textarea_TextAreas3t1;
+void ui_event_Screen3_Textarea_TextAreas3t2(lv_event_t * e);
+extern lv_obj_t * ui_Screen3_Textarea_TextAreas3t2;
+void ui_event_Screen3_Textarea_TextAreas3t3(lv_event_t * e);
+extern lv_obj_t * ui_Screen3_Textarea_TextAreas3t3;
+void ui_event_Screen3_Button_Button6(lv_event_t * e);
+extern lv_obj_t * ui_Screen3_Button_Button6;
+extern lv_obj_t * ui_Screen3_Label_Label9;
+void ui_event_Screen3_Button_Button7(lv_event_t * e);
+extern lv_obj_t * ui_Screen3_Button_Button7;
+extern lv_obj_t * ui_Screen3_Label_Label10;
+void ui_event_Screen3_Button_Button8(lv_event_t * e);
+extern lv_obj_t * ui_Screen3_Button_Button8;
+extern lv_obj_t * ui_Screen3_Label_Label11;
+extern lv_obj_t * ui_Screen3_Label_Label8;
+extern lv_obj_t * ui_Screen3_Label_Label13;
+extern lv_obj_t * ui_Screen3_Label_Label14;
 extern lv_obj_t * ui_Startevents____initial_actions0;
 
 

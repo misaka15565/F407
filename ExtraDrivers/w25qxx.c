@@ -315,7 +315,7 @@ void W25QXX_WAKEUP(void) {
     delay_us(3); //  等待TRES1
 }
 
-static const char magic_check_str[] = "114514";
+static const char magic_check_str[] = "abcdef";
 static const char default_passwd[] = "root";
 void W25Qxx_readPassword() {
     W25QXX_Read((unsigned char *)W25Qxx_password, 0, 256);
@@ -323,17 +323,17 @@ void W25Qxx_readPassword() {
     if (strncmp(W25Qxx_password, magic_check_str, 6) != 0) {
         // 初始化密码
         memset(W25Qxx_password, 0, 256);
-        strncpy(W25Qxx_password, magic_check_str, 6);
-        strncpy(W25Qxx_password + 6, default_passwd, 250);
+        strcpy(W25Qxx_password, magic_check_str);
+        strcpy(W25Qxx_password + 6, default_passwd);
         W25QXX_Write((unsigned char *)W25Qxx_password, 0, 256);
     }
 }
 
-void W25Qxx_writePassword(char *password) {
+void W25Qxx_writePassword(const char *password) {
     uint16_t len = strlen(password);
     if (len > 100) return;
-    memset(password, 0, 256);
-    strncpy(password, magic_check_str, 6);
-    strncpy(password + 6, password, 250);
-    W25QXX_Write((unsigned char *)password, 0, 256);
+    memset(W25Qxx_password, 0, 256);
+    strcpy(W25Qxx_password, magic_check_str);
+    strcpy(W25Qxx_password + 6, password);
+    W25QXX_Write((unsigned char *)W25Qxx_password, 0, 256);
 }

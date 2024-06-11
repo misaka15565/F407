@@ -77,8 +77,6 @@ void ui_Screen2_screen_init(void)
     ui_Screen2_Label_Label4 = lv_label_create(ui_Screen2_Button_Button2);
     lv_obj_set_width(ui_Screen2_Label_Label4, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Screen2_Label_Label4, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Screen2_Label_Label4, 0);
-    lv_obj_set_y(ui_Screen2_Label_Label4, 1);
     lv_obj_set_align(ui_Screen2_Label_Label4, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Screen2_Label_Label4, "文件");
     lv_obj_set_style_text_font(ui_Screen2_Label_Label4, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -91,10 +89,27 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_align(ui_Screen2_Switch_Switch1, LV_ALIGN_CENTER);
 
 
+    ui_Screen2_Button_Button3 = lv_button_create(ui_Screen2);
+    lv_obj_set_width(ui_Screen2_Button_Button3, 184);
+    lv_obj_set_height(ui_Screen2_Button_Button3, 50);
+    lv_obj_set_x(ui_Screen2_Button_Button3, 300);
+    lv_obj_set_y(ui_Screen2_Button_Button3, -27);
+    lv_obj_set_align(ui_Screen2_Button_Button3, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Screen2_Button_Button3, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_Screen2_Button_Button3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Screen2_Label_Label7 = lv_label_create(ui_Screen2_Button_Button3);
+    lv_obj_set_width(ui_Screen2_Label_Label7, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen2_Label_Label7, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_Screen2_Label_Label7, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Screen2_Label_Label7, "修改密码");
+    lv_obj_set_style_text_font(ui_Screen2_Label_Label7, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+
     lv_obj_add_event_cb(ui_Screen2_Button_Button1, ui_event_Screen2_Button_Button1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Slider_Slider1, ui_event_Screen2_Slider_Slider1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Button_Button2, ui_event_Screen2_Button_Button2, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Switch_Switch1, ui_event_Screen2_Switch_Switch1, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Screen2_Button_Button3, ui_event_Screen2_Button_Button3, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2, ui_event_Screen2, LV_EVENT_ALL, NULL);
 
 }

@@ -19,6 +19,8 @@ void ExplorerScreenLoaded(lv_event_t * e);
 void ExplorerScreenUnLoaded(lv_event_t * e);
 void screen3loadedfunc(lv_event_t * e);
 void screen3unloadedfunc(lv_event_t * e);
+void changepasswordvisible(lv_event_t * e);
+void passwordchange(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/
