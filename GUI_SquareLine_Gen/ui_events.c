@@ -281,7 +281,7 @@ void button5_clicked_proc(lv_event_t *e) {
     static lv_obj_t *qr = NULL;
     if (qr == NULL) {
         qr = lv_qrcode_create(ui_Screen2);
-        lv_obj_set_pos(qr, 450, 0);
+        lv_obj_set_pos(qr, 500, 0);
         const char data[] = "https://www.11ban.top/index.php";
         lv_qrcode_update(qr, data, sizeof(data));
         //lv_obj_set_style_transform_scale(qr, 3, 0);
