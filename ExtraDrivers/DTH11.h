@@ -13,6 +13,6 @@ void DTH11_IN(void);
 void DTH11_Delay(unsigned int j);
 void Delay_10us(void);
 unsigned char DTH11_ReadByte(void);
-void DTH11_ReadData(unsigned char *temp, unsigned char *humi);
-
+void DTH11_ReadData();
+extern uint8_t DTH11_temp,DTH11_humi;
 #endif

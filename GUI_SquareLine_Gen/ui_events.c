@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <sys/_intsup.h>
 #include "GNSS.h"
-
+#include "DTH11.h"
 void button1_clicked(lv_event_t *e) {
     // Your code here
     HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);

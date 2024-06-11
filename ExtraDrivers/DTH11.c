@@ -3,7 +3,8 @@
 #include "main.h"
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_gpio.h"
-
+#include <stdint.h>
+uint8_t DTH11_temp,DTH11_humi;
 /**********************************************************************************************************
 函数名称：配置DHT11引脚为输出
 输入参数：无
@@ -119,13 +120,8 @@ unsigned char DTH11_ReadByte(void)
     return value;
 }
 
-/**********************************************************************************************************
-函数名称：10us延时函数
-输入参数：时间
-输出参数：无
-函数返回：无
-**********************************************************************************************************/
-void DTH11_ReadData(unsigned char *temp, unsigned char *humi)
+
+void DTH11_ReadData()
 {
     unsigned char buffer[5] = {0};
     unsigned char checksum = 0;
@@ -172,8 +168,8 @@ void DTH11_ReadData(unsigned char *temp, unsigned char *humi)
         
         if (checksum == buffer[4])
         {
-            *humi = buffer[0];
-            *temp = buffer[2];
+            DTH11_humi = buffer[0];
+            DTH11_temp = buffer[2];
         }
     }
 }
