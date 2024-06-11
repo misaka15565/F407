@@ -43,9 +43,8 @@ void ui_Screen1_screen_init(void)
     ui_Screen1_Label_Label3 = lv_label_create(ui_Screen1);
     lv_obj_set_width(ui_Screen1_Label_Label3, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Screen1_Label_Label3, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Screen1_Label_Label3, -257);
-    lv_obj_set_y(ui_Screen1_Label_Label3, -161);
-    lv_obj_set_align(ui_Screen1_Label_Label3, LV_ALIGN_CENTER);
+    lv_obj_set_x(ui_Screen1_Label_Label3, 34);
+    lv_obj_set_y(ui_Screen1_Label_Label3, 52);
     lv_label_set_text(ui_Screen1_Label_Label3, "请输入密码：");
     lv_obj_set_style_text_color(ui_Screen1_Label_Label3, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Screen1_Label_Label3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
