@@ -46,6 +46,7 @@ void ui_event_Screen2_Slider_Slider3(lv_event_t * e);
 lv_obj_t * ui_Screen2_Slider_Slider3;
 lv_obj_t * ui_Screen2_Label_Label15;
 lv_obj_t * ui_Screen2_Label_Label16;
+lv_obj_t * ui_Screen2_Label_Label17;
 
 
 // SCREEN: ui_ExplorerScreen

@@ -141,6 +141,16 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_style_text_opa(ui_Screen2_Label_Label16, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Screen2_Label_Label16, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    ui_Screen2_Label_Label17 = lv_label_create(ui_Screen2);
+    lv_obj_set_width(ui_Screen2_Label_Label17, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen2_Label_Label17, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Screen2_Label_Label17, 502);
+    lv_obj_set_y(ui_Screen2_Label_Label17, 123);
+    lv_label_set_text(ui_Screen2_Label_Label17, "MP3开关:");
+    lv_obj_set_style_text_color(ui_Screen2_Label_Label17, lv_color_hex(0xF30000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Screen2_Label_Label17, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Screen2_Label_Label17, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+
     lv_obj_add_event_cb(ui_Screen2_Button_Button1, ui_event_Screen2_Button_Button1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Slider_Slider1, ui_event_Screen2_Slider_Slider1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Button_Button2, ui_event_Screen2_Button_Button2, LV_EVENT_ALL, NULL);
