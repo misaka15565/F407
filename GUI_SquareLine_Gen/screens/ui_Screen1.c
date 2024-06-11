@@ -17,6 +17,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_height(ui_Screen1_Textarea_TextArea1, LV_SIZE_CONTENT);    /// 140
     lv_obj_set_x(ui_Screen1_Textarea_TextArea1, 27);
     lv_obj_set_y(ui_Screen1_Textarea_TextArea1, 116);
+    lv_textarea_set_max_length(ui_Screen1_Textarea_TextArea1, 100);
     lv_textarea_set_placeholder_text(ui_Screen1_Textarea_TextArea1, "密码");
     lv_textarea_set_one_line(ui_Screen1_Textarea_TextArea1, true);
     lv_textarea_set_password_mode(ui_Screen1_Textarea_TextArea1, true);
