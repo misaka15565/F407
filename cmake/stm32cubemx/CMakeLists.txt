@@ -61,6 +61,7 @@ target_sources(stm32cubemx INTERFACE
     ../../Core/Src/stm32f4xx_it.c
     ../../Core/Src/stm32f4xx_hal_msp.c
     ../../FATFS/Target/usbh_diskio.c
+    ../../FATFS/Target/user_diskio.c
     ../../FATFS/App/fatfs.c
     ../../LWIP/Target/ethernetif.c
     ../../LWIP/App/lwip.c

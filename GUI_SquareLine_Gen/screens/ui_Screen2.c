@@ -33,11 +33,11 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_width(ui_Screen2_Label_Label1, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Screen2_Label_Label1, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_Screen2_Label_Label1, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Screen2_Label_Label1, "LOCK\nDEVICE");
+    lv_label_set_text(ui_Screen2_Label_Label1, "锁定");
     lv_obj_set_style_text_color(ui_Screen2_Label_Label1, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Screen2_Label_Label1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_Screen2_Label_Label1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui_Screen2_Label_Label1, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Screen2_Label_Label1, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Screen2_Slider_Slider1 = lv_slider_create(ui_Screen2);
     lv_slider_set_value(ui_Screen2_Slider_Slider1, 0, LV_ANIM_OFF);
@@ -80,7 +80,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_x(ui_Screen2_Label_Label4, 0);
     lv_obj_set_y(ui_Screen2_Label_Label4, 1);
     lv_obj_set_align(ui_Screen2_Label_Label4, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Screen2_Label_Label4, "FILE");
+    lv_label_set_text(ui_Screen2_Label_Label4, "文件");
     lv_obj_set_style_text_font(ui_Screen2_Label_Label4, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Screen2_Switch_Switch1 = lv_switch_create(ui_Screen2);

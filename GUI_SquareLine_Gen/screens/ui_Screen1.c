@@ -17,7 +17,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_height(ui_Screen1_Textarea_TextArea1, LV_SIZE_CONTENT);    /// 140
     lv_obj_set_x(ui_Screen1_Textarea_TextArea1, 27);
     lv_obj_set_y(ui_Screen1_Textarea_TextArea1, 116);
-    lv_textarea_set_placeholder_text(ui_Screen1_Textarea_TextArea1, "请输入密码：");
+    lv_textarea_set_placeholder_text(ui_Screen1_Textarea_TextArea1, "密码");
     lv_textarea_set_one_line(ui_Screen1_Textarea_TextArea1, true);
     lv_textarea_set_password_mode(ui_Screen1_Textarea_TextArea1, true);
     lv_obj_set_style_text_font(ui_Screen1_Textarea_TextArea1, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -41,10 +41,10 @@ void ui_Screen1_screen_init(void)
     ui_Screen1_Label_Label3 = lv_label_create(ui_Screen1);
     lv_obj_set_width(ui_Screen1_Label_Label3, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Screen1_Label_Label3, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Screen1_Label_Label3, -76);
+    lv_obj_set_x(ui_Screen1_Label_Label3, -257);
     lv_obj_set_y(ui_Screen1_Label_Label3, -161);
     lv_obj_set_align(ui_Screen1_Label_Label3, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Screen1_Label_Label3, "Please Input The Password");
+    lv_label_set_text(ui_Screen1_Label_Label3, "请输入密码：");
     lv_obj_set_style_text_color(ui_Screen1_Label_Label3, lv_color_hex(0xFF0000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Screen1_Label_Label3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Screen1_Label_Label3, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -64,7 +64,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_width(ui_Screen1_Label_Label5, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Screen1_Label_Label5, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_Screen1_Label_Label5, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Screen1_Label_Label5, "Submit");
+    lv_label_set_text(ui_Screen1_Label_Label5, "提交");
     lv_obj_set_style_text_color(ui_Screen1_Label_Label5, lv_color_hex(0x2000FF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Screen1_Label_Label5, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Screen1_Label_Label5, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);

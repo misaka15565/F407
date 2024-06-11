@@ -63,8 +63,8 @@ static void timelabel_update_timer(lv_timer_t *timer) {
 
     // GNSS
     sprintf(tmp, "GNSS:\n\
-longitude: %6.2f%c\n\
-latitude:%6.2f%c\n\
+经度: %6.2f%c\n\
+纬度:%6.2f%c\n\
     ",
             longitude, longitude_dir, latitude, latitude_dir);
     lv_label_set_text(ui_Screen2_Label_Label2, tmp);
@@ -171,12 +171,14 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
 void ExplorerScreenLoaded(lv_event_t *e) {
     // Your code here
     sudoer_ui_ExplorerWindow = lv_win_create(ui_ExplorerScreen);
-    lv_win_add_title(sudoer_ui_ExplorerWindow, "Explorer");
-    lv_obj_set_style_text_font(sudoer_ui_ExplorerWindow, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_win_add_title(sudoer_ui_ExplorerWindow, "文件浏览器");
+    lv_obj_set_style_text_font(sudoer_ui_ExplorerWindow, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(sudoer_ui_ExplorerWindow, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
     sudoer_ui_ExplorerWindow_CloseButton = lv_win_add_button(sudoer_ui_ExplorerWindow, LV_SYMBOL_CLOSE, 50);
+    lv_obj_set_style_text_font(sudoer_ui_ExplorerWindow_CloseButton, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_add_event_cb(sudoer_ui_ExplorerWindow_CloseButton, ExplorerWindowClose, LV_EVENT_CLICKED, NULL);
     sudoer_ui_Explorer = lv_file_explorer_create(sudoer_ui_ExplorerWindow);
+    lv_obj_set_style_text_font(sudoer_ui_Explorer, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_file_explorer_set_sort(sudoer_ui_Explorer, LV_EXPLORER_SORT_NONE);
     lv_file_explorer_open_dir(sudoer_ui_Explorer, "0:/");
     lv_obj_set_size(sudoer_ui_Explorer, 800, 400);
