@@ -163,6 +163,7 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
                 lv_textarea_set_cursor_pos(textarea, 0);
                 lv_textarea_set_cursor_click_pos(textarea, true);
                 lv_free(buf);
+                f_close(&file);
             }
         }
     }

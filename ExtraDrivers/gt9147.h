@@ -72,7 +72,7 @@ typedef struct
 
 extern _m_tp_dev tp_dev;	 	//触屏控制器在touch.c里面定义
 void lvgl_input_torch(lv_indev_t *indev, lv_indev_data_t *data) ;
-
+void lvgl_input_key_cb(lv_indev_t *indev, lv_indev_data_t *data);
 #endif
 
 

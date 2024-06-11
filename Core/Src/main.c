@@ -27,6 +27,7 @@
 #include "mqtt.h"
 #include "rng.h"
 #include "rtc.h"
+#include "src/indev/lv_indev.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_host.h"
@@ -153,8 +154,8 @@ int main(void) {
     MX_USART6_UART_Init();
     MX_RNG_Init();
     /* USER CODE BEGIN 2 */
-    //DTH11_IN();
-    //DTH11_ReadData();
+    // DTH11_IN();
+    // DTH11_ReadData();
     W25QXX_Init();
     printf("%04x\n", W25QXX_ReadID());
     LCD_Init();
@@ -199,6 +200,10 @@ int main(void) {
     lv_indev_t *indev_drv = lv_indev_create();
     lv_indev_set_type(indev_drv, LV_INDEV_TYPE_POINTER);
     lv_indev_set_read_cb(indev_drv, lvgl_input_torch);
+    // 创建按键输入设备
+    lv_indev_t *key_indev = lv_indev_create();
+    lv_indev_set_type(key_indev, LV_INDEV_TYPE_ENCODER);
+    lv_indev_set_read_cb(key_indev, lvgl_input_key_cb);
     {
         // 读取速度模式
         uint32_t ethres;

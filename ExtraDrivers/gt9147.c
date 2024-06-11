@@ -2,7 +2,9 @@
 #include "ct_iic.h"
 #include "lvgl.h"
 #include "main.h"
+#include "src/core/lv_group.h"
 #include "src/indev/lv_indev.h"
+#include "src/misc/lv_types.h"
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_gpio.h"
 #include "usart.h"
@@ -394,8 +396,7 @@ u8 GT9147_Scan(u8 mode) {
                 tp_dev.x[0] = tp_dev.x[1];
                 tp_dev.y[0] = tp_dev.y[1];
 
-            }
-            else // 非法数据,则忽略此次数据(还原原来的)
+            } else // 非法数据,则忽略此次数据(还原原来的)
             {
                 tp_dev.x[0] = tp_dev.x[4];
                 tp_dev.y[0] = tp_dev.y[4];
@@ -433,6 +434,32 @@ void lvgl_input_torch(lv_indev_t *indev, lv_indev_data_t *data) {
         data_readed = true;
     }
 }
+static bool key1_pressed = false;
+static bool key2_pressed = false;
+static bool key3_pressed = false;
+static bool key_readed = true;
+void lvgl_input_key_cb(lv_indev_t *indev, lv_indev_data_t *data) {
+    if (!key_readed) {
+        key_readed = true;
+        data->state = LV_INDEV_STATE_PRESSED;
+        if (key1_pressed) {
+            data->enc_diff = -1;
+        } else if (key3_pressed) {
+            data->enc_diff = 1;
+        }
+
+        if(key2_pressed){
+            data->state = LV_INDEV_STATE_PRESSED;
+        }else{
+            data->state = LV_INDEV_STATE_RELEASED;
+        }
+
+        key1_pressed = false;
+        key2_pressed = false;
+        key3_pressed = false;
+    }
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if (htim->Instance != TIM3)
         return;
@@ -448,5 +475,30 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if (count == 10) {
         HAL_GPIO_TogglePin(LED8_GPIO_Port, LED8_Pin);
         count = 0;
+    }
+    // 检查key123是否按下
+    if (HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin) == GPIO_PIN_RESET) {
+        if (!key1_pressed) {
+            key1_pressed = true;
+            key_readed = false;
+        }
+    } else {
+        key1_pressed = false;
+    }
+    if (HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin) == GPIO_PIN_RESET) {
+        if (!key2_pressed) {
+            key2_pressed = true;
+            key_readed = false;
+        }
+    } else {
+        key2_pressed = false;
+    }
+    if (HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin) == GPIO_PIN_RESET) {
+        if (!key3_pressed) {
+            key3_pressed = true;
+            key_readed = false;
+        }
+    } else {
+        key3_pressed = false;
     }
 }
