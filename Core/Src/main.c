@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "DTH11.h"
 #include "adc.h"
 #include "dac.h"
 #include "dma.h"
@@ -153,6 +154,7 @@ int main(void)
   MX_USART6_UART_Init();
   MX_RNG_Init();
   /* USER CODE BEGIN 2 */
+  DTH11_IN();
     W25QXX_Init();
     printf("%04x\n",W25QXX_ReadID());
     LCD_Init();

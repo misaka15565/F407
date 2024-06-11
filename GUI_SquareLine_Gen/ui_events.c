@@ -5,6 +5,7 @@
 
 #include "MP3IOT.h"
 #include "examples/others/file_explorer/lv_example_file_explorer.h"
+#include "ff.h"
 #include "lvgl.h"
 #include "rtc.h"
 #include "src/core/lv_obj.h"
@@ -17,12 +18,15 @@
 #include "src/misc/lv_event.h"
 #include "src/misc/lv_types.h"
 #include "src/others/file_explorer/lv_file_explorer.h"
+#include "src/widgets/textarea/lv_textarea.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_rtc.h"
 #include "ui.h"
 #include "main.h"
 #include "ui_helpers.h"
+#include <stdbool.h>
 #include <stdio.h>
+#include <sys/_intsup.h>
 #include "GNSS.h"
 
 void button1_clicked(lv_event_t *e) {
@@ -92,9 +96,9 @@ static void ExplorerWindowClose(lv_event_t *e) {
 }
 static lv_obj_t *sudoer_ui_image_window;
 static lv_obj_t *sudoer_ui_image;
-static void ImageWindowClose(lv_event_t* e){
+static void ImageWindowClose(lv_event_t *e) {
     lv_obj_delete(sudoer_ui_image_window);
-    sudoer_ui_image_window=NULL;
+    sudoer_ui_image_window = NULL;
 }
 static void Explorer_file_selected_handler(lv_event_t *e) {
     lv_event_code_t code = lv_event_get_code(e);
@@ -102,7 +106,7 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
     if (code == LV_EVENT_VALUE_CHANGED) {
         const char *cur_path = lv_file_explorer_get_current_path(obj);
         const char *sel_fn = lv_file_explorer_get_selected_file_name(obj);
-        // 如果以jpg结尾
+        // 如果以jpg或bmp结尾
         uint16_t len = lv_strlen(sel_fn);
         if (len > 4 && (lv_strcmp(sel_fn + len - 4, ".jpg") == 0 || lv_strcmp(sel_fn + len - 4, ".bmp") == 0)) {
             char path[256];
@@ -111,13 +115,55 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
             printf("open file %s\n", path);
 
             sudoer_ui_image_window = lv_win_create(ui_ExplorerScreen);
-            lv_obj_set_pos(sudoer_ui_ExplorerWindow,0,0);
-            lv_win_add_title(sudoer_ui_image_window, "Image");
-            lv_obj_t* button=lv_win_add_button(sudoer_ui_image_window, LV_SYMBOL_CLOSE, 50);
-            lv_obj_add_event_cb(button,ImageWindowClose,LV_EVENT_CLICKED,NULL);
+            lv_obj_set_pos(sudoer_ui_ExplorerWindow, 0, 0);
+            char title[256];
+            sprintf(title, "图片读取:%s", sel_fn);
+            lv_win_add_title(sudoer_ui_image_window, title);
+            lv_obj_t *button = lv_win_add_button(sudoer_ui_image_window, LV_SYMBOL_CLOSE, 50);
+            lv_obj_add_event_cb(button, ImageWindowClose, LV_EVENT_CLICKED, NULL);
             lv_obj_set_style_text_font(button, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
             sudoer_ui_image = lv_image_create(sudoer_ui_image_window);
             lv_image_set_src(sudoer_ui_image, path);
+        }
+        // 如果以txt结尾
+        else if (len > 4 && lv_strcmp(sel_fn + len - 4, ".txt") == 0) {
+            char path[256];
+            lv_strcpy(path, cur_path);
+            lv_strcpy(path + lv_strlen(cur_path) - 1, sel_fn);
+            printf("open file %s\n", path);
+            FIL file;
+            FRESULT res = f_open(&file, path, FA_READ);
+            if (res == FR_OK) {
+                const int max_file_len = 10240;
+                uint8_t *buf = lv_malloc(max_file_len);
+                // 先判断文件长度
+                f_lseek(&file, 0);
+                UINT filesize = f_size(&file);
+                if (filesize > 10240) {
+                    f_lseek(&file, filesize - max_file_len);
+                }
+                UINT br;
+                f_read(&file, buf, max_file_len, &br);
+                buf[br] = 0;
+                sudoer_ui_image_window = lv_win_create(ui_ExplorerScreen);
+                char title[256];
+                sprintf(title, "txt文件读取:%s", sel_fn);
+                lv_win_add_title(sudoer_ui_image_window, title);
+                lv_obj_set_pos(sudoer_ui_image_window, 0, 0);
+                lv_obj_t *button = lv_win_add_button(sudoer_ui_image_window, LV_SYMBOL_CLOSE, 50);
+                lv_obj_add_event_cb(button, ImageWindowClose, LV_EVENT_CLICKED, NULL);
+                lv_obj_set_style_text_font(button, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_obj_set_style_text_font(sudoer_ui_image_window, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
+                // 添加文本框
+                lv_obj_t *textarea = lv_textarea_create(sudoer_ui_image_window);
+                lv_textarea_set_text(textarea, (const char *)buf);
+                lv_obj_set_size(textarea, 800, 400);
+                lv_obj_set_style_text_font(textarea, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
+                // 将光标设置回开头
+                lv_textarea_set_cursor_pos(textarea, 0);
+                lv_textarea_set_cursor_click_pos(textarea, true);
+                lv_free(buf);
+            }
         }
     }
 }
@@ -141,22 +187,19 @@ void ExplorerScreenUnLoaded(lv_event_t *e) {
     lv_obj_delete(sudoer_ui_ExplorerWindow);
 }
 
-void Switch_mp3_changed(lv_event_t * e)
-{
-	// Your code here
-    if(lv_obj_has_state(ui_Screen2_Switch_Switch1,LV_STATE_CHECKED)){
+void Switch_mp3_changed(lv_event_t *e) {
+    // Your code here
+    if (lv_obj_has_state(ui_Screen2_Switch_Switch1, LV_STATE_CHECKED)) {
         mp3_play();
-    }else{
+    } else {
         mp3_stop();
     }
 }
 
-void screen3loadedfunc(lv_event_t * e)
-{
-	// Your code here
+void screen3loadedfunc(lv_event_t *e) {
+    // Your code here
 }
 
-void screen3unloadedfunc(lv_event_t * e)
-{
-	// Your code here
+void screen3unloadedfunc(lv_event_t *e) {
+    // Your code here
 }
