@@ -20,7 +20,7 @@
 #define W25Q128 0XEF17
 
 extern unsigned short W25QXX_TYPE; // 定义W25QXX芯片型号
-
+extern char W25Qxx_password[256];         // 前六个字符是114514，从第七个开始是密码
 //////////////////////////////////////////////////////////////////////////////////
 // 指令表
 #define W25X_WriteEnable 0x06
@@ -55,4 +55,6 @@ void W25QXX_Erase_Sector(unsigned int Dst_Addr);                                
 void W25QXX_Wait_Busy(void);                                                                      // 等待空闲
 void W25QXX_PowerDown(void);                                                                      // 进入掉电模式
 void W25QXX_WAKEUP(void);                                                                         // 唤醒
+void W25Qxx_readPassword();
+void W25Qxx_writePassword(char *passwd);
 #endif

@@ -1,8 +1,10 @@
 #include "w25qxx.h"
 #include "spi.h"
+#include <string.h>
 
 unsigned short W25QXX_TYPE = W25Q16; //  默认是W25Q16
 typedef unsigned char u8;
+char W25Qxx_password[256]; // 前六个字符是114514，从第七个开始是密码
 // 4Kbytes为一个Sector
 // 16个扇区为1个Block
 // W25Q128
@@ -311,4 +313,27 @@ void W25QXX_WAKEUP(void) {
 
     W25QXX_CS_H;
     delay_us(3); //  等待TRES1
+}
+
+static const char magic_check_str[] = "114514";
+static const char default_passwd[] = "root";
+void W25Qxx_readPassword() {
+    W25QXX_Read((unsigned char *)W25Qxx_password, 0, 256);
+    // 如果开头不是magic
+    if (strncmp(W25Qxx_password, magic_check_str, 6) != 0) {
+        // 初始化密码
+        memset(W25Qxx_password, 0, 256);
+        strncpy(W25Qxx_password, magic_check_str, 6);
+        strncpy(W25Qxx_password + 6, default_passwd, 250);
+        W25QXX_Write((unsigned char *)W25Qxx_password, 0, 256);
+    }
+}
+
+void W25Qxx_writePassword(char *password) {
+    uint16_t len = strlen(password);
+    if (len > 100) return;
+    memset(password, 0, 256);
+    strncpy(password, magic_check_str, 6);
+    strncpy(password + 6, password, 250);
+    W25QXX_Write((unsigned char *)password, 0, 256);
 }

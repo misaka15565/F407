@@ -156,6 +156,7 @@ int main(void)
     // DTH11_IN();
     // DTH11_ReadData();
     W25QXX_Init();
+    W25Qxx_readPassword();
     printf("%04x\n", W25QXX_ReadID());
     LCD_Init();
     LCD_Display_Dir(1);
