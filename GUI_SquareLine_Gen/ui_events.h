@@ -15,6 +15,7 @@ void Timer_Create(lv_event_t * e);
 void Timer_Delete(lv_event_t * e);
 void Slider1_proc(lv_event_t * e);
 void Switch_mp3_changed(lv_event_t * e);
+void Slider3_proc(lv_event_t * e);
 void ExplorerScreenLoaded(lv_event_t * e);
 void ExplorerScreenUnLoaded(lv_event_t * e);
 void screen3loadedfunc(lv_event_t * e);

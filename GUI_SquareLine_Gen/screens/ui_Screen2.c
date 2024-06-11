@@ -46,7 +46,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_width(ui_Screen2_Slider_Slider1, 700);
     lv_obj_set_height(ui_Screen2_Slider_Slider1, 50);
     lv_obj_set_x(ui_Screen2_Slider_Slider1, 0);
-    lv_obj_set_y(ui_Screen2_Slider_Slider1, 111);
+    lv_obj_set_y(ui_Screen2_Slider_Slider1, 200);
     lv_obj_set_align(ui_Screen2_Slider_Slider1, LV_ALIGN_CENTER);
 
 
@@ -105,11 +105,48 @@ void ui_Screen2_screen_init(void)
     lv_label_set_text(ui_Screen2_Label_Label7, "修改密码");
     lv_obj_set_style_text_font(ui_Screen2_Label_Label7, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    ui_Screen2_Slider_Slider3 = lv_slider_create(ui_Screen2);
+    lv_slider_set_range(ui_Screen2_Slider_Slider3, 0, 30);
+    lv_slider_set_value(ui_Screen2_Slider_Slider3, 0, LV_ANIM_OFF);
+    if(lv_slider_get_mode(ui_Screen2_Slider_Slider3) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(
+            ui_Screen2_Slider_Slider3, 0, LV_ANIM_OFF);
+    lv_obj_set_width(ui_Screen2_Slider_Slider3, 700);
+    lv_obj_set_height(ui_Screen2_Slider_Slider3, 50);
+    lv_obj_set_x(ui_Screen2_Slider_Slider3, 0);
+    lv_obj_set_y(ui_Screen2_Slider_Slider3, 70);
+    lv_obj_set_align(ui_Screen2_Slider_Slider3, LV_ALIGN_CENTER);
+
+
+    //Compensating for LVGL9.1 draw crash with bar/slider max value when top-padding is nonzero and right-padding is 0
+    if(lv_obj_get_style_pad_top(ui_Screen2_Slider_Slider3,
+                                LV_PART_MAIN) > 0) lv_obj_set_style_pad_right(ui_Screen2_Slider_Slider3,
+                                                                                  lv_obj_get_style_pad_right(ui_Screen2_Slider_Slider3, LV_PART_MAIN) + 1, LV_PART_MAIN);
+    ui_Screen2_Label_Label15 = lv_label_create(ui_Screen2);
+    lv_obj_set_width(ui_Screen2_Label_Label15, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen2_Label_Label15, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Screen2_Label_Label15, 17);
+    lv_obj_set_y(ui_Screen2_Label_Label15, 357);
+    lv_label_set_text(ui_Screen2_Label_Label15, "电机:");
+    lv_obj_set_style_text_color(ui_Screen2_Label_Label15, lv_color_hex(0xF30000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Screen2_Label_Label15, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Screen2_Label_Label15, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Screen2_Label_Label16 = lv_label_create(ui_Screen2);
+    lv_obj_set_width(ui_Screen2_Label_Label16, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen2_Label_Label16, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Screen2_Label_Label16, 17);
+    lv_obj_set_y(ui_Screen2_Label_Label16, 229);
+    lv_label_set_text(ui_Screen2_Label_Label16, "音量:");
+    lv_obj_set_style_text_color(ui_Screen2_Label_Label16, lv_color_hex(0xF30000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_Screen2_Label_Label16, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_Screen2_Label_Label16, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+
     lv_obj_add_event_cb(ui_Screen2_Button_Button1, ui_event_Screen2_Button_Button1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Slider_Slider1, ui_event_Screen2_Slider_Slider1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Button_Button2, ui_event_Screen2_Button_Button2, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Switch_Switch1, ui_event_Screen2_Switch_Switch1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Button_Button3, ui_event_Screen2_Button_Button3, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Screen2_Slider_Slider3, ui_event_Screen2_Slider_Slider3, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2, ui_event_Screen2, LV_EVENT_ALL, NULL);
 
 }

@@ -21,6 +21,7 @@
 #include "src/misc/lv_types.h"
 #include "src/others/file_explorer/lv_file_explorer.h"
 #include "src/widgets/label/lv_label.h"
+#include "src/widgets/slider/lv_slider.h"
 #include "src/widgets/textarea/lv_textarea.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_gpio.h"
@@ -270,4 +271,10 @@ void passwordchange(lv_event_t *e) {
             lv_textarea_set_text(ui_Screen3_Textarea_TextAreas3t3, "");
         }
     }
+}
+
+void Slider3_proc(lv_event_t * e)
+{
+	// Your code here
+    mp3_changevol(lv_slider_get_value(ui_Screen2_Slider_Slider3));
 }
