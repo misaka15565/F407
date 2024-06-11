@@ -52,10 +52,10 @@ void CheckPasswd(lv_event_t *e) {
     if (lv_strcmp(W25Qxx_password + 6, pwdtmp) == 0) {
         lv_textarea_set_text(ui_Screen1_Textarea_TextArea1, ""); // 清空密码框
         _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Screen2_screen_init);
-    }else if(lv_strcmp(pwdtmp,"reset")==0){
-        if(HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin)==GPIO_PIN_RESET && HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin)==GPIO_PIN_RESET && HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin)==GPIO_PIN_RESET){
-            //重置密码
-            char tmp[20]="root";
+    } else if (lv_strcmp(pwdtmp, "reset") == 0) {
+        if (HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin) == GPIO_PIN_RESET && HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin) == GPIO_PIN_RESET && HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin) == GPIO_PIN_RESET) {
+            // 重置密码
+            char tmp[20] = "root";
             W25Qxx_writePassword(tmp);
             lv_label_set_text(ui_Screen1_Label_Label3, "密码重置为root，请重新输入");
             lv_textarea_set_text(ui_Screen1_Textarea_TextArea1, ""); // 清空密码框
@@ -236,7 +236,7 @@ void changepasswordvisible(lv_event_t *e) {
     }
 }
 
-lv_obj_t* password_msgbox_win;
+lv_obj_t *password_msgbox_win;
 static void windows_close_cb(lv_event_t *e) {
     lv_obj_delete(password_msgbox_win);
     _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_OUT_LEFT, 500, 0, &ui_Screen2_screen_init);
@@ -249,8 +249,8 @@ void passwordchange(lv_event_t *e) {
     const char *pwd3 = lv_textarea_get_text(ui_Screen3_Textarea_TextAreas3t3);
     // 如果pwd1和原来的密码相同
     if (strcmp(pwd1, W25Qxx_password + 6) == 0) {
-        // 如果pwd2和pwd3相同
-        if (strcmp(pwd2, pwd3) == 0) {
+        // 如果pwd2和pwd3相同且长度大于等于1
+        if (strcmp(pwd2, pwd3) == 0 && strlen(pwd2) >= 1) {
             // 修改密码
             W25Qxx_writePassword(pwd2);
 
@@ -264,6 +264,10 @@ void passwordchange(lv_event_t *e) {
             lv_obj_set_style_text_font(button, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_pos(password_msgbox_win, 0, 0);
             lv_obj_set_size(password_msgbox_win, 400, 240);
+            // 清空三个文本框
+            lv_textarea_set_text(ui_Screen3_Textarea_TextAreas3t1, "");
+            lv_textarea_set_text(ui_Screen3_Textarea_TextAreas3t2, "");
+            lv_textarea_set_text(ui_Screen3_Textarea_TextAreas3t3, "");
         }
     }
 }
