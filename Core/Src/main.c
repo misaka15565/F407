@@ -105,8 +105,8 @@ int _read(int fd, char *pBuffer, int size) {
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static lv_color_t disp_buf_1[800 * 10];
-static lv_color_t disp_buf_2[800 * 10];
+static lv_color_t disp_buf_1[800 * 15];
+static lv_color_t disp_buf_2[800 * 15];
 /* USER CODE END 0 */
 
 /**

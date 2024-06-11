@@ -121,7 +121,7 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
             lv_win_add_title(sudoer_ui_image_window, title);
             lv_obj_t *button = lv_win_add_button(sudoer_ui_image_window, LV_SYMBOL_CLOSE, 50);
             lv_obj_add_event_cb(button, ImageWindowClose, LV_EVENT_CLICKED, NULL);
-            lv_obj_set_style_text_font(button, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(button, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
             sudoer_ui_image = lv_image_create(sudoer_ui_image_window);
             lv_image_set_src(sudoer_ui_image, path);
         }
@@ -152,7 +152,7 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
                 lv_obj_set_pos(sudoer_ui_image_window, 0, 0);
                 lv_obj_t *button = lv_win_add_button(sudoer_ui_image_window, LV_SYMBOL_CLOSE, 50);
                 lv_obj_add_event_cb(button, ImageWindowClose, LV_EVENT_CLICKED, NULL);
-                lv_obj_set_style_text_font(button, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+                lv_obj_set_style_text_font(button, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
                 lv_obj_set_style_text_font(sudoer_ui_image_window, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
                 // 添加文本框
                 lv_obj_t *textarea = lv_textarea_create(sudoer_ui_image_window);
@@ -175,10 +175,10 @@ void ExplorerScreenLoaded(lv_event_t *e) {
     lv_obj_set_style_text_font(sudoer_ui_ExplorerWindow, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(sudoer_ui_ExplorerWindow, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
     sudoer_ui_ExplorerWindow_CloseButton = lv_win_add_button(sudoer_ui_ExplorerWindow, LV_SYMBOL_CLOSE, 50);
-    lv_obj_set_style_text_font(sudoer_ui_ExplorerWindow_CloseButton, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(sudoer_ui_ExplorerWindow_CloseButton, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_add_event_cb(sudoer_ui_ExplorerWindow_CloseButton, ExplorerWindowClose, LV_EVENT_CLICKED, NULL);
     sudoer_ui_Explorer = lv_file_explorer_create(sudoer_ui_ExplorerWindow);
-    lv_obj_set_style_text_font(sudoer_ui_Explorer, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(sudoer_ui_Explorer, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_file_explorer_set_sort(sudoer_ui_Explorer, LV_EXPLORER_SORT_NONE);
     lv_file_explorer_open_dir(sudoer_ui_Explorer, "0:/");
     lv_obj_set_size(sudoer_ui_Explorer, 800, 400);
