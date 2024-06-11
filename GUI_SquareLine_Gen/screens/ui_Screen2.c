@@ -84,8 +84,8 @@ void ui_Screen2_screen_init(void)
     ui_Screen2_Switch_Switch1 = lv_switch_create(ui_Screen2);
     lv_obj_set_width(ui_Screen2_Switch_Switch1, 93);
     lv_obj_set_height(ui_Screen2_Switch_Switch1, 52);
-    lv_obj_set_x(ui_Screen2_Switch_Switch1, 345);
-    lv_obj_set_y(ui_Screen2_Switch_Switch1, -95);
+    lv_obj_set_x(ui_Screen2_Switch_Switch1, 152);
+    lv_obj_set_y(ui_Screen2_Switch_Switch1, 10);
     lv_obj_set_align(ui_Screen2_Switch_Switch1, LV_ALIGN_CENTER);
 
 
@@ -144,12 +144,28 @@ void ui_Screen2_screen_init(void)
     ui_Screen2_Label_Label17 = lv_label_create(ui_Screen2);
     lv_obj_set_width(ui_Screen2_Label_Label17, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Screen2_Label_Label17, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Screen2_Label_Label17, 502);
-    lv_obj_set_y(ui_Screen2_Label_Label17, 123);
+    lv_obj_set_x(ui_Screen2_Label_Label17, 308);
+    lv_obj_set_y(ui_Screen2_Label_Label17, 229);
     lv_label_set_text(ui_Screen2_Label_Label17, "MP3开关:");
     lv_obj_set_style_text_color(ui_Screen2_Label_Label17, lv_color_hex(0xF30000), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Screen2_Label_Label17, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_Screen2_Label_Label17, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Screen2_Button_Button5 = lv_button_create(ui_Screen2);
+    lv_obj_set_width(ui_Screen2_Button_Button5, 400);
+    lv_obj_set_height(ui_Screen2_Button_Button5, 50);
+    lv_obj_set_x(ui_Screen2_Button_Button5, -187);
+    lv_obj_set_y(ui_Screen2_Button_Button5, -41);
+    lv_obj_set_align(ui_Screen2_Button_Button5, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Screen2_Button_Button5, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_remove_flag(ui_Screen2_Button_Button5, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Screen2_Label_Label12 = lv_label_create(ui_Screen2_Button_Button5);
+    lv_obj_set_width(ui_Screen2_Label_Label12, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Screen2_Label_Label12, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_Screen2_Label_Label12, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Screen2_Label_Label12, "显示作者网站二维码");
+    lv_obj_set_style_text_font(ui_Screen2_Label_Label12, &ui_font_ysFont40, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_Screen2_Button_Button1, ui_event_Screen2_Button_Button1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Slider_Slider1, ui_event_Screen2_Slider_Slider1, LV_EVENT_ALL, NULL);
@@ -157,6 +173,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_add_event_cb(ui_Screen2_Switch_Switch1, ui_event_Screen2_Switch_Switch1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Button_Button3, ui_event_Screen2_Button_Button3, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2_Slider_Slider3, ui_event_Screen2_Slider_Slider3, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Screen2_Button_Button5, ui_event_Screen2_Button_Button5, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Screen2, ui_event_Screen2, LV_EVENT_ALL, NULL);
 
 }

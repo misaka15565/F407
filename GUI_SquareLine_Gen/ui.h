@@ -51,6 +51,9 @@ extern lv_obj_t * ui_Screen2_Slider_Slider3;
 extern lv_obj_t * ui_Screen2_Label_Label15;
 extern lv_obj_t * ui_Screen2_Label_Label16;
 extern lv_obj_t * ui_Screen2_Label_Label17;
+void ui_event_Screen2_Button_Button5(lv_event_t * e);
+extern lv_obj_t * ui_Screen2_Button_Button5;
+extern lv_obj_t * ui_Screen2_Label_Label12;
 // SCREEN: ui_ExplorerScreen
 void ui_ExplorerScreen_screen_init(void);
 void ui_event_ExplorerScreen(lv_event_t * e);

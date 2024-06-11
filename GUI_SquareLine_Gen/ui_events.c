@@ -16,6 +16,8 @@
 #include "src/core/lv_obj_tree.h"
 #include "src/display/lv_display.h"
 #include "src/font/lv_font.h"
+#include "src/font/lv_symbol_def.h"
+#include "src/libs/qrcode/lv_qrcode.h"
 #include "src/misc/lv_area.h"
 #include "src/misc/lv_event.h"
 #include "src/misc/lv_types.h"
@@ -35,10 +37,6 @@
 #include "GNSS.h"
 #include "DTH11.h"
 #include "w25qxx.h"
-void button1_clicked(lv_event_t *e) {
-    // Your code here
-    HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-}
 
 void CheckPasswd(lv_event_t *e) {
     // Your code here
@@ -273,8 +271,22 @@ void passwordchange(lv_event_t *e) {
     }
 }
 
-void Slider3_proc(lv_event_t * e)
-{
-	// Your code here
+void Slider3_proc(lv_event_t *e) {
+    // Your code here
     mp3_changevol(lv_slider_get_value(ui_Screen2_Slider_Slider3));
+}
+
+void button5_clicked_proc(lv_event_t *e) {
+    // Your code here
+    static lv_obj_t *qr = NULL;
+    if (qr == NULL) {
+        qr = lv_qrcode_create(ui_Screen2);
+        lv_obj_set_pos(qr, 450, 0);
+        const char data[] = "https://www.11ban.top/index.php";
+        lv_qrcode_update(qr, data, sizeof(data));
+        //lv_obj_set_style_transform_scale(qr, 3, 0);
+    } else {
+        lv_obj_delete(qr);
+        qr = NULL;
+    }
 }
