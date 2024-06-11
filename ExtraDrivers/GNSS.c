@@ -9,8 +9,8 @@ GSVDATA gpgsv;
 unsigned char gps_time[50] = "";
 float latitude = 0.0;                                               //  纬度
 float longitude = 0.0;                                              //  经度
-char latitude_dir;
-char longitude_dir;
+char latitude_dir='N';
+char longitude_dir='E';
 
 unsigned char numMsg;	//  语句总数
 unsigned char msgNo;	//  当前语句编号
