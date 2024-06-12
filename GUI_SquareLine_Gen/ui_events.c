@@ -141,11 +141,14 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
             char title[256];
             sprintf(title, "图片读取:%s", sel_fn);
             lv_win_add_title(sudoer_ui_image_window, title);
+            lv_obj_t* content=lv_win_get_content(sudoer_ui_image_window);
+            lv_obj_set_pos(content,0,0);
             lv_obj_t *button = lv_win_add_button(sudoer_ui_image_window, LV_SYMBOL_CLOSE, 50);
             lv_obj_add_event_cb(button, ImageWindowClose, LV_EVENT_CLICKED, NULL);
             lv_obj_set_style_text_font(button, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
-            sudoer_ui_image = lv_image_create(sudoer_ui_image_window);
+            sudoer_ui_image = lv_image_create(content);
             lv_image_set_src(sudoer_ui_image, path);
+            lv_obj_set_pos(sudoer_ui_image, 0, 0);
         }
         // 如果以txt结尾
         else if (len > 4 && lv_strcmp(sel_fn + len - 4, ".txt") == 0) {
