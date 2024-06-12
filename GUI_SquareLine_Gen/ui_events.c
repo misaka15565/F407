@@ -23,6 +23,7 @@
 #include "src/misc/lv_types.h"
 #include "src/others/file_explorer/lv_file_explorer.h"
 #include "src/widgets/label/lv_label.h"
+#include "src/widgets/msgbox/lv_msgbox.h"
 #include "src/widgets/slider/lv_slider.h"
 #include "src/widgets/textarea/lv_textarea.h"
 #include "stm32f4xx.h"
@@ -60,6 +61,14 @@ void CheckPasswd(lv_event_t *e) {
             lv_label_set_text(ui_Screen1_Label_Label3, "密码重置为root，请重新输入");
             lv_textarea_set_text(ui_Screen1_Textarea_TextArea1, ""); // 清空密码框
         }
+    }else{
+        lv_obj_t* msgbox =lv_msgbox_create(ui_Screen1);
+        lv_msgbox_add_text(msgbox,"密码错误");
+        lv_obj_set_style_text_font(msgbox, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_size(msgbox, 200, 100);
+        lv_obj_set_align(msgbox, LV_ALIGN_CENTER);
+        lv_obj_t* button = lv_msgbox_add_close_button(msgbox);
+        lv_obj_set_style_text_font(button, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
     }
 }
 
