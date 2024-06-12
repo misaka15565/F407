@@ -1,5 +1,6 @@
 #include "w25qxx.h"
 #include "spi.h"
+#include "src/stdlib/lv_mem.h"
 #include <string.h>
 
 unsigned short W25QXX_TYPE = W25Q16; //  默认是W25Q16
@@ -200,15 +201,13 @@ void W25QXX_Write_NoCheck(unsigned char *pBuffer, unsigned int WriteAddr, unsign
 // pBuffer:数据存储区
 // WriteAddr:开始写入的地址(24bit)
 // NumByteToWrite:要写入的字节数(最大65535)
-unsigned char W25QXX_BUFFER[4096];
 void W25QXX_Write(unsigned char *pBuffer, unsigned int WriteAddr, unsigned short NumByteToWrite) {
     unsigned int secpos;
     unsigned short secoff;
     unsigned short secremain;
     unsigned short i;
-    unsigned char *W25QXX_BUF;
+    unsigned char *W25QXX_BUF = (void*)lv_malloc(4096);
 
-    W25QXX_BUF = W25QXX_BUFFER;
     secpos = WriteAddr / 4096; //  扇区地址
     secoff = WriteAddr % 4096; //  在扇区内的偏移
     secremain = 4096 - secoff; //  扇区剩余空间大小
@@ -259,6 +258,7 @@ void W25QXX_Write(unsigned char *pBuffer, unsigned int WriteAddr, unsigned short
             }
         }
     };
+    lv_free(W25QXX_BUF);
 }
 // 擦除整个芯片
 // 等待时间超长...
