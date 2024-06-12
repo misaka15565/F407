@@ -48,10 +48,11 @@ void CheckPasswd(lv_event_t *e) {
 #undef PASSWORD_NOCHECK
 #endif
     const char *pwdtmp = lv_textarea_get_text(ui_Screen1_Textarea_TextArea1);
-
+    static uint16_t password_try_time = 0;
     if (lv_strcmp(W25Qxx_password + 6, pwdtmp) == 0) {
         lv_textarea_set_text(ui_Screen1_Textarea_TextArea1, ""); // 清空密码框
-        lv_label_set_text(ui_Screen1_Label_Label3,"请输入密码：");
+        lv_label_set_text(ui_Screen1_Label_Label3, "请输入密码：");
+        password_try_time = 0;
         _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Screen2_screen_init);
     } else if (lv_strcmp(pwdtmp, "reset") == 0) {
         if (HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin) == GPIO_PIN_RESET && HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin) == GPIO_PIN_RESET && HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin) == GPIO_PIN_RESET) {
@@ -60,15 +61,21 @@ void CheckPasswd(lv_event_t *e) {
             W25Qxx_writePassword(tmp);
             lv_label_set_text(ui_Screen1_Label_Label3, "密码重置为root，请重新输入");
             lv_textarea_set_text(ui_Screen1_Textarea_TextArea1, ""); // 清空密码框
+            password_try_time = 0;
         }
-    }else{
-        lv_obj_t* msgbox =lv_msgbox_create(ui_Screen1);
-        lv_msgbox_add_text(msgbox,"密码错误");
+    } else {
+        ++password_try_time;
+        lv_obj_t *msgbox = lv_msgbox_create(ui_Screen1);
+        lv_msgbox_add_text(msgbox, "密码错误");
+        if (password_try_time > 5) {
+            lv_msgbox_add_text(msgbox, "密码错误次数过多，请尝试重置密码");
+        }
         lv_obj_set_style_text_font(msgbox, &ui_font_ysFont, LV_PART_MAIN | LV_STATE_DEFAULT);
-        lv_obj_set_size(msgbox, 200, 100);
+        lv_obj_set_size(msgbox, 300, 200);
         lv_obj_set_align(msgbox, LV_ALIGN_CENTER);
-        lv_obj_t* button = lv_msgbox_add_close_button(msgbox);
+        lv_obj_t *button = lv_msgbox_add_close_button(msgbox);
         lv_obj_set_style_text_font(button, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_textarea_set_text(ui_Screen1_Textarea_TextArea1, ""); // 清空密码框
     }
 }
 
@@ -141,8 +148,8 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
             char title[256];
             sprintf(title, "图片读取:%s", sel_fn);
             lv_win_add_title(sudoer_ui_image_window, title);
-            lv_obj_t* content=lv_win_get_content(sudoer_ui_image_window);
-            lv_obj_set_pos(content,0,0);
+            lv_obj_t *content = lv_win_get_content(sudoer_ui_image_window);
+            lv_obj_set_pos(content, 0, 0);
             lv_obj_t *button = lv_win_add_button(sudoer_ui_image_window, LV_SYMBOL_CLOSE, 50);
             lv_obj_add_event_cb(button, ImageWindowClose, LV_EVENT_CLICKED, NULL);
             lv_obj_set_style_text_font(button, &lv_font_montserrat_18, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -297,7 +304,7 @@ void button5_clicked_proc(lv_event_t *e) {
         lv_obj_set_pos(qr, 500, 0);
         const char data[] = "https://www.11ban.top/index.php";
         lv_qrcode_update(qr, data, sizeof(data));
-        //lv_obj_set_style_transform_scale(qr, 3, 0);
+        // lv_obj_set_style_transform_scale(qr, 3, 0);
     } else {
         lv_obj_delete(qr);
         qr = NULL;
