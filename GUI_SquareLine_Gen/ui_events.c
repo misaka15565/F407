@@ -133,7 +133,7 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
         if (len > 4 && (lv_strcmp(sel_fn + len - 4, ".jpg") == 0 || lv_strcmp(sel_fn + len - 4, ".bmp") == 0)) {
             char path[256];
             lv_strcpy(path, cur_path);
-            lv_strcpy(path + lv_strlen(cur_path) - 1, sel_fn);
+            lv_strcpy(path + lv_strlen(cur_path), sel_fn);
             printf("open file %s\n", path);
 
             sudoer_ui_image_window = lv_win_create(ui_ExplorerScreen);
@@ -154,7 +154,7 @@ static void Explorer_file_selected_handler(lv_event_t *e) {
         else if (len > 4 && lv_strcmp(sel_fn + len - 4, ".txt") == 0) {
             char path[256];
             lv_strcpy(path, cur_path);
-            lv_strcpy(path + lv_strlen(cur_path) - 1, sel_fn);
+            lv_strcpy(path + lv_strlen(cur_path), sel_fn);
             printf("open file %s\n", path);
             FIL file;
             FRESULT res = f_open(&file, path, FA_READ);
