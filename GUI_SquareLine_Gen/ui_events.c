@@ -50,6 +50,7 @@ void CheckPasswd(lv_event_t *e) {
 
     if (lv_strcmp(W25Qxx_password + 6, pwdtmp) == 0) {
         lv_textarea_set_text(ui_Screen1_Textarea_TextArea1, ""); // 清空密码框
+        lv_label_set_text(ui_Screen1_Label_Label3,"请输入密码：");
         _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Screen2_screen_init);
     } else if (lv_strcmp(pwdtmp, "reset") == 0) {
         if (HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin) == GPIO_PIN_RESET && HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin) == GPIO_PIN_RESET && HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin) == GPIO_PIN_RESET) {
